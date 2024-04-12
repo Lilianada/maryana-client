@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 import Background from "../../assets/Background.jpg";
 import Logo from "../../assets/logo.png";
-import { CheckIcon } from "@heroicons/react/24/outline";
+import { CheckIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { db } from "../../config/firebase";
 import Select from "react-select";
 import {
@@ -20,8 +20,11 @@ import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import { customModal } from "../../utils/modalUtils";
 import { useModal } from "../../context/ModalContext";
+import { useAlert } from "../../context/AlertContext";
 import { collection, getDocs } from "firebase/firestore";
 import PhoneVerification from "./PhoneValidation";
+import DotLoader from "../../components/DotLoader";
+import { customAlert } from "../../utils/alertUtils";
 
 const CountrySelect = ({ value, onChange }) => {
   const [countries, setCountries] = useState([]);
@@ -41,7 +44,12 @@ const CountrySelect = ({ value, onChange }) => {
   };
 
   return (
-    <Select options={countries} value={value} onChange={handleCountryChange} />
+    <Select
+      options={countries}
+      value={value}
+      onChange={handleCountryChange}
+      className="bg-white focus:bg-blue-50 block w-full placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+    />
   );
 };
 
@@ -58,6 +66,7 @@ const validatePassword = (pass, isStrongPolicy) => {
 
 export default function Register() {
   const { showModal } = useModal();
+  const { showAlert } = useAlert();
   const initialFormState = {
     fullName: "",
     email: "",
@@ -75,6 +84,7 @@ export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const [isStrongPasswordPolicy, setIsStrongPasswordPolicy] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [verificationCode, setVerificationCode] = useState(
     new Array(6).fill("")
   );
@@ -91,6 +101,9 @@ export default function Register() {
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+  const toggleConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   const handleFirebaseError = (error) => {
@@ -343,10 +356,22 @@ export default function Register() {
   const handleSignup = async (e) => {
     e.preventDefault();
 
+    setIsLoading(true);
     // Validation checks
     const passwordValidationResult = validatePasswords();
     if (passwordValidationResult) {
       setErrorWithTimeout(passwordValidationResult);
+      customAlert({
+        showModal,
+        title: "Verification Code Sent",
+        text: "Please check your phone for the verification code.",
+        icon: CheckIcon,
+        showConfirmButton: false,
+        timer: 2000,
+        iconBgColor: "bg-green-100",
+        iconTextColor: "bg-green-600",
+        buttonBgColor: "bg-green-600",
+      });
       return;
     }
 
@@ -360,7 +385,6 @@ export default function Register() {
       return;
     }
 
-    setIsLoading(true);
     try {
       window.recaptchaVerifier = new RecaptchaVerifier(
         auth,
@@ -394,7 +418,7 @@ export default function Register() {
           />
         </div>
         <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-16 xl:px-20">
-          <div className="mx-auto w-full max-w-sm lg:w-96 text-left">
+          <div className="mx-auto w-full max-w-[28rem] lg:w-96 text-left">
             <div>
               <img className="h-10 w-auto" src={Logo} alt="Your Company" />
               <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -413,7 +437,12 @@ export default function Register() {
 
             <div className="mt-10">
               <div>
-                <form action="#" method="POST" onSubmit={handleSignup} className="space-y-2">
+                <form
+                  action="#"
+                  method="POST"
+                  onSubmit={handleSignup}
+                  className="space-y-2"
+                >
                   <div className="flex items-center gap-3">
                     <label
                       htmlFor="remember-me"
@@ -445,10 +474,11 @@ export default function Register() {
                         onChange={handleChange}
                         placeholder="Primary Account Holder Full Name"
                         required
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
                   </div>
+
                   {formData.jointAccount && (
                     <div>
                       <label
@@ -464,7 +494,7 @@ export default function Register() {
                           placeholder="Secondary Account Holder Full Name"
                           value={formData.secondaryAccountHolder}
                           onChange={handleChange}
-                          className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                       </div>
                     </div>
@@ -486,7 +516,7 @@ export default function Register() {
                           value={formData.email}
                           onChange={handleChange}
                           required
-                          className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                       </div>
                     </div>
@@ -511,7 +541,7 @@ export default function Register() {
                             setFormData({ ...formData, mobilePhone: value })
                           }
                           required
-                          className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          className="bg-white focus:bg-blue-50 border-0 rounded-md focus:ring-0 focus:ring-inset focus:ring-indigo-50"
                         />
                       </div>
                     </div>
@@ -529,7 +559,7 @@ export default function Register() {
                         <CountrySelect
                           value={formData.country}
                           onChange={handleChange}
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
                       </div>
                     </div>
@@ -548,55 +578,96 @@ export default function Register() {
                           placeholder="Address"
                           value={formData.address}
                           onChange={handleChange}
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          autoComplete="street-address"
                         />
                       </div>
                     </div>
                   </div>
-                  <div>
-                    <label
-                      htmlFor="password"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Password
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        autoComplete="current-password"
-                        required
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
+
+                  <div className="grid max-w-2xl grid-cols-1 gap-x-3 gap-y-8 sm:grid-cols-6 md:col-span-2">
+                    <div className="sm:col-span-3">
+                      <label
+                        htmlFor="password"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Password
+                      </label>
+                      <div className="relative mt-2 rounded-md shadow-sm">
+                        <input
+                          className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          type={showPassword ? "text" : "password"}
+                          name="password"
+                          value={formData.password}
+                          onChange={handleChange}
+                          autoComplete="new-password"
+                        />
+                        <div className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3">
+                          {showPassword ? (
+                            <EyeIcon
+                              className="h-4 w-4 text-indigo-300"
+                              aria-hidden="true"
+                              onClick={togglePasswordVisibility}
+                            />
+                          ) : (
+                            <EyeSlashIcon
+                              className="h-4 w-4 text-gray-300"
+                              aria-hidden="true"
+                              onClick={togglePasswordVisibility}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="sm:col-span-3">
+                      <label
+                        htmlFor="confirm-password"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Confirm Password
+                      </label>
+                      <div className="relative mt-2 rounded-md shadow-sm">
+                        <input
+                          className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          type={showConfirmPassword ? "text" : "password"}
+                          name="confirmPassword"
+                          value={formData.confirmPassword}
+                          onChange={handleChange}
+                          autoComplete="confirm-password"
+                        />
+                        <div className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3">
+                          {showConfirmPassword ? (
+                            <EyeIcon
+                              className="h-4 w-4 text-indigo-300"
+                              aria-hidden="true"
+                              onClick={toggleConfirmPassword}
+                            />
+                          ) : (
+                            <EyeSlashIcon
+                              className="h-4 w-4 text-gray-300"
+                              aria-hidden="true"
+                              onClick={toggleConfirmPassword}
+                            />
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
-
-                  <div>
-                    <label
-                      htmlFor="confirm-password"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Confirm Password
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        id="confirm-password"
-                        name="confirm-password"
-                        type="password"
-                        autoComplete="current-password"
-                        required
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
-
                   <div>
                     <button
+                    id="sign-up-button"
                       type="submit"
                       className="mt-8 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                      Sign up
+                      {isLoading ? (
+                        <div className="flex w-full justify-center align-middle gap-2">
+                          <span>Signing up</span>
+                          <DotLoader />
+                        </div>
+                      ) : (
+                        "Sign up"
+                      )}
                     </button>
                   </div>
                 </form>
@@ -605,29 +676,29 @@ export default function Register() {
           </div>
         </div>
         {verificationModal && (
-        <PhoneVerification
-          isOpen={verificationModal}
-          onClose={() => setVerificationModal(false)}
-          onVerify={handleVerifyCode}
-          onResend={resendCode}
-          isLoading={isLoading}
-          canResend={canResend}
-          counter={counter}
-          setCounter={setCounter}
-          setCanResend={setCanResend}
-          error={error}
-          successMessage={successMessage}
-          phone={formData.mobilePhone}
-          setPhoneNumber={(value) => {
-            setFormData({
-              ...formData,
-              mobilePhone: value,
-            });
-          }}
-          code={verificationCode}
-          setCode={setVerificationCode}
-        />
-      )}
+          <PhoneVerification
+            isOpen={verificationModal}
+            onClose={() => setVerificationModal(false)}
+            onVerify={handleVerifyCode}
+            onResend={resendCode}
+            isLoading={isLoading}
+            canResend={canResend}
+            counter={counter}
+            setCounter={setCounter}
+            setCanResend={setCanResend}
+            error={error}
+            successMessage={successMessage}
+            phone={formData.mobilePhone}
+            setPhoneNumber={(value) => {
+              setFormData({
+                ...formData,
+                mobilePhone: value,
+              });
+            }}
+            code={verificationCode}
+            setCode={setVerificationCode}
+          />
+        )}
       </div>
     </div>
   );

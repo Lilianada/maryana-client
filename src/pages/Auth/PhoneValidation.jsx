@@ -50,7 +50,7 @@ export default function PhoneVerification({
         <div className="p-6">
           <h1 className="text-xl font-semibold text-indigo-600 mb-2">Verify Code</h1>
           <p className="text-gray-600 mb-4">Please enter the verification code sent to your phone.</p>
-          <form onSubmit={onVerify}>
+          <form onSubmit={onVerify} className="w-full grid items-center">
             <div className="flex mb-4">
               {code.map((value, index) => (
                 <input
