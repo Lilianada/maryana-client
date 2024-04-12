@@ -144,7 +144,6 @@ export const fetchPasswordPolicySetting = async () => {
   }
 };
 
-
 //display tool featute
 export const displayToolsFeature = (setIsToolsVisible) => {
   try {
