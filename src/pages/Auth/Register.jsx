@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Background from "../../assets/images/Background.jpg";
+import Background from "../../assets/Background.jpg";
 import Logo from "../../assets/logo.png";
 
 export default function Register() {

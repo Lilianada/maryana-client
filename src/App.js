@@ -8,7 +8,7 @@ function App() {
       <Router>
             <Routes>
               <Route
-                path="/dashboard/"
+                path="/sign-up"
                 element={
                   <Register/>
                 }
