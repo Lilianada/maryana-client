@@ -13,26 +13,37 @@ http://www.apache.org/licenses/LICENSE-2.0
 * limitations under the License.
 */
 import {
-    addDoc,
-    collection,
-    deleteDoc,
-    doc,
-    getDoc,
-    getDocs,
-    onSnapshot,
-    orderBy,
-    query,
-    serverTimestamp,
-    setDoc,
-    updateDoc,
-  } from "firebase/firestore";
-  import { db } from "./firebase";
-  import { getAuth, signOut } from "firebase/auth";
-  import { useNavigate } from "react-router-dom";
-  
-  // const USER_COLLECTION = "users";
-  const USERS_COLLECTION = "users";
-  const ADMIN_DASH_COLLECTION = "admin_users";
-  const USERS_REQUESTS = "userRequests";
-  const ADMINUSERS_COLLECTION = "adminUsers";
-  
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+} from "firebase/firestore";
+import { db } from "./firebase";
+
+// Banking Details
+export async function addBankingDetails(uid, data) {
+  const bankingDetailsRef = collection(db, "users", uid, "bankingDetails");
+  return addDoc(bankingDetailsRef, data);
+}
+
+export async function updateBankingDetails(uid, docId, data) {
+  return setDoc(doc(db, "users", uid, "bankingDetails", docId), data);
+}
+
+export async function getBankingDetails(uid) {
+  const firestorePath = `users/${uid}/bankingDetails`;
+
+  const bankingDetailsQuery = query(collection(db, firestorePath));
+  const querySnapshot = await getDocs(bankingDetailsQuery);
+
+  if (querySnapshot.empty) {
+    return []; // Return an empty array if no banking details are found
+  }
+
+  return querySnapshot.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id,
+  }));
+}

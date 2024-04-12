@@ -12,27 +12,115 @@ http://www.apache.org/licenses/LICENSE-2.0
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-import {
-    addDoc,
-    collection,
-    deleteDoc,
-    doc,
-    getDoc,
-    getDocs,
-    onSnapshot,
-    orderBy,
-    query,
-    serverTimestamp,
-    setDoc,
-    updateDoc,
-  } from "firebase/firestore";
-  import { db } from "./firebase";
-  import { getAuth, signOut } from "firebase/auth";
-  import { useNavigate } from "react-router-dom";
-  
-  // const USER_COLLECTION = "users";
-  const USERS_COLLECTION = "users";
-  const ADMIN_DASH_COLLECTION = "admin_users";
-  const USERS_REQUESTS = "userRequests";
-  const ADMINUSERS_COLLECTION = "adminUsers";
-  
+import { addDoc, collection, doc, getDoc } from "firebase/firestore";
+import { db } from "./firebase";
+import { getAuth, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+
+const ADMIN_DASH_COLLECTION = "admin_users";
+const USERS_REQUESTS = "userRequests";
+const ADMINUSERS_COLLECTION = "adminUsers";
+
+export function logoutAndRedirectToLogin() {
+  const authInstance = getAuth();
+  const user = authInstance.currentUser;
+
+  if (!user) {
+    console.log("No user is currently authenticated.");
+    return;
+  }
+
+  // Sign out the user
+  signOut(authInstance)
+    .then(() => {
+      const navigate = useNavigate();
+      navigate("/");
+    })
+    .catch((error) => {
+      console.error("Error signing out:", error);
+    });
+}
+
+// Get Current Date
+export function getCurrentDate() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0"); // Month is zero-based
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+// Format Number
+export function formatNumber(number) {
+  return new Intl.NumberFormat("en-US", {
+    style: "decimal",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(number);
+}
+
+export async function addUserRequestToFirestore(formData) {
+  try {
+    const adminDashRef = await addDoc(
+      collection(db, ADMIN_DASH_COLLECTION),
+      {}
+    );
+
+    const userRequestRef = await addDoc(
+      collection(db, ADMIN_DASH_COLLECTION, adminDashRef.id, USERS_REQUESTS),
+      {
+        ...formData,
+      }
+    );
+    return userRequestRef.id;
+  } catch (error) {
+    console.error("Error adding user request to Firestore:", error);
+    return null;
+  }
+}
+
+// Function to add login/logout notification to Admin Dashboard
+export async function addLogNotification(userRef) {
+  try {
+    // Fetch the user's data to determine the login status
+    const userSnapshot = await getDoc(userRef);
+
+    if (userSnapshot.exists()) {
+      const userData = userSnapshot.data();
+      const isLoggedIn = userData.isLoggedIn; // Assuming 'isLoggedIn' is a boolean field in the user's data
+
+      // Create a notification message based on the login status
+      const adminNotification = isLoggedIn
+        ? `User '${userData.fullName}' logged in`
+        : `User '${userData.fullName}' logged out`;
+
+      // Send the notification to the admin_users collection
+      const notificationData = {
+        message: adminNotification,
+        // date: getCurrentDate(),
+        timeStamp: new Date(),
+        isLoggedIn: isLoggedIn,
+      };
+
+      // Construct the Firestore references for admin dashboard and sub-collection
+      const adminDashRef = collection(db, ADMINUSERS_COLLECTION);
+      const notificationDashRef = doc(adminDashRef, "notifications");
+      const subCollectionName = isLoggedIn
+        ? "loginNotifications"
+        : "logoutNotifications";
+      const notificationsRef = collection(
+        notificationDashRef,
+        subCollectionName
+      );
+
+      await addDoc(notificationsRef, notificationData);
+      return notificationData;
+    } else {
+      console.error("User not found in Firestore.");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error adding user login notification to Firestore:", error);
+    return null;
+  }
+}
