@@ -13,26 +13,56 @@ http://www.apache.org/licenses/LICENSE-2.0
 * limitations under the License.
 */
 import {
-    addDoc,
     collection,
     deleteDoc,
     doc,
-    getDoc,
     getDocs,
-    onSnapshot,
-    orderBy,
-    query,
-    serverTimestamp,
-    setDoc,
-    updateDoc,
   } from "firebase/firestore";
   import { db } from "./firebase";
-  import { getAuth, signOut } from "firebase/auth";
-  import { useNavigate } from "react-router-dom";
-  
-  // const USER_COLLECTION = "users";
+
   const USERS_COLLECTION = "users";
-  const ADMIN_DASH_COLLECTION = "admin_users";
-  const USERS_REQUESTS = "userRequests";
-  const ADMINUSERS_COLLECTION = "adminUsers";
   
+
+//NOTIFICATIONS
+const NOTIFICATIONS_SUB_COLLECTION = "notifications";
+
+export async function getNotificationsForUser(userId) {
+  try {
+    const notificationsRef = collection(
+      db,
+      USERS_COLLECTION,
+      userId,
+      NOTIFICATIONS_SUB_COLLECTION
+    );
+    const notificationsSnapshot = await getDocs(notificationsRef);
+
+    if (!notificationsSnapshot || notificationsSnapshot.empty) {
+      return [];
+    }
+
+    const notifications = notificationsSnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+    return notifications;
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+    return null;
+  }
+}
+
+export const deleteNotification = async (uid, notificationId) => {
+  try {
+    const requestRef = doc(
+      db,
+      USERS_COLLECTION,
+      uid,
+      NOTIFICATIONS_SUB_COLLECTION,
+      notificationId
+    );
+    await deleteDoc(requestRef);
+  } catch (error) {
+    console.error("Error deleting Notification: ", error);
+    throw error;
+  }
+};
