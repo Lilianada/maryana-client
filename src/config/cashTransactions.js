@@ -12,27 +12,26 @@ http://www.apache.org/licenses/LICENSE-2.0
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-import {
-    addDoc,
-    collection,
-    deleteDoc,
-    doc,
-    getDoc,
-    getDocs,
-    onSnapshot,
-    orderBy,
-    query,
-    serverTimestamp,
-    setDoc,
-    updateDoc,
-  } from "firebase/firestore";
-  import { db } from "./firebase";
-  import { getAuth, signOut } from "firebase/auth";
-  import { useNavigate } from "react-router-dom";
-  
-  // const USER_COLLECTION = "users";
-  const USERS_COLLECTION = "users";
-  const ADMIN_DASH_COLLECTION = "admin_users";
-  const USERS_REQUESTS = "userRequests";
-  const ADMINUSERS_COLLECTION = "adminUsers";
-  
+import { collection, getDocs, query } from "firebase/firestore";
+import { db } from "./firebase";
+
+const USERS_COLLECTION = "users";
+
+//CASH DEPOSIT
+const CASH_DEPOSIT_SUB_COLLECTION = "cashDeposits";
+//get Cash Deposit
+export async function getCashDeposit(uid) {
+  const cashDepositQuery = query(
+    collection(db, USERS_COLLECTION, uid, CASH_DEPOSIT_SUB_COLLECTION)
+  );
+  const querySnapshot = await getDocs(cashDepositQuery);
+
+  if (querySnapshot.empty) {
+    return null;
+  }
+
+  return querySnapshot.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id,
+  }));
+}

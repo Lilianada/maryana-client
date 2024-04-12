@@ -12,7 +12,7 @@ http://www.apache.org/licenses/LICENSE-2.0
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-import { addDoc, collection, doc, getDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -124,3 +124,118 @@ export async function addLogNotification(userRef) {
     return null;
   }
 }
+
+
+// Function to fetch the password policy setting from Firestore
+export const fetchPasswordPolicySetting = async () => {
+  try {
+    const docRef = doc(db, ADMINUSERS_COLLECTION, "strongPasswordPolicy");
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const isStrong = docSnap.data().isTrue;
+      return isStrong;
+    } else {
+      return true;
+    }
+  } catch (error) {
+    console.error("Error fetching password policy: ", error);
+    throw error;
+  }
+};
+
+
+//display tool featute
+export const displayToolsFeature = (setIsToolsVisible) => {
+  try {
+    const docRef = doc(db, "adminUsers", "toolFeature");
+
+    const unsubscribe = onSnapshot(docRef, (doc) => {
+      if (doc.exists()) {
+        setIsToolsVisible(doc.data().isDisplayed);
+      } else {
+        return;
+      }
+    });
+
+    return unsubscribe;
+  } catch (error) {
+    console.error("Error fetching document:", error);
+  }
+};
+
+//display bonds feature
+export const displayBondsFeature = (setIsBondsVisible) => {
+  try {
+    const docRef = doc(db, "adminUsers", "bondsFeature");
+
+    const unsubscribe = onSnapshot(docRef, (doc) => {
+      if (doc.exists()) {
+        setIsBondsVisible(doc.data().isTrue);
+      } else {
+        return;
+      }
+    });
+
+    return unsubscribe;
+  } catch (error) {
+    console.error("Error fetching document:", error);
+  }
+};
+
+//display fixed term feature
+export const displayFixedTermFeature = (setIsFixedTermVisible) => {
+  try {
+    const docRef = doc(db, "adminUsers", "termsFeature");
+
+    const unsubscribe = onSnapshot(docRef, (doc) => {
+      if (doc.exists()) {
+        setIsFixedTermVisible(doc.data().isTrue);
+      } else {
+        return;
+      }
+    });
+
+    return unsubscribe;
+  } catch (error) {
+    console.error("Error fetching document:", error);
+  }
+};
+
+//display ipo feature
+export const displayIpoFeature = (setIsIpoVisible) => {
+  try {
+    const docRef = doc(db, "adminUsers", "iposFeature");
+
+    const unsubscribe = onSnapshot(docRef, (doc) => {
+      if (doc.exists()) {
+        setIsIpoVisible(doc.data().isTrue);
+      } else {
+        return;
+      }
+    });
+
+    return unsubscribe;
+  } catch (error) {
+    console.error("Error fetching document:", error);
+  }
+};
+
+//display ipos tables feature
+export const displayIposTable = (setIsIposVisible) => {
+  try {
+    const docRef = doc(db, "adminUsers", "iposTableFeature");
+
+    const unsubscribe = onSnapshot(docRef, (doc) => {
+      if (doc.exists()) {
+        setIsIposVisible(doc.data().isTrue);
+      } else {
+        return;
+      }
+    });
+
+    return unsubscribe;
+  } catch (error) {
+    console.error("Error fetching document:", error);
+  }
+};

@@ -13,26 +13,60 @@ http://www.apache.org/licenses/LICENSE-2.0
 * limitations under the License.
 */
 import {
-    addDoc,
     collection,
-    deleteDoc,
     doc,
     getDoc,
     getDocs,
-    onSnapshot,
-    orderBy,
-    query,
-    serverTimestamp,
-    setDoc,
     updateDoc,
   } from "firebase/firestore";
   import { db } from "./firebase";
-  import { getAuth, signOut } from "firebase/auth";
-  import { useNavigate } from "react-router-dom";
   
-  // const USER_COLLECTION = "users";
   const USERS_COLLECTION = "users";
-  const ADMIN_DASH_COLLECTION = "admin_users";
-  const USERS_REQUESTS = "userRequests";
-  const ADMINUSERS_COLLECTION = "adminUsers";
-  
+
+//STOCKS
+const STOCKS_COLLECTION = "stocks";
+// Function to get stock data from the user's database
+export async function getStockFromUserDB(userId) {
+  try {
+    const userDocRef = doc(db, USERS_COLLECTION, userId);
+
+    const userDocSnap = await getDoc(userDocRef);
+
+    if (userDocSnap.exists()) {
+      // Creating a reference to the stocks sub-collection of the user's document
+      const stocksCollectionRef = collection(userDocRef, STOCKS_COLLECTION);
+      const stocksSnapshot = await getDocs(stocksCollectionRef);
+
+      const stocksData = stocksSnapshot.docs.map((doc) => doc.data());
+      return stocksData;
+    } else {
+      console.error(`User with ID ${userId} not found.`);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error getting stock from user database: ", error);
+    throw error;
+  }
+}
+
+// Function to update a single stock in Firestore
+export const updateStockInDB = async (userId, stock) => {
+  try {
+    if (!stock.id) {
+      throw new Error("Stock ID is missing or invalid");
+    }
+    const userDocRef = doc(db, USERS_COLLECTION, userId);
+    const userDocSnap = await getDoc(userDocRef);
+
+    if (userDocSnap.exists()) {
+      const stocksCollectionRef = collection(userDocRef, STOCKS_COLLECTION);
+      const stockRef = doc(stocksCollectionRef, stock.id);
+      await updateDoc(stockRef, stock);
+    } else {
+      console.error(`Error processing Update.`);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error updating stock in the database:", error);
+  }
+};
