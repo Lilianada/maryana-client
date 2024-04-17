@@ -1,12 +1,15 @@
 import React, { Fragment, useEffect, useState } from "react";
 import DotLoader from "../../../components/DotLoader";
 import {
+    ExclamationCircleIcon,
   EyeIcon,
   EyeSlashIcon,
   QuestionMarkCircleIcon,
 } from "@heroicons/react/20/solid";
 import logo from "../../../assets/logo.png";
 import { Popover, Transition } from "@headlessui/react";
+import { useAlert } from "../../../context/AlertContext";
+import { customAlert } from "../../../utils/alertUtils";
 
 const requirements = [
   { name: "Minimum of 8 characters" },
@@ -22,6 +25,7 @@ export default function ResetPasswordForm({
   handleChangePassword,
   ACTIONS,
 }) {
+    const {showAlert} = useAlert();
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -34,7 +38,18 @@ export default function ResetPasswordForm({
 
   useEffect(() => {
     if (state.error) {
-      console.log(state.error);
+        customAlert({
+            showAlert,
+            title: "Error",
+            description: state.error,
+            showConfirmButton: false,
+            iconBgColor: "bg-red-50",
+            iconTextColor: "text-red-600",
+            buttonBgColor: "bg-red-600",
+            icon: ExclamationCircleIcon,
+            timer: 2000,
+        });
+
       const clearErrorTimeout = setTimeout(() => {
         dispatch({ type: ACTIONS.SHOW_ERROR, error: "" });
       }, 3000);
