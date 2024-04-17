@@ -13,9 +13,10 @@ http://www.apache.org/licenses/LICENSE-2.0
 * limitations under the License.
 */
 import { addDoc, collection, doc, getDoc, onSnapshot } from "firebase/firestore";
-import { db } from "./firebase";
+import { db, storage } from "./firebase";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { getDownloadURL, ref } from "firebase/storage";
 
 const ADMIN_DASH_COLLECTION = "admin_users";
 const USERS_REQUESTS = "userRequests";
@@ -236,5 +237,19 @@ export const displayIposTable = (setIsIposVisible) => {
     return unsubscribe;
   } catch (error) {
     console.error("Error fetching document:", error);
+  }
+};
+
+//fetch logo
+export const fetchLogo = async (setLogo) => {
+  const storageRef = ref(
+    storage,
+    "gs://cvs-online.appspot.com/logos/darkLogo/"
+  );
+  try {
+    const logoUrl = await getDownloadURL(storageRef);
+    return setLogo(logoUrl);
+  } catch (error) {
+    console.error("Error fetching whiteLogo:", error);
   }
 };
