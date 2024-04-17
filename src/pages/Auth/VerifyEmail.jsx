@@ -1,27 +1,17 @@
+import React, { useState } from 'react'
 import { sendEmailVerification } from 'firebase/auth';
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { auth, storage } from '../../config/firebase';
+import { auth } from '../../config/firebase';
 import backgroundImageUrl from '../../assets/Background.jpg';
-import { getDownloadURL, ref } from 'firebase/storage';
-import { fetchLogo } from '../../config/utils';
+import logo from '../../assets/logo.png';
 import DotLoader from '../../components/DotLoader';
+import { useModal } from '../../context/ModalContext';
+import { customModal } from '../../utils/modalUtils';
+import { CheckIcon } from '@heroicons/react/20/solid';
 
 export default function VerifyEmail() {
-    const [message, setMessage] = useState('');
-    const [error, setError] = useState('');
+    const { showModal } = useModal();
     const [isLoading, setIsLoading] = useState(false);
-    const navigate = useNavigate();
-    const [logoUrl, setLogo] = useState("");
-
-
-  useEffect(() => {
-    const fetchLogo = async () => {
-        await fetchLogo(setLogo);
-    }
-    fetchLogo();
-  }, []);
-
+    console.log(auth.currentUser)
   
     const handleEmailVerification = async () => {
       setIsLoading(true);
@@ -29,19 +19,32 @@ export default function VerifyEmail() {
       try {
         // Send the email verification link
         await sendEmailVerification(auth.currentUser);
-  
-        setMessage('Verification email sent. Please check your inbox.');
-        setTimeout(() => {
-          setMessage('');
-        }, 2000);
-        setIsLoading(false);
+        customModal({
+            showModal,
+            title: "Success",
+            text: "Verification email sent. Please check your inbox.",
+            showConfirmButton: false,
+            iconBgColor: "bg-green-100",
+            iconTextColor: "text-green-600",
+            buttonBgColor: "bg-green-600",
+            icon: CheckIcon,
+            timer: 1500,
+        });
       } catch (error) {
-        setError('Error sending verification email. Please try again.');
-        setTimeout(() => {
-          setError('');
-        }, 2000);
-        setIsLoading(false);
         console.error(error);
+        customModal({
+            showModal,
+            title: "Error",
+            text: "Error sending verification email. Please try again.",
+            showConfirmButton: false,
+            iconBgColor: "bg-red-100",
+            iconTextColor: "text-red-600",
+            buttonBgColor: "bg-red-600",
+            icon: CheckIcon,
+            timer: 1500,
+        });
+      } finally {
+        setIsLoading(false);
       }
     };
     return (
@@ -54,23 +57,23 @@ export default function VerifyEmail() {
           }}
         >
           <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-[480px]">
-            <div className="bg-blue-50 px-6 py-12 shadow sm:rounded-lg sm:px-12">
+            <div className="bg-blue-50 px-6 py-8 shadow sm:rounded-lg sm:px-12">
               <div className="sm:mx-auto sm:w-full sm:max-w-md mb-6">
                 <img
                   className="mx-auto h-10 w-auto"
-                  src={logoUrl}
+                  src={logo}
                   alt="Company Logo"
                 />
-                <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+                <h2 className="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                   Verify Email Address
                 </h2>
-                <p className="mt-2 text-sm text-gray-700">
-                Please click the button below to send a verification email to your address.
+                <p className="mt-2 text-sm text-gray-700 text-center">
+                Please click the button below to send a verification email to your email address.
                 </p>
               </div>
     
               <form
-                className="space-y-4 text-left mt-10"
+                className="space-y-4 text-left mt-6"
                 action="#"
                 method="POST"
                 onSubmit={handleEmailVerification}
@@ -83,11 +86,11 @@ export default function VerifyEmail() {
                   >
                     {isLoading ? (
                       <div className="flex w-full justify-center align-middle gap-2">
-                        <span>Submitting</span>
+                        <span>Verifing</span>
                         <DotLoader />
                       </div>
                     ) : (
-                      "Submit"
+                      "Verify Email"
                     )}
                   </button>
                 </div>
