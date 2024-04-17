@@ -8,7 +8,7 @@ import {
 import { getDownloadURL, ref } from "firebase/storage";
 import { onAuthStateChanged } from "firebase/auth";
 import Background from "../../assets/Background.jpg";
-import { XCircleIcon } from "@heroicons/react/20/solid";
+import { EyeIcon, EyeSlashIcon, XCircleIcon } from "@heroicons/react/20/solid";
 import { auth, db, storage } from "../../config/firebase";
 import DotLoader from "../../components/DotLoader";
 import { customAlert } from "../../utils/alertUtils";
@@ -24,6 +24,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [logoUrl, setLogoUrl] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -55,6 +56,10 @@ export default function Login() {
 
     return () => unsubscribe();
   }, [auth]);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -133,108 +138,121 @@ export default function Login() {
             </div>
 
             <div className="mt-10">
-                <form
-                  action="#"
-                  method="POST"
-                  className="space-y-6"
-                  onSubmit={handleLogin}
-                >
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Email address
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        id="email"
-                        name="email"
-                        type="email"
-                        autoComplete="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="password"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Password
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        id="password"
-                        name="password"
-                        type="password"
-                        autoComplete="current-password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <input
-                        id="remember-me"
-                        name="remember-me"
-                        type="checkbox"
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                      />
-                      <label
-                        htmlFor="remember-me"
-                        className="ml-3 block text-sm leading-6 text-gray-700"
-                      >
-                        Remember me
-                      </label>
-                    </div>
-
-                    <div className="text-sm leading-6">
-                      <Link
-                        to="/forgot-password"
-                        className="font-semibold text-indigo-600 hover:text-indigo-500"
-                      >
-                        Forgot password?
-                      </Link>
-                    </div>
-                  </div>
-
-                  <div>
-                    <button
-                      type="submit"
-                      className="flex w-full justify-center align-middle rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                      {isLoading ? (
-                        <div className="flex w-full justify-center align-middle gap-2">
-                          <span>Loading</span>
-                          <DotLoader />
-                        </div>
-                      ) : (
-                        "Sign In"
-                      )}
-                    </button>
-                  </div>
-                </form>
-            </div>
-            
-            <div className="mt-4">
-            <p className="text-center text-sm leading-6 text-gray-500">
-              Not a member?{" "}
-              <Link
-                to="/sign-up"
-                className="font-semibold text-indigo-600 hover:text-indigo-500"
+              <form
+                action="#"
+                method="POST"
+                className="space-y-6"
+                onSubmit={handleLogin}
               >
-                Sign Up
-              </Link>
-            </p>
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Email address
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      id="email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="sm:col-span-3">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Password
+                  </label>
+                  <div className="relative mt-2 rounded-md shadow-sm">
+                    <input
+                      className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      autoComplete="password"
+                    />
+                    <div className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3">
+                      {showPassword ? (
+                        <EyeIcon
+                          className="h-4 w-4 text-indigo-300"
+                          aria-hidden="true"
+                          onClick={togglePasswordVisibility}
+                        />
+                      ) : (
+                        <EyeSlashIcon
+                          className="h-4 w-4 text-gray-300"
+                          aria-hidden="true"
+                          onClick={togglePasswordVisibility}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <input
+                      id="remember-me"
+                      name="remember-me"
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                    />
+                    <label
+                      htmlFor="remember-me"
+                      className="ml-3 block text-sm leading-6 text-gray-700"
+                    >
+                      Remember me
+                    </label>
+                  </div>
+
+                  <div className="text-sm leading-6">
+                    <Link
+                      to="/forgot-password"
+                      className="font-semibold text-indigo-600 hover:text-indigo-500"
+                    >
+                      Forgot password?
+                    </Link>
+                  </div>
+                </div>
+
+                <div>
+                  <button
+                    type="submit"
+                    className="flex w-full justify-center align-middle rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    {isLoading ? (
+                      <div className="flex w-full justify-center align-middle gap-2">
+                        <span>Loading</span>
+                        <DotLoader />
+                      </div>
+                    ) : (
+                      "Sign In"
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <div className="mt-4">
+              <p className="text-center text-sm leading-6 text-gray-500">
+                Not a member?{" "}
+                <Link
+                  to="/sign-up"
+                  className="font-semibold text-indigo-600 hover:text-indigo-500"
+                >
+                  Sign Up
+                </Link>
+              </p>
             </div>
           </div>
         </div>

@@ -13,7 +13,7 @@ export default function ForgotPassword() {
   const { showModal } = useModal();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [whiteLogoUrl, setWhiteLogo] = useState("");
+  const [logoUrl, setLogo] = useState("");
   const navigate = useNavigate();
 
   const fetchWhiteLogo = async () => {
@@ -23,7 +23,7 @@ export default function ForgotPassword() {
     );
     try {
       const logoUrl = await getDownloadURL(storageRef);
-      setWhiteLogo(logoUrl);
+      setLogo(logoUrl);
     } catch (error) {
       console.error("Error fetching whiteLogo:", error);
     }
@@ -79,7 +79,7 @@ export default function ForgotPassword() {
             <div className="sm:mx-auto sm:w-full sm:max-w-md mb-6">
               <img
                 className="mx-auto h-10 w-auto"
-                src={whiteLogoUrl}
+                src={logoUrl}
                 alt="Company Logo"
               />
               <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
