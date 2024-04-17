@@ -1,30 +1,25 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import DotLoader from "../../../components/DotLoader";
 import {
-  ChevronDownIcon,
   EyeIcon,
   EyeSlashIcon,
+  QuestionMarkCircleIcon,
 } from "@heroicons/react/20/solid";
-import backgroundImageUrl from "../../../assets/Background.jpg";
 import logo from "../../../assets/logo.png";
 import { Popover, Transition } from "@headlessui/react";
-import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 
 const requirements = [
   { name: "Minimum of 8 characters" },
   { name: "One uppercase letter" },
   { name: "One lowercase letter" },
   { name: "At least one number" },
-  { name: "At least one special character" },
+  { name: "At least one special character (!@#$%^&*)" },
 ];
 
 export default function ResetPasswordForm({
   state,
   dispatch,
   handleChangePassword,
-  showTooltip,
-  setShowTooltip,
   ACTIONS,
 }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -49,15 +44,10 @@ export default function ResetPasswordForm({
 
   return (
     <div
-      className="grid min-h-full h-screen flex-1 place-items-center justify-center py-12 sm:px-6 lg:px-8"
-      style={{
-        backgroundImage: `url(${backgroundImageUrl})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
+      className="grid min-h-full h-screen flex-1 place-items-center justify-center py-12 sm:px-6 bg-blue-50 lg:px-8 sm:bg-custom-pattern bg-cover bg-center"
     >
       <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-[480px]">
-        <div className="bg-blue-50 px-6 py-12 shadow sm:rounded-lg sm:px-12">
+        <div className="bg-blue-50 px-6 py-12 sm:shadow sm:rounded-lg sm:px-12">
           <div className="sm:mx-auto sm:w-full sm:max-w-md mb-6">
             <img
               className="mx-auto h-10 w-auto"
@@ -67,18 +57,18 @@ export default function ResetPasswordForm({
             <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
               Set Password
             </h2>
-            <p className="mt-2 text-sm text-gray-700">
+            <p className="mt-2 text-sm text-gray-700 grid place-items-center text-center">
               Kindly enter your new password to activate your account and log
               in.
               <Popover className="relative">
                 <Popover.Button className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
                   <span>
                     <QuestionMarkCircleIcon
-                      className="h-4 w-4 text-indigo-300"
+                      className="h-5 w-5 text-indigo-600"
                       aria-hidden="true"
                     />
                   </span>
-                  <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
+                  {/* <ChevronDownIcon className="h-5 w-5" aria-hidden="true" /> */}
                 </Popover.Button>
                 <Transition
                   as={Fragment}
@@ -90,7 +80,7 @@ export default function ResetPasswordForm({
                   leaveTo="opacity-0 translate-y-1"
                 >
                   <Popover.Panel className="absolute left-1/2 z-10 mt-5 flex w-screen max-w-min -translate-x-1/2 px-4">
-                    <ul className="w-56 shrink rounded-xl bg-white p-4 text-sm font-semibold leading-6 text-gray-900 shadow-lg ring-1 ring-gray-900/5">
+                    <ul className="w-56 shrink rounded-xl bg-white p-4 text-sm font-semibold leading-6 text-gray-900 shadow-lg ring-1 ring-gray-900/5 text-left">
                       {requirements.map((item) => (
                         <li
                           key={item.name}
@@ -107,7 +97,7 @@ export default function ResetPasswordForm({
           </div>
 
           <form
-            className="space-y-4 text-left mt-10"
+            className="space-y-4 text-left mt-6"
             action="#"
             method="POST"
             onSubmit={handleChangePassword}
@@ -126,7 +116,7 @@ export default function ResetPasswordForm({
                   })
                 }
                 autoComplete="password"
-                placeholder="Current Password"
+                placeholder="New Password"
                 required
               />
               <div className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3">
@@ -196,16 +186,6 @@ export default function ResetPasswordForm({
               </button>
             </div>
           </form>
-
-          <p className="mt-10 text-center text-sm text-gray-500">
-            Remembered your password?{" "}
-            <Link
-              to="/"
-              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-            >
-              Sign In
-            </Link>
-          </p>
         </div>
       </div>
     </div>

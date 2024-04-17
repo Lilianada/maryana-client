@@ -6,6 +6,7 @@ import Login from "./pages/Auth/Login";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import ChangePassword from "./pages/Auth/ChangePassword";
 import VerifyEmail from "./pages/Auth/VerifyEmail";
+import AuthAction from "./pages/Auth/AuthAction";
 
 function App() {
   const { loadingAuthState } = useAuth();
@@ -18,6 +19,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/auth-action" element={<AuthAction />} />
         </Routes>
       </Router>
       {loadingAuthState && <LoadingScreen />}
