@@ -425,13 +425,7 @@ export default function Register() {
                 Register to become a member
               </h2>
               <p className="mt-2 text-sm leading-6 text-gray-500">
-                Already a member?{" "}
-                <Link
-                  to="/sign-up"
-                  className="font-semibold text-indigo-600 hover:text-indigo-500"
-                >
-                  Sign in
-                </Link>
+              Become a user by creating an account.
               </p>
             </div>
 
@@ -671,6 +665,17 @@ export default function Register() {
                     </button>
                   </div>
                 </form>
+                <div className="mt-4">
+                <p className="mt-2 text-sm leading-6 text-gray-500">
+                Already a member?{" "}
+                <Link
+                  to="/"
+                  className="font-semibold text-indigo-600 hover:text-indigo-500"
+                >
+                  Sign in
+                </Link>
+              </p>
+                </div>
               </div>
             </div>
           </div>
