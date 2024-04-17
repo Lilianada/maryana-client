@@ -1,22 +1,20 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getDownloadURL, ref } from "firebase/storage";
-import { auth, storage } from "../../config/firebase";
+import { auth } from "../../config/firebase";
 import {
   EmailAuthProvider,
   reauthenticateWithCredential,
-  sendPasswordResetEmail,
   updatePassword,
 } from "firebase/auth";
 import DotLoader from "../../components/DotLoader";
 import { customModal } from "../../utils/modalUtils";
 import { CheckIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { useModal } from "../../context/ModalContext";
-import backgroundImageUrl from "../../assets/Background.jpg";
 import { useAlert } from "../../context/AlertContext";
 import { customAlert } from "../../utils/alertUtils";
 import { XCircleIcon } from "@heroicons/react/20/solid";
 import { fetchPasswordPolicySetting } from "../../config/utils";
+import logo from "../../assets/logo.png";
 
 export default function ChangePassword() {
   const { showAlert, hideAlert } = useAlert();
@@ -24,48 +22,24 @@ export default function ChangePassword() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [isStrongPasswordPolicy, setIsStrongPasswordPolicy] = useState(true);
-  const [showTooltip, setShowTooltip] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-    const [showNewPassword, setShowNewPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  const [logo, setLogo] = useState("");
-  const [whiteLogo, setWhiteLogo] = useState("");
-
-  const fetchLogo = async () => {
-    const storageRef = ref(
-      storage,
-      "gs://cvs-online.appspot.com/logos/darkLogo/"
-    );
-    try {
-      const logoUrl = await getDownloadURL(storageRef);
-      setLogo(logoUrl);
-    } catch (error) {
-      console.error("Error fetching logo:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchLogo();
-  }, []);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-    const toggleNewPassword = () => {
-        setShowNewPassword(!showNewPassword);
-    };
+  const toggleNewPassword = () => {
+    setShowNewPassword(!showNewPassword);
+  };
 
-    const toggleConfirmPassword = () => {
-        setShowConfirmPassword(!showConfirmPassword);
-    };
-
+  const toggleConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
   const validatePassword = (pass, isStrongPolicy) => {
     if (isStrongPolicy) {
@@ -76,29 +50,12 @@ export default function ChangePassword() {
     }
   };
 
-  const fetchWhiteLogo = async () => {
-    const storageRef = ref(
-      storage,
-      "gs://cvs-online.appspot.com/logos/darkLogo/"
-    );
-    try {
-      const logoUrl = await getDownloadURL(storageRef);
-      setWhiteLogo(logoUrl);
-    } catch (error) {
-      console.error("Error fetching whiteLogo:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchWhiteLogo();
-  }, []);
-
   const validatePasswords = () => {
     if (newPassword !== confirmPassword) {
       customAlert({
         showAlert,
-        title: "New password and confirm password do not match.",
-        description: error.message,
+        title: "Error",
+        description: "New password and confirm password do not match.",
         textColor: "text-red-800",
         icon: XCircleIcon,
         iconBgColor: "bg-red-100",
@@ -114,8 +71,8 @@ export default function ChangePassword() {
         ? customAlert({
             showAlert,
             title:
-              "Password must be at least 8 characters long, must contain at least one number and a special character.",
-            description: error.message,
+              "Error",
+            description:"Password must be at least 8 characters long, must contain at least one number and a special character.",
             textColor: "text-red-800",
             icon: XCircleIcon,
             iconBgColor: "bg-red-100",
@@ -126,8 +83,8 @@ export default function ChangePassword() {
           })
         : customAlert({
             showAlert,
-            title: "Password must be at least 6 digits long.",
-            description: error.message,
+            title: "Error",
+            description: "Password must be at least 6 digits long.",
             textColor: "text-red-800",
             icon: XCircleIcon,
             iconBgColor: "bg-red-100",
@@ -176,7 +133,7 @@ export default function ChangePassword() {
       customModal({
         showModal,
         title: "Error",
-        text: error.message || "Error updating password. Please try again.",
+        text: err.message || "Error updating password. Please try again.",
         showConfirmButton: false,
         iconBgColor: "bg-red-100",
         iconTextColor: "text-red-600",
@@ -201,16 +158,9 @@ export default function ChangePassword() {
   }, []);
 
   return (
-    <div
-      className="grid min-h-full h-screen flex-1 place-items-center justify-center py-12 sm:px-6 lg:px-8"
-      style={{
-        backgroundImage: `url(${backgroundImageUrl})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
+    <div className="grid min-h-full h-screen flex-1 place-items-center justify-center py-12 sm:px-6 bg-blue-50 lg:px-8 sm:bg-custom-pattern bg-cover bg-center">
       <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-[480px]">
-        <div className="bg-blue-50 px-6 py-12 shadow sm:rounded-lg sm:px-12">
+        <div className="bg-blue-50 px-6 py-12 sm:shadow sm:rounded-lg sm:px-12">
           <div className="sm:mx-auto sm:w-full sm:max-w-md mb-6">
             <img
               className="mx-auto h-10 w-auto"
@@ -258,63 +208,59 @@ export default function ChangePassword() {
               </div>
             </div>
 
-              <div className="relative mt-2 rounded-md shadow-sm">
-                <input
-                  className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  type={showNewPassword ? "text" : "password"}
-                  name="newPassword"
-                  value={newPassword}
-                  onChange={({ target: { value } }) =>
-                    setNewPassword(value)
-                  }
-                  autoComplete="new-password"
-                  placeholder="New Password"
-                />
-                <div className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3">
-                  {showNewPassword ? (
-                    <EyeIcon
-                      className="h-4 w-4 text-indigo-300"
-                      aria-hidden="true"
-                      onClick={toggleNewPassword}
-                    />
-                  ) : (
-                    <EyeSlashIcon
-                      className="h-4 w-4 text-gray-300"
-                      aria-hidden="true"
-                      onClick={toggleNewPassword}
-                    />
-                  )}
-                </div>
+            <div className="relative mt-2 rounded-md shadow-sm">
+              <input
+                className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                type={showNewPassword ? "text" : "password"}
+                name="newPassword"
+                value={newPassword}
+                onChange={({ target: { value } }) => setNewPassword(value)}
+                autoComplete="new-password"
+                placeholder="New Password"
+              />
+              <div className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3">
+                {showNewPassword ? (
+                  <EyeIcon
+                    className="h-4 w-4 text-indigo-300"
+                    aria-hidden="true"
+                    onClick={toggleNewPassword}
+                  />
+                ) : (
+                  <EyeSlashIcon
+                    className="h-4 w-4 text-gray-300"
+                    aria-hidden="true"
+                    onClick={toggleNewPassword}
+                  />
+                )}
               </div>
+            </div>
 
-              <div className="relative mt-2 rounded-md shadow-sm">
-                <input
-                  className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  type={showConfirmPassword ? "text" : "password"}
-                  name="confirmPassword"
-                  value={confirmPassword}
-                  onChange={({ target: { value } }) =>
-                    setConfirmPassword(value)
-                  }
-                  autoComplete="confirm-password"
-                    placeholder="Confirm Password"
-                />
-                <div className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3">
-                  {showConfirmPassword ? (
-                    <EyeIcon
-                      className="h-4 w-4 text-indigo-300"
-                      aria-hidden="true"
-                      onClick={toggleConfirmPassword}
-                    />
-                  ) : (
-                    <EyeSlashIcon
-                      className="h-4 w-4 text-gray-300"
-                      aria-hidden="true"
-                      onClick={toggleConfirmPassword}
-                    />
-                  )}
-                </div>
+            <div className="relative mt-2 rounded-md shadow-sm">
+              <input
+                className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                value={confirmPassword}
+                onChange={({ target: { value } }) => setConfirmPassword(value)}
+                autoComplete="confirm-password"
+                placeholder="Confirm Password"
+              />
+              <div className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3">
+                {showConfirmPassword ? (
+                  <EyeIcon
+                    className="h-4 w-4 text-indigo-300"
+                    aria-hidden="true"
+                    onClick={toggleConfirmPassword}
+                  />
+                ) : (
+                  <EyeSlashIcon
+                    className="h-4 w-4 text-gray-300"
+                    aria-hidden="true"
+                    onClick={toggleConfirmPassword}
+                  />
+                )}
               </div>
+            </div>
 
             <div>
               <button

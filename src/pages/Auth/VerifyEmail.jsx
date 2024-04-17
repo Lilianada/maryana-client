@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { sendEmailVerification } from 'firebase/auth';
 import { auth } from '../../config/firebase';
-import backgroundImageUrl from '../../assets/Background.jpg';
 import logo from '../../assets/logo.png';
 import DotLoader from '../../components/DotLoader';
 import { useModal } from '../../context/ModalContext';
@@ -49,15 +48,10 @@ export default function VerifyEmail() {
     };
     return (
         <div
-          className="grid min-h-full h-screen flex-1 place-items-center justify-center py-12 sm:px-6 lg:px-8"
-          style={{
-            backgroundImage: `url(${backgroundImageUrl})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-[480px]">
-            <div className="bg-blue-50 px-6 py-8 shadow sm:rounded-lg sm:px-12">
+      className="grid min-h-full h-screen flex-1 place-items-center justify-center py-12 sm:px-6 bg-blue-50 lg:px-8 sm:bg-custom-pattern bg-cover bg-center"
+    >
+      <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-[480px]">
+        <div className="bg-blue-50 px-6 py-12 sm:shadow sm:rounded-lg sm:px-12">
               <div className="sm:mx-auto sm:w-full sm:max-w-md mb-6">
                 <img
                   className="mx-auto h-10 w-auto"
