@@ -7,6 +7,7 @@ import DotLoader from "../../components/DotLoader";
 import { customModal } from "../../utils/modalUtils";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import { useModal } from "../../context/ModalContext";
+import backgroundImageUrl from "../../assets/Background.jpg";
 
 export default function ForgotPassword() {
   const { showModal } = useModal();
@@ -69,15 +70,17 @@ export default function ForgotPassword() {
       });
   };
   return (
-    <>
-      <div className="grid min-h-full h-screen flex-1 place-items-center justify-center py-12 sm:px-6 lg:px-8">
+    
+      <div className="grid min-h-full h-screen flex-1 place-items-center justify-center py-12 sm:px-6 lg:px-8"
+      style={{ backgroundImage: `url(${backgroundImageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+      >
         <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div className="bg-blue-50 px-6 py-12 shadow sm:rounded-lg sm:px-12">
             <div className="sm:mx-auto sm:w-full sm:max-w-md mb-6">
               <img
                 className="mx-auto h-10 w-auto"
                 src={whiteLogoUrl}
-                alt="Your Company"
+                alt="Company Logo"
               />
               <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                 Forgot Password
@@ -86,6 +89,7 @@ export default function ForgotPassword() {
                 Please enter your email address to reset your password.
               </p>
             </div>
+            
             <form
               className="space-y-4 text-left mt-10"
               action="#"
@@ -137,6 +141,6 @@ export default function ForgotPassword() {
           </div>
         </div>
       </div>
-    </>
+    
   );
 }

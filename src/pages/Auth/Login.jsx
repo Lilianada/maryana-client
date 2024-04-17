@@ -133,7 +133,6 @@ export default function Login() {
             </div>
 
             <div className="mt-10">
-              <div>
                 <form
                   action="#"
                   method="POST"
@@ -224,8 +223,8 @@ export default function Login() {
                     </button>
                   </div>
                 </form>
-              </div>
             </div>
+            
             <div className="mt-4">
             <p className="text-center text-sm leading-6 text-gray-500">
               Not a member?{" "}
