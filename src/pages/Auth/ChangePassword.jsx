@@ -10,7 +10,7 @@ import {
 } from "firebase/auth";
 import DotLoader from "../../components/DotLoader";
 import { customModal } from "../../utils/modalUtils";
-import { CheckIcon } from "@heroicons/react/24/outline";
+import { CheckIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { useModal } from "../../context/ModalContext";
 import backgroundImageUrl from "../../assets/Background.jpg";
 import { useAlert } from "../../context/AlertContext";
@@ -18,7 +18,7 @@ import { customAlert } from "../../utils/alertUtils";
 import { XCircleIcon } from "@heroicons/react/20/solid";
 import { fetchPasswordPolicySetting } from "../../config/utils";
 
-export default function ForgotPassword() {
+export default function ChangePassword() {
   const { showAlert, hideAlert } = useAlert();
   const { showModal } = useModal();
   const [currentPassword, setCurrentPassword] = useState("");
@@ -31,7 +31,11 @@ export default function ForgotPassword() {
   const [isStrongPasswordPolicy, setIsStrongPasswordPolicy] = useState(true);
   const [showTooltip, setShowTooltip] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [logo, setLogo] = useState("");
+  const [whiteLogo, setWhiteLogo] = useState("");
 
   const fetchLogo = async () => {
     const storageRef = ref(
@@ -53,6 +57,15 @@ export default function ForgotPassword() {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+    const toggleNewPassword = () => {
+        setShowNewPassword(!showNewPassword);
+    };
+
+    const toggleConfirmPassword = () => {
+        setShowConfirmPassword(!showConfirmPassword);
+    };
+
 
   const validatePassword = (pass, isStrongPolicy) => {
     if (isStrongPolicy) {
@@ -205,10 +218,10 @@ export default function ForgotPassword() {
               alt="Company Logo"
             />
             <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-              Forgot Password
+              Change Password
             </h2>
             <p className="mt-2 text-sm text-gray-700">
-              Please enter your email address to reset your password.
+              Please enter your current password and new password.
             </p>
           </div>
 
@@ -218,29 +231,90 @@ export default function ForgotPassword() {
             method="POST"
             onSubmit={handleChangePassword}
           >
-            <div className="password_field">
+            <div className="relative mt-2 rounded-md shadow-sm">
               <input
+                className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 type={showPassword ? "text" : "password"}
-                name="currentPassword"
-                placeholder="Current Password"
-                className="pass_field"
+                name="password"
                 value={currentPassword}
-                onChange={({ target: { value } }) => setCurrentPassword(value)}
-                required
-                disabled={isLoading}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                autoComplete="password"
+                placeholder="Current Password"
               />
-              {showPassword ? (
-                <IoEye
-                  className="password_icon"
-                  onClick={togglePasswordVisibility}
-                />
-              ) : (
-                <IoEyeOff
-                  className="password_icon"
-                  onClick={togglePasswordVisibility}
-                />
-              )}
+              <div className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3">
+                {showPassword ? (
+                  <EyeIcon
+                    className="h-4 w-4 text-indigo-300"
+                    aria-hidden="true"
+                    onClick={togglePasswordVisibility}
+                  />
+                ) : (
+                  <EyeSlashIcon
+                    className="h-4 w-4 text-gray-300"
+                    aria-hidden="true"
+                    onClick={togglePasswordVisibility}
+                  />
+                )}
+              </div>
             </div>
+
+              <div className="relative mt-2 rounded-md shadow-sm">
+                <input
+                  className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  type={showNewPassword ? "text" : "password"}
+                  name="newPassword"
+                  value={newPassword}
+                  onChange={({ target: { value } }) =>
+                    setNewPassword(value)
+                  }
+                  autoComplete="new-password"
+                  placeholder="New Password"
+                />
+                <div className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3">
+                  {showNewPassword ? (
+                    <EyeIcon
+                      className="h-4 w-4 text-indigo-300"
+                      aria-hidden="true"
+                      onClick={toggleNewPassword}
+                    />
+                  ) : (
+                    <EyeSlashIcon
+                      className="h-4 w-4 text-gray-300"
+                      aria-hidden="true"
+                      onClick={toggleNewPassword}
+                    />
+                  )}
+                </div>
+              </div>
+
+              <div className="relative mt-2 rounded-md shadow-sm">
+                <input
+                  className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  type={showConfirmPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  value={confirmPassword}
+                  onChange={({ target: { value } }) =>
+                    setConfirmPassword(value)
+                  }
+                  autoComplete="confirm-password"
+                    placeholder="Confirm Password"
+                />
+                <div className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3">
+                  {showConfirmPassword ? (
+                    <EyeIcon
+                      className="h-4 w-4 text-indigo-300"
+                      aria-hidden="true"
+                      onClick={toggleConfirmPassword}
+                    />
+                  ) : (
+                    <EyeSlashIcon
+                      className="h-4 w-4 text-gray-300"
+                      aria-hidden="true"
+                      onClick={toggleConfirmPassword}
+                    />
+                  )}
+                </div>
+              </div>
 
             <div>
               <button

@@ -4,6 +4,7 @@ import LoadingScreen from "./components/LoadingScreen";
 import { useAuth } from "./context/authContext";
 import Login from "./pages/Auth/Login";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
+import ChangePassword from "./pages/Auth/ChangePassword";
 
 function App() {
   const { loadingAuthState } = useAuth();
@@ -14,6 +15,7 @@ function App() {
           <Route path="/sign-up" element={<Register />} />
           <Route path="/" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/change-password" element={<ChangePassword />} />
         </Routes>
       </Router>
       {loadingAuthState && <LoadingScreen />}
