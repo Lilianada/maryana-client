@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
 import {
   Cog6ToothIcon,
-  UserCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import Logo from "../assets/logo.png";
@@ -82,7 +81,6 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, navigation }) {
                         to="/"
                         className="group flex items-center w-full bg-white text-gray-900 hover:bg-gray-100 hover:text-gray-900 rounded-md px-2 py-2 text-sm font-medium"
                       >
-                        {/* <UserCircleIcon className="text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6 flex-shrink-0" aria-hidden="true" /> */}
                         <div className="flex flex-col justify-start ">
                           <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">
                             Tom Cook

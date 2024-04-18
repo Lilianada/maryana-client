@@ -7,7 +7,7 @@ export default function KycForm() {
      <div className="py-5 text-center">
       <h3 className="text-lg font-semibold leading-6 text-gray-900">Know Your Customer Form</h3>
       <p className="mt-1 text-sm text-gray-500">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit quam corrupti consectetur.
+        Lorem ipsum dolor sit amet consectetur adipisicing.
       </p>
     </div>
 

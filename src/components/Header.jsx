@@ -116,7 +116,7 @@ export default function Header() {
               });
           }}
           onCancel={() => setOpenModal(false)}
-          Icon={ExclamationTriangleIcon} // Your Icon Component
+          Icon={ExclamationTriangleIcon}
           iconBgColor="bg-red-100"
           buttonBgColor="bg-red-600"
           iconTextColor="text-red-600"
