@@ -1,5 +1,8 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import React, { useEffect } from "react";
+import { customModal } from "../../utils/modalUtils";
+import { useModal } from "../../context/ModalContext";
+import { CheckIcon, ExclamationCircleIcon } from "@heroicons/react/20/solid";
 
 export default function PhoneVerification({
   isOpen,
@@ -16,6 +19,8 @@ export default function PhoneVerification({
   code,
   setCode
 }) {
+  
+  const { showModal } = useModal();
 
   useEffect(() => {
     let timer;
@@ -30,6 +35,31 @@ export default function PhoneVerification({
   if (!isOpen) {
     return null;
   }
+  
+
+  customModal({
+    showModal,
+    title: "Success",
+    text: successMessage,
+    showConfirmButton: false,
+    iconBgColor: "bg-green-100",
+    iconTextColor: "text-green-600",
+    buttonBgColor: "bg-green-600",
+    icon: CheckIcon,
+    timer: 1500,
+  })
+  
+  customModal({
+    showModal,
+    title: "Error",
+    text: error,
+    showConfirmButton: false,
+    iconBgColor: "bg-red-100",
+    iconTextColor: "text-red-600",
+    buttonBgColor: "bg-red-600",
+    icon: ExclamationCircleIcon,
+    timer: 1500,
+  })
 
   const onChange = (element, index) => {
     if (isNaN(element.value)) return false;
@@ -48,9 +78,9 @@ export default function PhoneVerification({
           </button>
         </div>
         <div className="p-6">
-          <h1 className="text-xl font-semibold text-indigo-600 mb-2">Verify Code</h1>
-          <p className="text-gray-600 mb-4">Please enter the verification code sent to your phone.</p>
-          <form onSubmit={onVerify} className="w-full grid items-center">
+          <h1 className="text-xl font-semibold text-indigo-600 mb-2 text-center">Verify Code</h1>
+          <p className="text-gray-600 mb-4 text-center">Please enter the verification code sent to your phone.</p>
+          <form onSubmit={onVerify} className="w-full grid place-items-center">
             <div className="flex mb-4">
               {code.map((value, index) => (
                 <input
@@ -81,8 +111,6 @@ export default function PhoneVerification({
               <p className="text-gray-600">Resend Code in {counter} seconds</p>
             )}
           </div>
-          {error && <p className="text-red-600 mt-4">{error}</p>}
-          {successMessage && <p className="text-green-600 mt-4">{successMessage}</p>}
         </div>
       </div>
     </section>

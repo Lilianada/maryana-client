@@ -66,7 +66,6 @@ const validatePassword = (pass, isStrongPolicy) => {
 
 export default function Register() {
   const { showModal } = useModal();
-  const { showAlert } = useAlert();
   const initialFormState = {
     fullName: "",
     email: "",
@@ -93,7 +92,6 @@ export default function Register() {
   const [counter, setCounter] = useState(15);
   const [canResend, setCanResend] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
   const auth = getAuth();
 
   const { setPhoneAuthData } = useAuth();
@@ -410,21 +408,17 @@ export default function Register() {
   return (
     <div className="h-screen bg-blue-50">
       <div className="flex min-h-full flex-1">
-        <div className="relative hidden w-0 flex-1 lg:block">
-          <img
-            className="absolute inset-0 h-full w-full object-cover"
-            src={Background}
-            alt=""
-          />
+        <div className="relative hidden w-0 flex-1 lg:block bg-custom-pattern sm:bg-custom-pattern bg-cover bg-center">
+          <img className="h-10 w-auto mt-6 ml-4" src={Logo} alt="Your Company" />
         </div>
-        <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-16 xl:px-20">
-          <div className="mx-auto w-full max-w-[28rem] lg:w-96 text-left">
+        <div className="flex flex-1 flex-col justify-center px-4 py-12 lg:py-4 sm:px-6 lg:flex-none lg:px-16 xl:px-20">
+          <div className="mx-auto w-full max-w-[28rem] text-left">
+            <img className="block lg:hidden h-10 w-auto" src={Logo} alt="Your Company" />
             <div>
-              <img className="h-10 w-auto" src={Logo} alt="Your Company" />
-              <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">
+              <h2 className="mt-4 text-2xl font-bold leading-9 tracking-tight text-gray-900">
                 Register to become a member
               </h2>
-              <p className="mt-2 text-sm leading-6 text-gray-500">
+              <p className="text-sm leading-6 text-gray-500">
               Become a user by creating an account.
               </p>
             </div>
