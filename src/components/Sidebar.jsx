@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -19,7 +20,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, navigation }) {
     ...item,
     current: item.to === location.pathname,
   }));
-
+  const userName = useSelector(state => state.user.name);
   return (
     <Transition.Root show={sidebarOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50 lg:" onClose={setSidebarOpen}>
@@ -83,7 +84,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, navigation }) {
                       >
                         <div className="flex flex-col justify-start ">
                           <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">
-                            Tom Cook
+                            {userName}
                           </p>
                           <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
                             Total Account Value:
