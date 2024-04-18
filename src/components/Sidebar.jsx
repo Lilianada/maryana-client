@@ -1,7 +1,11 @@
 import React, { Fragment } from "react";
 import { useLocation } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
-import { Cog6ToothIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  Cog6ToothIcon,
+  UserCircleIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import Logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 
@@ -68,69 +72,54 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, navigation }) {
               </Transition.Child>
               {/* Sidebar */}
               <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4 ring-1 ring-white/10">
-                <div className="flex h-16 shrink-0 items-center">
+                <div className="flex h-16 shrink-0 items-center mt-4">
                   <img className="h-8 w-auto" src={Logo} alt="Your Company" />
                 </div>
                 <nav className="flex flex-1 flex-col">
-                  <ul className="flex flex-1 flex-col gap-y-7">
-                    <li>
-                      <ul className="-mx-2 space-y-1">
-                        {updatedNavigation.map((item) => (
-                          <li
-                            key={item.name}
-                            onClick={() => setSidebarOpen(false)}
-                          >
-                            <Link
-                              to={item.to}
-                              className={classNames(
-                                item.current
-                                  ? 'bg-gray-100 text-gray-900 hover:bg-gray-100 hover:text-gray-900'
-                                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                                'group flex items-center rounded-md px-2 py-2 text-sm font-medium'
-                              )}
-                            >
-                              <item.icon
-                                className={classNames(
-                                  item.current
-                                    ? "text-gray-500"
-                                    : "text-gray-400 group-hover:text-gray-500",
-                                  "mr-3 h-6 w-6 flex-shrink-0"
-                                )}
-                                aria-hidden="true"
-                              />
-                             <span className="flex-1">{item.name}</span>
-                              {item.count ? (
-                                <span
-                                  className={classNames(
-                                    item.current
-                                      ? "bg-white"
-                                      : "bg-gray-100 group-hover:bg-gray-200",
-                                    "ml-3 inline-block rounded-full py-0.5 px-3 text-xs font-medium"
-                                  )}
-                                >
-                                  {item.count}
-                                </span>
-                              ) : null}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </li>
-                    <li
-                      className="mt-auto"
-                      onClick={() => setSidebarOpen(false)}
-                    >
+                  <ul className="flex flex-1 flex-col -mx-2 space-y-1">
+                    <li className="mb-6">
                       <Link
-                        to="/dashboard/settings"
-                        className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-600 hover:bg-gray-100 hover:text-gray-900" 
+                        to="/"
+                        className="group flex items-center w-full bg-white text-gray-900 hover:bg-gray-100 hover:text-gray-900 rounded-md px-2 py-2 text-sm font-medium"
                       >
-                        <Cog6ToothIcon
-                          className="h-6 w-6 shrink-0"
-                          aria-hidden="true"
-                        />
-                        Settings
+                        {/* <UserCircleIcon className="text-gray-400 group-hover:text-gray-500 mr-3 h-6 w-6 flex-shrink-0" aria-hidden="true" /> */}
+                        <div className="flex flex-col justify-start ">
+                          <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">
+                            Tom Cook
+                          </p>
+                          <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
+                            Total Account Value:
+                            <span className="text-indigo-500"> $1,000,000</span>
+                          </p>
+                          <p className="text-xs italic font-medium text-gray-500 group-hover:text-gray-700"></p>
+                        </div>
                       </Link>
                     </li>
+
+                    {updatedNavigation.map((item) => (
+                      <li key={item.name} onClick={() => setSidebarOpen(false)}>
+                        <Link
+                          to={item.to}
+                          className={classNames(
+                            item.current
+                              ? "border-indigo-600 bg-indigo-50 text-indigo-600"
+                              : "border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900",
+                            "group flex items-center border-l-4 px-3 py-2 text-sm font-medium"
+                          )}
+                        >
+                          <item.icon
+                            className={classNames(
+                              item.current
+                                ? "text-indigo-500"
+                                : "text-gray-400 group-hover:text-gray-500",
+                              "mr-3 h-6 w-6 flex-shrink-0"
+                            )}
+                            aria-hidden="true"
+                          />
+                          {item.name}
+                        </Link>
+                      </li>
+                    ))}
                   </ul>
                 </nav>
               </div>

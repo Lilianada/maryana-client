@@ -14,8 +14,8 @@ import { Outlet } from "react-router-dom";
 const navigation = [
   { name: "Home", to: "/dashboard", icon: HomeIcon, current: true },
   {
-    name: "Registered Users",
-    to: "/dashboard/registered_users",
+    name: "My Accounts",
+    to: "/dashboard/my-accounts",
     icon: UserGroupIcon,
     count: 5,
     current: false,
@@ -36,6 +36,18 @@ const navigation = [
   {
     name: "Ipos",
     to: "/dashboard/ipos",
+    icon: CalendarIcon,
+    current: false,
+  },
+  {
+    name: "Stocks",
+    to: "/dashboard/stocks",
+    icon: CalendarIcon,
+    current: false,
+  },
+  {
+    name: "Settings",
+    to: "/dashboard/settings",
     icon: CalendarIcon,
     current: false,
   },
@@ -75,7 +87,7 @@ export default function Skeleton() {
             <Header />
           </div>
 
-          <main className="pt-4 lg:pt-8 pb-10 lg:mx-4 sm:mx-6">
+          <main className="pt-4 lg:pt-8 pb-10 lg:px-4 sm:px-6 bg-gray-50">
             <div className="px-2">
               <Outlet />
             </div>

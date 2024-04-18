@@ -3,7 +3,7 @@ import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 
 export default function KycForm() {
   return (
-    <div className='bg-gray-50 py-12 px-4'>
+    <div className='bg-gray-50 py-8 px-4'>
      <div className="py-5 text-center">
       <h3 className="text-lg font-semibold leading-6 text-gray-900">Know Your Customer Form</h3>
       <p className="mt-1 text-sm text-gray-500">
