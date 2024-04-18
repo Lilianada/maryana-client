@@ -17,12 +17,14 @@ const navigation = [
     name: "Registered Users",
     to: "/dashboard/registered_users",
     icon: UserGroupIcon,
+    count: 5,
     current: false,
   },
   {
     name: "Bonds",
     to: "/dashboard/bonds",
     icon: DocumentChartBarIcon,
+    count: 3,
     current: false,
   },
   {
@@ -39,36 +41,6 @@ const navigation = [
   },
 ];
 
-const requests = [
-  {
-    id: 1,
-    name: "Users Request",
-    to: "/dashboard/user_requests",
-    initial: "U",
-    current: false,
-  },
-  {
-    id: 1,
-    name: "Bonds Request",
-    to: "/dashboard/bonds_requests",
-    initial: "B",
-    current: false,
-  },
-  {
-    id: 2,
-    name: "Ipos Request",
-    to: "/dashboard/ipos_requests",
-    initial: "I",
-    current: false,
-  },
-  {
-    id: 3,
-    name: "Fixed Term Requests",
-    to: "/dashboard/fixedTerms_requests",
-    initial: "F",
-    current: false,
-  },
-];
 
 export default function Skeleton() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -80,7 +52,6 @@ export default function Skeleton() {
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
           navigation={navigation}
-          requests={requests}
         />
 
         <div className="lg:pl">
