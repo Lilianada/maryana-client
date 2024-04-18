@@ -16,7 +16,7 @@ import { useAlert } from "../../context/AlertContext";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { addLogNotification } from "../../config/utils";
 import { useDispatch } from "react-redux";
-import { setUserName } from "../../store/actions/userActions";
+import { setUserName, setUserId } from "../../store/actions/userActions";
 
 export default function Login() {
   const { showAlert, hideAlert } = useAlert();
@@ -92,12 +92,14 @@ export default function Login() {
 
       // Dispatch Redux action to save the user's first name
       dispatch(setUserName(nameParts));
+      dispatch(setUserId(user.uid));
 
       if (userData.jointAccount) {
         const secondaryNameParts = userData.secondaryAccountHolder;
 
         // Optionally handle secondary names as needed
-        dispatch(setUserName(secondaryNameParts)); // Depending on how you want to handle this
+        dispatch(setUserName(secondaryNameParts)); 
+        dispatch(setUserId(user.uid));
       }
 
       await updateDoc(userRef, { isLoggedIn: true });

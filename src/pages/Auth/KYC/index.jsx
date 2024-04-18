@@ -1,7 +1,169 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
+import { primaryPurpose } from '../../../config/data'
+import { getUserKyc, updateUserKyc } from '../../../config/user';
+import { customModal } from '../../../utils/modalUtils';
+import { CheckIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { useModal } from '../../../context/ModalContext';
 
 export default function KycForm() {
+  const { showModal, hideModal } = useModal();
+  const [formData, setFormData] = useState({
+    eduExperience: "",
+    purpose: "",
+    tradeExperience: "",
+    investments: "",
+    investWindow: "",
+    tradingKnowledge: "",
+    tradeKnowledge: "",
+    purposeTrading: "",
+    financialStats: [],
+    stocksInvestment: "",
+    stockExperience: "",
+    cryptoExperience: "",
+    cryptoInvestment: "",
+    leverageExperience: "",
+    leverageInvestments: "",
+    job: "",
+    employerDets: "",
+    netIncome: "",
+    assets: "",
+    investAmount: "",
+    risk: {
+      name: "",
+      limit: "",
+    },
+    familyAssessment: [],
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  useEffect(() => {
+    const fetchKycDetails = async () => {
+      try {
+        const details = await getUserKyc(userId);
+        if (details) {
+          setFormData((prevDetails) => ({
+            ...prevDetails,
+            eduExperience: details.eduExperience || [],
+            purpose: details.purpose || "",
+            tradeExperience: details.tradeExperience || "",
+            investments: details.investments || "",
+            investWindow: details.investWindow || "",
+            tradeKnowledge: details.tradeKnowledge || [],
+            tradeStrategy: details.tradeStrategy || "",
+            purposeTrading: details.purposeTrading || "",
+            financialStats: details.financialStats || [],
+            job: details.job || "",
+            employerDets: details.employerDets || "",
+            stocksInvestment: details.stocksInvestment || "",
+            stockExperience: details.stockExperience || "",
+            cryptoExperience: details.cryptoExperience || "",
+            cryptoInvestment: details.cryptoInvestment || "",
+            leverageExperience: details.leverageExperience || "",
+            leverageInvestments: details.leverageInvestments || "",
+            netIncome: details.netIncome || "",
+            assets: details.assets || "",
+            investAmount: details.investAmount || "",
+            risk: details.risk || { name: "", limit: "" },
+            familyAssessment: details.familyAssessment || [],
+          }));
+        } else {
+          setFormData({
+            eduExperience: [],
+            purpose: "",
+            tradeExperience: "",
+            investments: "",
+            investWindow: "",
+            tradeKnowledge: [],
+            tradeStrategy: "",
+            purposeTrading: "",
+            financialStats: [],
+            stocksInvestment: "",
+            stockExperience: "",
+            cryptoExperience: "",
+            cryptoInvestment: "",
+            leverageExperience: "",
+            leverageInvestments: "",
+            job: "",
+            employerDets: "",
+            netIncome: "",
+            assets: "",
+            investAmount: "",
+            risk: {
+              name: "",
+              limit: "",
+            },
+            familyAssessment: [],
+          });
+        }
+      } catch (err) {
+        console.error("Error fetching KYC details:", err);
+      } 
+    };
+
+    if (userId) {
+      fetchKycDetails();
+    }
+  }, []);
+
+  // Handle field changes for both single and multiple value fields
+  const handleChange = (event) => {
+    const { name, value, type, checked } = event.target;
+    if (type === "checkbox") {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: checked
+          ? [...prevData[name], value]
+          : prevData[name].filter((item) => item !== value),
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
+
+  // Example submission handler
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+
+    const response = await updateUserKyc(userId, formData); // Await the response from the updateUserKyc function
+
+    if (response.success) {
+      // Show a success message if KYC details were successfully updated
+      customModal({
+        showModal,
+        title: "Success!",
+        text: "KYC details updated successfully.",
+        showConfirmButton: false,
+        icon: CheckIcon,
+        iconBgColor: "bg-green-100",
+        iconTextColor: "text-green-600",
+        buttonBgColor: "bg-green-600",
+        timer: 2000,
+        onClose: hideModal,
+      });
+    } else {
+      // Handle the error case
+      console.error("Error updating KYC details:", response.error);
+      customModal({
+        showModal,
+        title: "Error!",
+        text: `There was a problem updating KYC details: ${response.error}`,
+        showConfirmButton: false,
+        icon: ExclamationTriangleIcon,
+        iconBgColor: "bg-red-100",
+        iconTextColor: "text-red-600",
+        buttonBgColor: "bg-red-600",
+        onClose: hideModal,
+        timer: 3000,
+      });
+    }
+
+    setIsSubmitting(false);
+  };
+
   return (
     <div className='bg-gray-50 py-8 px-4'>
      <div className="py-5 text-center">
@@ -14,7 +176,7 @@ export default function KycForm() {
       <div className="space-y-10 divide-y divide-gray-900/10 mt-12">
         <div className="grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-3">
           <div className="px-4 sm:px-0">
-            <h2 className="text-base font-semibold leading-7 text-gray-900">Profile</h2>
+            <h2 className="text-base font-semibold leading-7 text-gray-900">Your goal</h2>
             <p className="mt-1 text-sm leading-6 text-gray-600">
               This information will be displayed publicly so be careful what you share.
             </p>
@@ -25,19 +187,22 @@ export default function KycForm() {
               <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div className="sm:col-span-4">
                   <label htmlFor="website" className="block text-sm font-medium leading-6 text-gray-900">
-                    Website
+                  Primary purpose of trading with us
                   </label>
                   <div className="mt-2">
-                    <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                      <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">http://</span>
-                      <input
-                        type="text"
-                        name="website"
-                        id="website"
-                        className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                        placeholder="www.example.com"
-                      />
-                    </div>
+                  <select
+                        name="purpose"
+                        value={formData.purpose}
+                        onChange={handleChange}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      >
+                        <option value="">Select your primary purpose</option>
+                        {primaryPurpose.map((purpose, index) => (
+                          <option value={purpose} key={index}>
+                            {purpose}
+                          </option>
+                        ))}
+                      </select>
                   </div>
                 </div>
 

@@ -12,7 +12,7 @@ http://www.apache.org/licenses/LICENSE-2.0
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "./firebase";
 import { getAuth } from "firebase/auth";
 
@@ -70,4 +70,40 @@ export function updateUser(uid, userData) {
 export function deleteUser(uid) {
   const userDoc = doc(db, USERS_COLLECTION, uid);
   return deleteDoc(userDoc);
+}
+
+
+//fetch user kyc
+const KYC_DOC_ID = "kycDoc";
+export async function getUserKyc(userId) {
+  const kycRef = collection(db, USERS_COLLECTION, userId, KYC_DOC_ID);
+  const kycSnapshot = await getDocs(kycRef);
+
+  const kycData = kycSnapshot.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id,
+  }));
+  // If there's no kyc at all, return null
+  if (kycData.length === 0) {
+    return null;
+  }
+  return kycData ? kycData[0] : null;
+}
+
+// Update or create user KYC document
+export async function updateUserKyc(userId, kycData) {
+  try {
+    const kycCollectionRef = collection(
+      db,
+      USERS_COLLECTION,
+      userId,
+      KYC_DOC_ID
+    );
+    const kycDocRef = doc(kycCollectionRef, "kyc_document");
+    await setDoc(kycDocRef, kycData, { merge: true });
+    return { success: true, id: KYC_DOC_ID };
+  } catch (error) {
+    console.error("Error updating kyc:", error);
+    return { success: false, error: error.message }; // Return error message on failure
+  }
 }
