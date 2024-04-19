@@ -23,9 +23,9 @@ function App() {
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/auth-action" element={<AuthAction />} />
-            <Route path="/kyc-form" element={<KycForm />} />
             <Route path="/welcome-page" element={<WelcomePage />} />
           <Route path="/" element={<Skeleton />}>
+            <Route path="/kyc-form" element={<KycForm />} />
           </Route>
         </Routes>
       </Router>

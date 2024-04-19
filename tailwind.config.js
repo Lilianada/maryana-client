@@ -6,6 +6,9 @@ module.exports = {
       backgroundImage: {
         "custom-pattern": "url('/src/assets/Background.jpg')",
       },
+      logo: {
+        "dark-logo": "url('/src/assets/logo.png')",
+      },
     },
   },
   variants: {

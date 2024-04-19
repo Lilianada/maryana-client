@@ -14,12 +14,12 @@ export default function WelcomePage() {
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link
-                to="#"
+                to="/kyc-form"
                 className="rounded-md bg-gray-800 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
                 Complete KYC
               </Link>
-              <Link to="#" className="text-sm font-semibold leading-6 text-gray-800">
+              <Link to="/dashboard" className="text-sm font-semibold leading-6 text-gray-800">
                 Explore your account <span aria-hidden="true">→</span>
               </Link>
             </div>

@@ -298,8 +298,9 @@ export default function KycForm() {
   };
 
   return (
-    <div className="bg-gray-50 h-full">
-      <div className="py-5 text-left">
+    <div className=" pb-10 lg:px-24 sm:px-8 bg-gray-50 min-h-screen">
+      
+      <div className="py-8 text-left">
         <h3 className="text-lg font-semibold leading-6 text-gray-900">
           Know Your Customer Form
         </h3>
@@ -331,7 +332,9 @@ export default function KycForm() {
             ))}
           </div>
         </div>
+
         {renderSection()}
+        
       </div>
 
       <div className="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8 mt-4">
