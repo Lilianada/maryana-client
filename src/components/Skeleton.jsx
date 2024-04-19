@@ -87,7 +87,7 @@ export default function Skeleton() {
             <Header />
           </div>
 
-          <main className="pt-4 lg:pt-8 pb-10 lg:px-4 sm:px-6 bg-blue-50 min-h-[calc(100vh_-_64px)]">
+          <main className="pt-4 sm:pt-8 pb-10 lg:px-4 sm:px-6 bg-slate-50 min-h-[calc(100vh_-_64px)]">
             <div className="px-2">
               <Outlet />
             </div>

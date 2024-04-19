@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import account_details from "../assets/account_details.png";
+import account_details from "../assets/my_accounts.png";
 import bonds_icon from "../assets/bond.png";
 import fixedTerm_icon from "../assets/deposit.png";
 import ipos_icon from "../assets/ipo.png";
@@ -17,9 +17,9 @@ export default function Dashboard() {
   
     const menus = [
       {
-        title: "Registered Users",
+        title: "My Accounts",
         icon: account_details,
-        href: "/dashboard/registered_users",
+        href: "/dashboard/my-accounts",
       },
       {
         title: "Bonds",
@@ -29,7 +29,7 @@ export default function Dashboard() {
       {
         title: "Fixed Terms",
         icon: fixedTerm_icon,
-        href: "/dashboard/fixed_term_deposits",
+        href: "/dashboard/fixed-term-deposits",
       },
       {
         title: "IPOs",
