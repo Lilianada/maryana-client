@@ -64,7 +64,7 @@ export default function Dashboard() {
                 <div className="flex items-center justify-center space-x-3">
                   <img src={item.icon} className="w-12" alt="card icon" />
                 </div>
-                <h2 className="mt-6 truncate text-xl text-gray-500">
+                <h2 className="mt-6 truncate text-xl font-semibold text-gray-500">
                   {item.title}
                 </h2>
               </div>
