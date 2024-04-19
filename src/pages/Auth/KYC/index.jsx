@@ -29,6 +29,12 @@ import { useModal } from "../../../context/ModalContext";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RadioGroup } from "@headlessui/react";
+import FirstSection from "./FirstSection";
+import SecondSection from "./SecondSection";
+import ThirdSection from "./ThirdSection";
+import FourthSection from "./FourthSection";
+import FifthSection from "./FifthSection";
+import SixthSection from "./SixthSection";
 
 const steps = [
   { name: "Step 1", to: "#", status: "complete" },
@@ -43,7 +49,6 @@ function classNames(...classes) {
 }
 
 export default function KycForm() {
-  const { showModal, hideModal } = useModal();
   const [formData, setFormData] = useState({
     eduExperience: "",
     purpose: "",
@@ -71,8 +76,12 @@ export default function KycForm() {
     },
     familyAssessment: [],
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { showModal, hideModal } = useModal();
   const userId = useSelector((state) => state.user.userId);
+  const [currentSection, setCurrentSection] = useState(0);
+  const totalSections = 6;
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const progressPercentage = ((currentSection + 1) / totalSections) * 100;
 
   useEffect(() => {
     const fetchKycDetails = async () => {
@@ -144,7 +153,7 @@ export default function KycForm() {
   }, []);
 
   // Handle field changes for both single and multiple value fields
-  const handleChange = (event) => {
+  const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
     if (type === "checkbox") {
       setFormData((prevData) => ({
@@ -202,6 +211,83 @@ export default function KycForm() {
     setIsSubmitting(false);
   };
 
+  const handleSave = async () => {
+    // This function could be adapted to save data to the backend or localstorage
+    console.log("Saving current data:", formData);
+  };
+
+  const handleNext = () => {
+    handleSave();
+    if (currentSection < totalSections - 1) {
+      setCurrentSection(currentSection + 1);
+    }
+  };
+
+  const renderSection = () => {
+    switch (currentSection) {
+      case 0:
+        return (
+          <FirstSection
+            formData={formData}
+            handleChange={handleInputChange}
+            primaryPurpose={primaryPurpose}
+            plannedInvestments={plannedInvestments}
+            investmentWindow={investmentWindow}
+          />
+        );
+      case 1:
+        return (
+          <SecondSection
+            formData={formData}
+            handleChange={handleInputChange}
+            stockExperiences={stockExperiences}
+            stockInvestents={stockInvestents}
+          />
+        );
+      case 2:
+        return (
+          <ThirdSection
+            formData={formData}
+            handleChange={handleInputChange}
+            cryptoExperiences={cryptoExperiences}
+            cryptoInvestments={cryptoInvestments}
+          />
+        );
+      case 3:
+        return (
+          <FourthSection formData={formData} handleChange={handleInputChange} />
+        );
+      case 4:
+        return (
+          <FifthSection
+            formData={formData}
+            handleChange={handleInputChange}
+            setFormData={setFormData}
+            tradingExperience={tradingExperience}
+            educationExperience={educationExperience}
+            tradingKnowledgeAssessment={tradingKnowledgeAssessment}
+            tradingStrategy={tradingStrategy}
+            purposeOfTrading={purposeOfTrading}
+            investmentAmount={investmentAmount}
+            riskReward={riskReward}
+            familyMembers={familyMembers}
+          />
+        );
+      case 5:
+        return (
+          <SixthSection
+            formData={formData}
+            handleChange={handleInputChange}
+            financialStatus={financialStatus}
+            occupation={occupation}
+            netAnnualIncome={netAnnualIncome}
+          />
+        );
+      default:
+        return <div>Section not found.</div>;
+    }
+  };
+
   return (
     <div className="bg-gray-50 h-[calc(100vh_-_120px)]">
       <div className="py-5 text-left">
@@ -211,112 +297,51 @@ export default function KycForm() {
         <p className="mt-1 text-sm text-gray-500">
           This information will be used in personalizing your experience.
         </p>
-        {/* Progress bar */}
-        <nav aria-label="Progress">
-          <ol className="flex items-center mt-4">
-            {steps.map((step, stepIdx) => (
-              <li
-                key={step.name}
-                className={classNames(
-                  stepIdx !== steps.length - 1 ? "pr-8 sm:pr-20" : "",
-                  "relative"
-                )}
+        <p>
+          Section {currentSection + 1} of {totalSections}
+        </p>
+        <div className="mt-6" aria-hidden="true">
+          <div className="overflow-hidden rounded-full bg-gray-200">
+            <div
+              className="h-2 bg-indigo-600 rounded-full"
+              style={{ width: `${progressPercentage}%` }}
+            />
+          </div>
+          <div className="mt-6 hidden grid-cols-4 text-sm font-medium text-gray-600 sm:grid">
+            {Array.from({ length: totalSections }, (_, i) => (
+              <div
+                key={i}
+                className={`text-center ${
+                  i <= currentSection ? "text-indigo-600" : ""
+                }`}
               >
-                {step.status === "complete" ? (
-                  <>
-                    <div
-                      className="absolute inset-0 flex items-center"
-                      aria-hidden="true"
-                    >
-                      <div className="h-0.5 w-full bg-indigo-600" />
-                    </div>
-                    <Link
-                      to="#"
-                      className="relative flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-900"
-                    >
-                      <CheckIcon
-                        className="h-5 w-5 text-white"
-                        aria-hidden="true"
-                      />
-                      <span className="sr-only">{step.name}</span>
-                    </Link>
-                  </>
-                ) : step.status === "current" ? (
-                  <>
-                    <div
-                      className="absolute inset-0 flex items-center"
-                      aria-hidden="true"
-                    >
-                      <div className="h-0.5 w-full bg-gray-200" />
-                    </div>
-                    <Link
-                      to="#"
-                      className="relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-indigo-600 bg-white"
-                      aria-current="step"
-                    >
-                      <span
-                        className="h-2.5 w-2.5 rounded-full bg-indigo-600"
-                        aria-hidden="true"
-                      />
-                      <span className="sr-only">{step.name}</span>
-                    </Link>
-                  </>
-                ) : (
-                  <>
-                    <div
-                      className="absolute inset-0 flex items-center"
-                      aria-hidden="true"
-                    >
-                      <div className="h-0.5 w-full bg-gray-200" />
-                    </div>
-                    <Link
-                      to="#"
-                      className="group relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white hover:border-gray-400"
-                    >
-                      <span
-                        className="h-2.5 w-2.5 rounded-full bg-transparent group-hover:bg-gray-300"
-                        aria-hidden="true"
-                      />
-                      <span className="sr-only">{step.name}</span>
-                    </Link>
-                  </>
-                )}
-              </li>
+                {`Step ${i + 1}`}
+              </div>
             ))}
-          </ol>
-        </nav>
+          </div>
+        </div>
+        {renderSection()}
       </div>
 
-      {/* Form sections */}
-
-      
-
-      {/* Stock investing experience */}
-      
-
-      {/* Crypto investing experience */}
-      
-
-      {/* Leverage investing experience */}
-      
-
-      {/* Trading Knowledge and Experience */}
-     
-      {/* Financial Status */}
-      
       <div className="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
-        <button
-          type="button"
-          className="text-sm font-semibold leading-6 text-gray-900"
-        >
-          Save
-        </button>
-        <button
-          type="submit"
-          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Submit all
-        </button>
+        {currentSection < totalSections - 1 ? (
+          <button
+            type="button"
+            className="text-sm font-semibold leading-6 text-gray-900"
+            onClick={handleNext}
+          >
+            Save & Next
+          </button>
+        ) : (
+          <button
+            type="submit"
+            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+          >
+            Submit all
+          </button>
+        )}
       </div>
     </div>
   );
