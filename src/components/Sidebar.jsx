@@ -73,14 +73,13 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, navigation }) {
               {/* Sidebar */}
               <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4 ring-1 ring-white/10">
                 <div className="flex h-16 shrink-0 items-center mt-4">
-                  <img className="h-8 w-auto" src={Logo} alt="Your Company" />
+                  <img className="h-12 w-auto" src={Logo} alt="Your Company" />
                 </div>
                 <nav className="flex flex-1 flex-col">
                   <ul className="flex flex-1 flex-col -mx-2 space-y-1">
                     <li className="mb-6">
-                      <Link
-                        to="/"
-                        className="group flex items-center w-full bg-white text-gray-900 hover:bg-gray-100 hover:text-gray-900 rounded-md px-2 py-2 text-sm font-medium"
+                      <div
+                        className="group flex items-center w-full bg-white text-gray-900 rounded-md px-2 py-2 text-sm font-medium"
                       >
                         <div className="flex flex-col justify-start ">
                           <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">
@@ -92,7 +91,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, navigation }) {
                           </p>
                           <p className="text-xs italic font-medium text-gray-500 group-hover:text-gray-700"></p>
                         </div>
-                      </Link>
+                      </div>
                     </li>
 
                     {updatedNavigation.map((item) => (
