@@ -24,8 +24,8 @@ function App() {
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/auth-action" element={<AuthAction />} />
           <Route path="/onboard" element={<WelcomePage />} />
-          <Route path="/dashboard" element={<Skeleton />}>
-            <Route path="/dashboard/kyc-form" element={<KycForm />} />
+          <Route path="/dashboard/" element={<Skeleton />}>
+            <Route path="kyc-form" element={<KycForm />} />
           </Route>
         </Routes>
       </Router>
