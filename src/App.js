@@ -10,6 +10,8 @@ import AuthAction from "./pages/Auth/AuthAction";
 import KycForm from "./pages/Auth/KYC";
 import Skeleton from "./components/Skeleton";
 import WelcomePage from "./pages/Auth/WelcomePage";
+import ProtectedRoute from "./protectedRoute";
+import Dashboard from "./components/Dashboard";
 
 function App() {
   const { loadingAuthState } = useAuth();
@@ -26,6 +28,14 @@ function App() {
           <Route path="/onboard" element={<WelcomePage />} />
           <Route path="/dashboard/" element={<Skeleton />}>
             <Route path="kyc-form" element={<KycForm />} />
+            <Route
+              index
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
           </Route>
         </Routes>
       </Router>
