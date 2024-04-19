@@ -298,7 +298,7 @@ export default function KycForm() {
   };
 
   return (
-    <div className=" pb-10 lg:px-24 sm:px-8 bg-gray-50 min-h-screen">
+    <div className="px-2 pb-10 lg:px-24 sm:px-8 bg-gray-50 min-h-[calc(100vh_-_64px)]">
       
       <div className="py-8 text-left">
         <h3 className="text-lg font-semibold leading-6 text-gray-900">
