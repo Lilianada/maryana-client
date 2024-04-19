@@ -27,26 +27,13 @@ import {
 } from "@heroicons/react/24/outline";
 import { useModal } from "../../../context/ModalContext";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { RadioGroup } from "@headlessui/react";
 import FirstSection from "./FirstSection";
 import SecondSection from "./SecondSection";
 import ThirdSection from "./ThirdSection";
 import FourthSection from "./FourthSection";
 import FifthSection from "./FifthSection";
 import SixthSection from "./SixthSection";
-
-const steps = [
-  { name: "Step 1", to: "#", status: "complete" },
-  { name: "Step 2", to: "#", status: "complete" },
-  { name: "Step 3", to: "#", status: "current" },
-  { name: "Step 4", to: "#", status: "upcoming" },
-  { name: "Step 5", to: "#", status: "upcoming" },
-];
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import DotLoader from "../../../components/DotLoader";
 
 export default function KycForm() {
   const [formData, setFormData] = useState({
@@ -175,10 +162,9 @@ export default function KycForm() {
     event.preventDefault();
     setIsSubmitting(true);
 
-    const response = await updateUserKyc(userId, formData); // Await the response from the updateUserKyc function
+    const response = await updateUserKyc('v6pygKlYmrSOoJxkh6lpKesG2Bl2', formData);
 
     if (response.success) {
-      // Show a success message if KYC details were successfully updated
       customModal({
         showModal,
         title: "Success!",
@@ -212,8 +198,27 @@ export default function KycForm() {
   };
 
   const handleSave = async () => {
-    // This function could be adapted to save data to the backend or localstorage
-    console.log("Saving current data:", formData);
+    const filteredFormData = Object.entries(formData).reduce(
+      (acc, [key, value]) => {
+        // Ensure we handle arrays for checkboxes or multi-selects that might be empty
+        if (Array.isArray(value) && value.length > 0) {
+          acc[key] = value;
+        } else if (value !== "" && value != null) {
+          acc[key] = value;
+        }
+        return acc;
+      },
+      {}
+    );
+
+    const response = await updateUserKyc(
+      "v6pygKlYmrSOoJxkh6lpKesG2Bl2",
+      filteredFormData
+    );
+
+    if (response.success) {
+      console.log("Saving current data:", formData);
+    }
   };
 
   const handleNext = () => {
@@ -221,6 +226,10 @@ export default function KycForm() {
     if (currentSection < totalSections - 1) {
       setCurrentSection(currentSection + 1);
     }
+  };
+
+  const handleGoToSection = (sectionIndex) => {
+    setCurrentSection(sectionIndex);
   };
 
   const renderSection = () => {
@@ -289,7 +298,7 @@ export default function KycForm() {
   };
 
   return (
-    <div className="bg-gray-50 h-[calc(100vh_-_120px)]">
+    <div className="bg-gray-50 h-full">
       <div className="py-5 text-left">
         <h3 className="text-lg font-semibold leading-6 text-gray-900">
           Know Your Customer Form
@@ -297,37 +306,39 @@ export default function KycForm() {
         <p className="mt-1 text-sm text-gray-500">
           This information will be used in personalizing your experience.
         </p>
-        <p>
-          Section {currentSection + 1} of {totalSections}
-        </p>
-        <div className="mt-6" aria-hidden="true">
+
+        <div className="mt-6 mb-6" aria-hidden="true">
           <div className="overflow-hidden rounded-full bg-gray-200">
             <div
               className="h-2 bg-indigo-600 rounded-full"
               style={{ width: `${progressPercentage}%` }}
             />
           </div>
-          <div className="mt-6 hidden grid-cols-4 text-sm font-medium text-gray-600 sm:grid">
+          <div className="mt-6 hidden grid-cols-6 text-sm font-medium text-gray-600 sm:grid">
             {Array.from({ length: totalSections }, (_, i) => (
-              <div
+              <button
                 key={i}
-                className={`text-center ${
-                  i <= currentSection ? "text-indigo-600" : ""
+                onClick={() => handleGoToSection(i)}
+                className={`w-full text-center cursor-pointer ${
+                  i === currentSection
+                    ? "text-indigo-600"
+                    : "hover:text-indigo-400"
                 }`}
+                style={{ padding: "4px 0" }} // Adding padding to increase clickable area
               >
                 {`Step ${i + 1}`}
-              </div>
+              </button>
             ))}
           </div>
         </div>
         {renderSection()}
       </div>
 
-      <div className="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
+      <div className="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8 mt-4">
         {currentSection < totalSections - 1 ? (
           <button
             type="button"
-            className="text-sm font-semibold leading-6 text-gray-900"
+            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             onClick={handleNext}
           >
             Save & Next
@@ -339,7 +350,14 @@ export default function KycForm() {
             onClick={handleSubmit}
             disabled={isSubmitting}
           >
-            Submit all
+            {isSubmitting ? (
+              <div className="flex w-full justify-center align-middle gap-2">
+                <span>Submiting</span>
+                <DotLoader />
+              </div>
+            ) : (
+              "Submit KYC Form"
+            )}
           </button>
         )}
       </div>

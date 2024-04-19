@@ -8,7 +8,7 @@ export default function FirstSection({
   investmentWindow,
 }) {
   return (
-    <div className="space-y-10 divide-y divide-gray-900/10 mt-6">
+    <div className="space-y-10 divide-y divide-gray-900/10 mt-12">
       {/* Your Goal */}
       <div className="grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-3">
         <div className="px-4 sm:px-0">
