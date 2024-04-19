@@ -9,6 +9,7 @@ import VerifyEmail from "./pages/Auth/VerifyEmail";
 import AuthAction from "./pages/Auth/AuthAction";
 import KycForm from "./pages/Auth/KYC";
 import Skeleton from "./components/Skeleton";
+import WelcomePage from "./pages/Auth/WelcomePage";
 
 function App() {
   const { loadingAuthState } = useAuth();
@@ -17,14 +18,14 @@ function App() {
       <Router>
         <Routes>
           <Route path="/sign-up" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/auth-action" element={<AuthAction />} />
-          <Route path="/" element={<Skeleton />} >
-          <Route path="/kyc-form" element={<KycForm />} />
-
+            <Route path="/kyc-form" element={<KycForm />} />
+            <Route path="/welcome-page" element={<WelcomePage />} />
+          <Route path="/" element={<Skeleton />}>
           </Route>
         </Routes>
       </Router>
