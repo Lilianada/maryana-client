@@ -337,32 +337,51 @@ export default function KycForm() {
       </div>
 
       <div className="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8 mt-4">
-        {currentSection < totalSections - 1 ? (
-          <button
-            type="button"
-            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            onClick={handleNext}
-          >
-            Save & Next
-          </button>
+  {currentSection < totalSections - 1 ? (
+    <>
+      <button
+        type="button"
+        className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+        onClick={() => navigate('/dashboard')} // Using `navigate` from `react-router-dom`
+      >
+        Skip for later
+      </button>
+      <button
+        type="button"
+        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        onClick={handleNext}
+      >
+        Save & Next
+      </button>
+    </>
+  ) : (
+    <>
+      <button
+        type="button"
+        className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+            onClick={() => navigate('/dashboard')} // Using `navigate` from `react-router-dom`
+      >
+        Skip for later
+      </button>
+      <button
+        type="submit"
+        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        onClick={handleSubmit}
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? (
+          <div className="flex w-full justify-center align-middle gap-2">
+            <span>Submitting</span>
+            <DotLoader />
+          </div>
         ) : (
-          <button
-            type="submit"
-            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            onClick={handleSubmit}
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? (
-              <div className="flex w-full justify-center align-middle gap-2">
-                <span>Submiting</span>
-                <DotLoader />
-              </div>
-            ) : (
-              "Submit KYC Form"
-            )}
-          </button>
+          "Submit KYC Form"
         )}
-      </div>
+      </button>
+    </>
+  )}
+</div>
+
     </div>
   );
 }

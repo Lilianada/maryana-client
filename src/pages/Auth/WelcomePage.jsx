@@ -6,18 +6,19 @@ import { getUserKycCompletion } from "../../config/user";
 export default function WelcomePage() {
   const [kycCompletion, setKycCompletion] = useState(null);
   const user = useSelector((state) => state.user);
-console.log(user)
-  useEffect(() => {
-    const userId = user.userId;
-    getUserKycCompletion(userId).then(completion => {
-      if (completion !== null) {
-        setKycCompletion(completion);
-      } else {
-        // Set to a specific flag when no KYC data is present at all
-        setKycCompletion('none');
-      }
-    });
 
+const isKycComplete = async () => {
+  const userId = user.userId;
+  await getUserKycCompletion(userId).then(completion => {
+    if (completion !== null) {
+      setKycCompletion(completion);
+    } else {
+      setKycCompletion('none');
+    }
+  });
+}
+  useEffect( () => {
+    isKycComplete();
   }, []);
 
   return (
@@ -28,9 +29,9 @@ console.log(user)
             Hello {user.name},
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-lg leading-6 sm:leading-8 text-gray-600">
-            Welcome to CVS Online Portfolio Management. 
-            {kycCompletion === 'none' ? (
-              "Kindly begin the process of completing your KYC information to personalize your experience on our platform."
+            Welcome to CVS Online Portfolio Management. {""}
+            {kycCompletion === 0 ? (
+              "Kindly begin the process of completing your KYC information."
             ) : kycCompletion < 100 ? (
               `You have completed only ${kycCompletion}% of your KYC, you have ${100 - kycCompletion}% more to go.`
             ) : (
@@ -43,9 +44,9 @@ console.log(user)
                 to="/kyc-form"
                 className="rounded-md bg-gray-800 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
-                {kycCompletion === 'none' ? 'Start KYC' : 'Complete KYC'}
+                {kycCompletion === 0 ? 'Start KYC' : 'Complete KYC'}
               </Link>
-              {kycCompletion !== 'none' && (
+              {kycCompletion !== 0 && (
                 <Link
                   to="/dashboard"
                   className="text-sm font-semibold leading-6 text-gray-800"
