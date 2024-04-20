@@ -2,7 +2,6 @@ import React, { Fragment } from "react";
 import { useLocation } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
 import {
-  Cog6ToothIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import Logo from "../assets/logo.png";
