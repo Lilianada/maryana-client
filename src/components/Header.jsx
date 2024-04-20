@@ -7,6 +7,7 @@ import {
 import { Menu, Transition } from "@headlessui/react";
 import CustomModal from "./CustomModal";
 import { auth } from "../config/firebase";
+import { persistor } from "../store/store";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -104,6 +105,7 @@ export default function Header() {
           confirmButtonTextColor="text-white"
           onConfirm={() => {
             setIsLoading(true);
+            persistor.purge();
             auth
               .signOut()
               .then(() => {
