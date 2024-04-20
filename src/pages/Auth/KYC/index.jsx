@@ -34,6 +34,7 @@ import FourthSection from "./FourthSection";
 import FifthSection from "./FifthSection";
 import SixthSection from "./SixthSection";
 import DotLoader from "../../../components/DotLoader";
+import { useNavigate } from "react-router-dom";
 
 export default function KycForm() {
   const [formData, setFormData] = useState({
@@ -67,6 +68,7 @@ export default function KycForm() {
   const userId = useSelector((state) => state.user.userId);
   const [currentSection, setCurrentSection] = useState(0);
   const totalSections = 6;
+  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const progressPercentage = ((currentSection + 1) / totalSections) * 100;
 
@@ -177,6 +179,7 @@ export default function KycForm() {
         timer: 2000,
         onClose: hideModal,
       });
+      navigate("/dashboard");
     } else {
       // Handle the error case
       console.error("Error updating KYC details:", response.error);
@@ -211,14 +214,10 @@ export default function KycForm() {
       {}
     );
 
-    const response = await updateUserKyc(
+   await updateUserKyc(
       "v6pygKlYmrSOoJxkh6lpKesG2Bl2",
       filteredFormData
     );
-
-    if (response.success) {
-      console.log("Saving current data:", formData);
-    }
   };
 
   const handleNext = () => {

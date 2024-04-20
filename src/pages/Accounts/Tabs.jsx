@@ -1,56 +1,65 @@
+import React, { useState } from 'react';
+import Table from './Table';
 
-const tabs = [
-    { name: 'My Bonds', href: '#', current: false },
-    { name: 'My Terms Deposit', href: '#', current: false },
-    { name: 'My IPOs', href: '#', current: true },
-    { name: 'My Shares', href: '#', current: false },
-  ]
-  
-  function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-  }
-  
-  export default function Tabs() {
+const tabsInfo = [
+    { name: 'My Bonds', content: <Table/> },
+    { name: 'My Terms Deposit', content: <Table/> },
+    { name: 'My IPOs', content: <Table/> },
+    { name: 'My Shares', content: <Table/> },
+];
+
+export default function Tabs() {
+    // State to keep track of the current active tab
+    const [activeTab, setActiveTab] = useState(tabsInfo[2].name); // Default to 'My IPOs' as it's initially true
+
+    function handleTabClick(tabName) {
+        setActiveTab(tabName);
+    }
+
+    // Find the tab object to display its content
+    const activeTabInfo = tabsInfo.find(tab => tab.name === activeTab);
+
     return (
-      <div>
-        <div className="sm:hidden">
-          <label htmlFor="tabs" className="sr-only">
-            Select a tab
-          </label>
-          {/* Use an "onChange" listener to redirect the user to the selected tab URL. */}
-          <select
-            id="tabs"
-            name="tabs"
-            className="block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
-            defaultValue={tabs.find((tab) => tab.current).name}
-          >
-            {tabs.map((tab) => (
-              <option key={tab.name}>{tab.name}</option>
-            ))}
-          </select>
-        </div>
-        <div className="hidden sm:block">
-          <div className="border-b border-gray-200">
-            <nav className="-mb-px flex" aria-label="Tabs">
-              {tabs.map((tab) => (
-                <a
-                  key={tab.name}
-                  href={tab.href}
-                  className={classNames(
-                    tab.current
-                      ? 'border-indigo-500 text-indigo-600'
-                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
-                    'w-1/4 border-b-2 py-4 px-1 text-center text-sm font-medium'
-                  )}
-                  aria-current={tab.current ? 'page' : undefined}
+        <div>
+            <div className="sm:hidden">
+                <label htmlFor="tabs" className="sr-only">
+                    Select a tab
+                </label>
+                <select
+                    id="tabs"
+                    name="tabs"
+                    className="block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                    value={activeTab}
+                    onChange={(e) => handleTabClick(e.target.value)}
                 >
-                  {tab.name}
-                </a>
-              ))}
-            </nav>
-          </div>
+                    {tabsInfo.map((tab) => (
+                        <option key={tab.name} value={tab.name}>
+                            {tab.name}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div className="hidden sm:block">
+                <div className="border-b border-gray-200">
+                    <nav className="-mb-px flex" aria-label="Tabs">
+                        {tabsInfo.map((tab) => (
+                            <button
+                                key={tab.name}
+                                onClick={() => handleTabClick(tab.name)}
+                                className={`w-1/4 py-4 px-1 text-center text-sm font-medium 
+                                    ${tab.name === activeTab ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'} 
+                                    border-b-2 cursor-pointer`}
+                                aria-current={tab.name === activeTab ? 'page' : undefined}
+                            >
+                                {tab.name}
+                            </button>
+                        ))}
+                    </nav>
+                </div>
+            </div>
+            <div className="mt-4 w-full overflow-scroll">
+                {activeTabInfo && activeTabInfo.content}
+            </div>
         </div>
-      </div>
-    )
-  }
-  
+    );
+}

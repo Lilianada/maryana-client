@@ -48,7 +48,7 @@ export default function Login() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        navigate("/dashboard");
+        navigate("/onboard");
       } else {
         return;
       }

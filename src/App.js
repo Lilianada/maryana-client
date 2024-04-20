@@ -20,15 +20,15 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/sign-up" element={<Register />} />
+          <Route index path="/sign-up" element={<Register />} />
           <Route path="/" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/auth-action" element={<AuthAction />} />
           <Route path="/onboard" element={<WelcomePage />} />
+          <Route path="/kyc-form" element={<KycForm />} />
           <Route path="/dashboard/" element={<Skeleton />}>
-            <Route path="kyc-form" element={<KycForm />} />
             <Route
               index
               element={
