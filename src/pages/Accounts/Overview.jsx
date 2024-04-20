@@ -18,7 +18,7 @@ export default function Overview() {
   return (
     <div>
       <h2 className="text-xl font-semibold text-gray-800">Account Overview</h2>
-      <ul className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-8 lg:grid-cols-4">
+      <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
         {accounts.map((item) => (
           <li key={item.name} className="col-span-1 flex rounded-md shadow-sm">
             <div
@@ -30,7 +30,7 @@ export default function Overview() {
               <item.icons className="h-6 w-6 text-white" />
             </div>
             <div className="flex flex-1 items-center justify-between truncate rounded-r-md border-b border-r border-t border-gray-200 bg-white">
-              <div className="flex flex-col gap-4 flex-1 truncate px-4 py-4 text-base">
+              <div className="flex flex-col gap-2 flex-1 truncate px-4 py-3 text-sm">
                 <Link to={item.href} className="font-medium text-gray-900 hover:text-gray-600">
                   {item.name}
                 </Link>

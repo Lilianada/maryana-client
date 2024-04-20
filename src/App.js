@@ -12,7 +12,7 @@ import Skeleton from "./components/Skeleton";
 import WelcomePage from "./pages/Auth/WelcomePage";
 import ProtectedRoute from "./protectedRoute";
 import Dashboard from "./components/Dashboard";
-import AccountsOverview from "./pages/Accounts/Overview";
+import AccountsOverview from "./pages/Accounts";
 
 function App() {
   const { loadingAuthState } = useAuth();
