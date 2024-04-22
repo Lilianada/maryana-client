@@ -5,15 +5,16 @@ import {
   CalendarIcon,
   ArrowTrendingUpIcon,
 } from "@heroicons/react/24/outline";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getCashDeposit } from "../../config/cashTransactions";
-import { getFixedTerm } from "../../config/terms";
-import { getBonds } from "../../config/bonds";
-import { getIpos } from "../../config/ipos";
+import { getUserTerm } from "../../config/terms";
+import { getBondsHoldings } from "../../config/bonds";
+import { getUserIpos } from "../../config/ipos";
 import { getStock } from "../../config/stocks";
 import { convertToNumber, formatNumber } from "../../config/utils";
+import { setTotalBalance } from "../../store/actions/userActions";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -27,14 +28,16 @@ export default function Overview() {
   const [totalShares, setTotalShares] = useState(0);
   const [totalDeposits, setTotalDeposits] = useState(0);
   const [balance, setBalance] = useState(0);
+  const dispatch = useDispatch();
+  console.log(userId);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const cashDeposits = await getCashDeposit(userId);
-        const terms = await getFixedTerm(userId);
-        const bonds = await getBonds(userId);
-        const ipos = await getIpos(userId);
+        const terms = await getUserTerm(userId);
+        const bonds = await getBondsHoldings(userId);
+        const ipos = await getUserIpos(userId);
         const stocks = await getStock(userId);
 
         calculateTotalDeposits(cashDeposits);
@@ -196,6 +199,7 @@ export default function Overview() {
     },
   ];
 
+  dispatch(setTotalBalance(balance));
   return (
     <div>
       <h2 className="text-xl font-semibold text-gray-800">Account Overview</h2>

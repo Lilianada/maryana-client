@@ -7,6 +7,7 @@ import {
 import Logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { formatNumber } from "../config/utils";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -14,12 +15,13 @@ function classNames(...classes) {
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen, navigation }) {
   const location = useLocation();
+  const balance = useSelector((state) => state.user.balance);
+  const userName = useSelector(state => state.user.name);
 
   const updatedNavigation = navigation.map((item) => ({
     ...item,
     current: item.to === location.pathname,
   }));
-  const userName = useSelector(state => state.user.name);
   return (
     <Transition.Root show={sidebarOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50 lg:" onClose={setSidebarOpen}>
@@ -86,7 +88,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, navigation }) {
                           </p>
                           <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
                             Total Account Value:
-                            <span className="text-indigo-500"> $1,000,000</span>
+                            <span className="text-indigo-500"> ${formatNumber(balance)}</span>
                           </p>
                           <p className="text-xs italic font-medium text-gray-500 group-hover:text-gray-700"></p>
                         </div>

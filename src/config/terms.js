@@ -49,7 +49,7 @@ export async function getFixedTerm() {
   }));
 }
 
-export async function getUserFixedTerm(uid) {
+export async function getUserTerm(uid) {
   const fixedTermQuery = query(
     collection(db, USERS_COLLECTION, uid, FIXED_TERMS_SUB_COLLECTION)
   );

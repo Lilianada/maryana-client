@@ -1,8 +1,9 @@
-import { SET_USER_NAME, SET_USER_ID } from '../actions/userActions';
+import { SET_USER_NAME, SET_USER_ID, SET_TOTAL_BALANCE } from '../actions/userActions';
 
 const initialState = {
   name: '',
-  userId: ''
+  userId: '',
+  balance: ''
 };
 
 const userReducer = (state = initialState, action) => {
@@ -16,6 +17,11 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         userId: action.payload
+      };
+    case SET_TOTAL_BALANCE:
+      return {
+        ...state,
+        balance: action.payload
       };
     default:
       return state;

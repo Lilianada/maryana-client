@@ -98,8 +98,7 @@ export default function Login() {
         const secondaryNameParts = userData.secondaryAccountHolder;
 
         // Optionally handle secondary names as needed
-        dispatch(setUserName(secondaryNameParts)); 
-        dispatch(setUserId(user.uid));
+        // dispatch(setSecondaryUserName(secondaryNameParts)); 
       }
 
       await updateDoc(userRef, { isLoggedIn: true });
