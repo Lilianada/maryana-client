@@ -68,72 +68,80 @@ export default function Table() {
       <div className="mt-8 overflow-scroll">
         <div className="align-middle inline-block min-w-full">
           <div className="border-t border-gray-200">
-            <table className="min-w-full divide-y divide-gray-300">
-              <thead className="bg-gray-100">
-                <tr>
-                  {[
-                    " SYM",
-                    "Company",
-                    "Type",
-                    "Share",
-                    "TP",
-                    "MP",
-                    "TA",
-                    "Value",
-                    "+/-(%)",
-                    "Status",
-                    "Date",
-                  ].map((header, index) => (
-                    <th
-                      key={index}
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      {header}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 bg-slate-50">
-                {stocks.map((stock, index) => (
-                  <tr key={index}>
-                    <td className=" px-3 py-4 text-sm text-gray-500 lg:table-cell">
-                      {stock.symbol}
-                    </td>
-                    <td className=" truncate max-w-12 px-3 py-4 text-sm text-gray-500 lg:table-cell">
-                      {stock.companyName}
-                    </td>
-                    <td className=" px-3 py-4 text-sm text-gray-500 lg:table-cell">
-                      {stock.type}
-                    </td>
-                    <td className=" px-3 py-4 text-sm text-gray-500 capitalize lg:table-cell">
-                      {stock.shares}
-                    </td>
-                    <td className=" px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                      ${formatNumber(stock.tradePrice)}
-                    </td>
-                    <td className=" px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                      ${formatNumber(stock.marketPrice)}
-                    </td>
-                    <td className=" px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                      ${formatNumber(stock.tradeAmount)}
-                    </td>
-                    <td className=" px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                      ${formatNumber(stock.value)}
-                    </td>
-                    <td className=" px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                      {stock.profitLoss}%
-                    </td>
-                    <td className=" px-3 py-4 text-sm text-gray-500 lg:table-cell">
-                      {stock.status}
-                    </td>
-                    <td className=" truncate px-3 py-4 text-sm text-gray-500 xl:table-cell">
-                      {stock.tradeDate}
-                    </td>
+            {stocks === null ? (
+              <div className="w-full grid place-items-center rounded-xl border border-gray-200 p-4 mt-12">
+                <h5 className="text-gray-400 text-base ">
+                  NO STOCKS TRANSACTIONS AVAILABLE.
+                </h5>
+              </div>
+            ) : (
+              <table className="min-w-full divide-y divide-gray-300">
+                <thead className="bg-gray-100">
+                  <tr>
+                    {[
+                      " SYM",
+                      "Company",
+                      "Type",
+                      "Share",
+                      "TP",
+                      "MP",
+                      "TA",
+                      "Value",
+                      "+/-(%)",
+                      "Status",
+                      "Date",
+                    ].map((header, index) => (
+                      <th
+                        key={index}
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
+                        {header}
+                      </th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-gray-200 bg-slate-50">
+                  {stocks.map((stock, index) => (
+                    <tr key={index}>
+                      <td className=" px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                        {stock.symbol}
+                      </td>
+                      <td className=" truncate max-w-12 px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                        {stock.companyName}
+                      </td>
+                      <td className=" px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                        {stock.type}
+                      </td>
+                      <td className=" px-3 py-4 text-sm text-gray-500 capitalize lg:table-cell">
+                        {stock.shares}
+                      </td>
+                      <td className=" px-3 py-4 text-sm text-gray-500 sm:table-cell">
+                        ${formatNumber(stock.tradePrice)}
+                      </td>
+                      <td className=" px-3 py-4 text-sm text-gray-500 sm:table-cell">
+                        ${formatNumber(stock.marketPrice)}
+                      </td>
+                      <td className=" px-3 py-4 text-sm text-gray-500 sm:table-cell">
+                        ${formatNumber(stock.tradeAmount)}
+                      </td>
+                      <td className=" px-3 py-4 text-sm text-gray-500 sm:table-cell">
+                        ${formatNumber(stock.value)}
+                      </td>
+                      <td className=" px-3 py-4 text-sm text-gray-500 sm:table-cell">
+                        {stock.profitLoss}%
+                      </td>
+                      <td className=" px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                        {stock.status}
+                      </td>
+                      <td className=" truncate px-3 py-4 text-sm text-gray-500 xl:table-cell">
+                        {stock.tradeDate}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>
