@@ -48,17 +48,17 @@ export default function AddUserBonds({ setOpen, open, bond }) {
       typeOfRequest: typeOfRequest,
       quantity: numberOfBondsBought,
       userId: user.userId,
-      userName: user.userName,
+      userName: user.name,
     };
     setIsLoading(true);
     try {
       const result = await buyBonds(user.userId, bondData, typeOfRequest);
-        
-      if (result.success) {
+        console.log(result)
+      if (result) {
         customModal({
           showModal,
           title: "Success",
-          text: "You have successfully made an investment on behalf of this user.",
+          text: "Your request has been sent succesfully.",
           showConfirmButton: false,
           icon: CheckIcon,
           iconBgColor: "bg-green-100",
@@ -75,7 +75,7 @@ export default function AddUserBonds({ setOpen, open, bond }) {
       customModal({
         showModal,
         title: "Error!",
-        text: "There was an error making your investment. Please try again.",
+        text: "There was an error sending your request. Please try again.",
         showConfirmButton: false,
         icon: ExclamationTriangleIcon,
         iconBgColor: "bg-red-100",
