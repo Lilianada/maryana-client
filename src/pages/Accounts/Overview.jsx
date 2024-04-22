@@ -29,7 +29,6 @@ export default function Overview() {
   const [totalDeposits, setTotalDeposits] = useState(0);
   const [balance, setBalance] = useState(0);
   const dispatch = useDispatch();
-  console.log(userId);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -145,13 +144,14 @@ export default function Overview() {
       totalTermAmount +
       totalIpoAmount +
       totalShares;
+      dispatch(setTotalBalance(balance));
     setBalance(totalBalance);
   }, [
     totalDeposits,
     totalBondAmount,
     totalTermAmount,
-    totalIpoAmount,
     totalShares,
+    totalIpoAmount,
   ]);
 
   const accounts = [
@@ -199,7 +199,7 @@ export default function Overview() {
     },
   ];
 
-  dispatch(setTotalBalance(balance));
+  
   return (
     <div>
       <h2 className="text-xl font-semibold text-gray-800">Account Overview</h2>

@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import Table from './Table';
+import BondTable from './BondTable';
+import TermTable from './TermsTable';
 
 const tabsInfo = [
-    { name: 'My Bonds', content: <Table/> },
-    { name: 'My Terms Deposit', content: <Table/> },
+    { name: 'My Bonds', content: <BondTable/> },
+    { name: 'My Terms Deposit', content: <TermTable/> },
     { name: 'My IPOs', content: <Table/> },
     { name: 'My Shares', content: <Table/> },
 ];
 
 export default function Tabs() {
     // State to keep track of the current active tab
-    const [activeTab, setActiveTab] = useState(tabsInfo[2].name); // Default to 'My IPOs' as it's initially true
+    const [activeTab, setActiveTab] = useState(tabsInfo[0].name); // Default to 'My IPOs' as it's initially true
 
     function handleTabClick(tabName) {
         setActiveTab(tabName);
