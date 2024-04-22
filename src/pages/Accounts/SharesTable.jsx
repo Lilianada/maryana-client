@@ -94,7 +94,7 @@ export default function Table() {
                       <th
                         key={index}
                         scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        className="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
                         {header}
                       </th>
@@ -104,37 +104,37 @@ export default function Table() {
                 <tbody className="divide-y divide-gray-200 bg-slate-50">
                   {stocks.map((stock, index) => (
                     <tr key={index}>
-                      <td className=" px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                      <td className=" whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {stock.symbol}
                       </td>
-                      <td className=" truncate max-w-12 px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                      <td className=" truncate max-w-12 whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {stock.companyName}
                       </td>
-                      <td className=" px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {stock.type}
                       </td>
-                      <td className=" px-3 py-4 text-sm text-gray-500 capitalize lg:table-cell">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 capitalize">
                         {stock.shares}
                       </td>
-                      <td className=" px-3 py-4 text-sm text-gray-500 sm:table-cell">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         ${formatNumber(stock.tradePrice)}
                       </td>
-                      <td className=" px-3 py-4 text-sm text-gray-500 sm:table-cell">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         ${formatNumber(stock.marketPrice)}
                       </td>
-                      <td className=" px-3 py-4 text-sm text-gray-500 sm:table-cell">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         ${formatNumber(stock.tradeAmount)}
                       </td>
-                      <td className=" px-3 py-4 text-sm text-gray-500 sm:table-cell">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         ${formatNumber(stock.value)}
                       </td>
-                      <td className=" px-3 py-4 text-sm text-gray-500 sm:table-cell">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {stock.profitLoss}%
                       </td>
-                      <td className=" px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {stock.status}
                       </td>
-                      <td className=" truncate px-3 py-4 text-sm text-gray-500 xl:table-cell">
+                      <td className="truncate whitespace-nowrap px-3 py-4 text-sm text-gray-500 xl:table-cell">
                         {stock.tradeDate}
                       </td>
                     </tr>

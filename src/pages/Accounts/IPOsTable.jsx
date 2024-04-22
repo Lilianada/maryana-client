@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { getUserIpos } from "../../config/ipos";
-import { useModal } from "../../context/ModalContext";
 import { useSelector } from "react-redux";
 import { formatNumber } from "../../config/utils";
 
 export default function IPOsTable() {
   const userId = useSelector((state) => state.user.userId);
-  const { showModal, hideModal } = useModal();
   const [ipos, setIpos] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useState("");
@@ -26,12 +24,12 @@ export default function IPOsTable() {
 
   const handleInvest = (item) => {
     setSelectedId(item.id);
-    showModal("buyIpo");
+   
   };
 
   const handleSell = (id) => {
     setSelectedId(id);
-    showModal("sellIpo");
+   
   };
 
   return (
@@ -65,7 +63,7 @@ export default function IPOsTable() {
                       <th
                         key={index}
                         scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        className="whitespace-nowrap px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
                         {header}
                       </th>
@@ -81,22 +79,22 @@ export default function IPOsTable() {
                 <tbody className="divide-y divide-gray-200 bg-slate-50">
                   {ipos.map((item, index) => (
                     <tr key={index}>
-                      <td className=" truncate max-w-12 px-3 py-4 text-sm text-gray-500 lg:table-cell">
+                      <td className="whitespace-nowrap truncate max-w-12 px-3 py-4 text-sm text-gray-500 lg:table-cell">
                         {item.name}
                       </td>
-                      <td className=" px-3 py-4 text-sm text-gray-500">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {item.type}
                       </td>
-                      <td className=" px-3 py-4 text-sm text-gray-500">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {item.numberOfShares}
                       </td>
-                      <td className="px-3 py-4 text-sm text-gray-500">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         ${formatNumber(item.sharePrice)}
                       </td>
-                      <td className="px-3 py-4 text-sm text-gray-500">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         ${formatNumber(item.numberOfShares * item.sharePrice)}
                       </td>
-                      <td className="px-3 py-4 text-sm text-gray-500">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {item.date}
                       </td>
                       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
