@@ -103,10 +103,10 @@ export default function Table() {
                 <tbody className="divide-y divide-gray-200 bg-slate-50">
                   {stocks.map((stock, index) => (
                     <tr key={index}>
-                      <td className=" whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {stock.symbol}
                       </td>
-                      <td className=" truncate max-w-12 whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <td className="truncate max-w-12 whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {stock.companyName}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
