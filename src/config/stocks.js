@@ -26,7 +26,7 @@ import {
 //STOCKS
 const STOCKS_COLLECTION = "stocks";
 // Function to get stock data from the user's database
-export async function getStockFromUserDB(userId) {
+export async function getStock(userId) {
   try {
     const userDocRef = doc(db, USERS_COLLECTION, userId);
 

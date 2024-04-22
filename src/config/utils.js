@@ -17,6 +17,8 @@ import { db, storage } from "./firebase";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { getDownloadURL, ref } from "firebase/storage";
+import { format, isToday, isYesterday } from "date-fns";
+
 
 const ADMIN_DASH_COLLECTION = "admin_users";
 const USERS_REQUESTS = "userRequests";
@@ -59,6 +61,35 @@ export function formatNumber(number) {
     maximumFractionDigits: 2,
   }).format(number);
 }
+
+
+export function convertToNumber(stringAmount) {
+  // Check if the input is already a number, and if not, convert it
+  if (typeof stringAmount === "string") {
+    return parseFloat(stringAmount.replace(",", ""));
+  } else if (typeof stringAmount === "number") {
+    return stringAmount;
+  }
+  return 0;
+}
+
+
+export  const formatTimestamp = (timeStamp) => {
+  if (!timeStamp) return "";
+
+  const date = timeStamp.toDate(); // Convert Firestore timestamp to JavaScript Date object
+
+  if (isToday(date)) {
+    // If the message was sent today, return only the time
+    return format(date, "p"); // 'p' is for the local time format
+  } else if (isYesterday(date)) {
+    // If the message was sent yesterday, return 'Yesterday'
+    return "Yesterday";
+  } else {
+    // Otherwise, return the full date
+    return format(date, "PPP"); // 'PPP' is for the longer date format, e.g., Jun 20, 2020
+  }
+};
 
 export async function addUserRequestToFirestore(formData) {
   try {
