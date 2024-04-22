@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useModal } from "../../context/ModalContext";
 import { useSelector } from "react-redux";
-import DotLoader from "../../components/DotLoader";
 import { formatNumber } from "../../config/utils";
 import { getUserTerm } from "../../config/terms";
 
 export default function TermTable() {
   const userId = useSelector((state) => state.user.userId);
-  const { showModal, hideModal } = useModal();
   const [terms, setTerms] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useState("");
@@ -31,12 +29,10 @@ export default function TermTable() {
 
   const handleBuy = (item) => {
     setSelectedId(item.id);
-    showModal("buyTerm");
   };
 
   const handleSell = (id) => {
     setSelectedId(id);
-    showModal("sellTerm");
   };
 
   return (

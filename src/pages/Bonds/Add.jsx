@@ -53,7 +53,6 @@ export default function AddUserBonds({ setOpen, open, bond }) {
     setIsLoading(true);
     try {
       const result = await buyBonds(user.userId, bondData, typeOfRequest);
-        console.log(result)
       if (result) {
         customModal({
           showModal,

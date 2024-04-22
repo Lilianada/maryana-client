@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { getBondsHoldings } from "../../config/bonds";
 import DotLoader from "../../components/DotLoader";
 import { formatNumber } from "../../config/utils";
+import AddUserBonds from "../Bonds/Add";
+import { set } from "date-fns";
 
 export default function BondTable() {
   const userId = useSelector((state) => state.user.userId);
@@ -29,14 +31,14 @@ export default function BondTable() {
     }
   };
 
-  const handleBuy = (item) => {
-    setSelectedId(item.id);
-    showModal("buyBond");
+  const handleBuy = (bond) => {
+    setSelectedId(bond);
+    setOpen(true);
   };
 
-  const handleSell = (id) => {
-    setSelectedId(id);
-    showModal("sellBond");
+  const handleSell = (bond) => {
+    setSelectedId(bond);
+    setOpen(true);
   };
 
   return (
@@ -115,7 +117,7 @@ export default function BondTable() {
                       </td>
                       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                         <button
-                          onClick={() => handleSell(item.id)}
+                          onClick={() => handleSell(item)}
                           className="text-red-600 hover:text-red-900"
                         >
                           Sell
@@ -127,6 +129,14 @@ export default function BondTable() {
                 </tbody>
               </table>
             )}
+             
+            <AddUserBonds
+              bond={selectedId}
+              setBond={setSelectedId}
+              open={open}
+              setOpen={setOpen}
+              userId={userId}
+            />
           </div>
         </div>
       </div>
