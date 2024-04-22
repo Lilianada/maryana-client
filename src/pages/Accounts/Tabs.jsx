@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import Table from './Table';
+import Table from './SharesTable';
 import BondTable from './BondTable';
 import TermTable from './TermsTable';
+import IPOsTable from './IPOsTable';
 
 const tabsInfo = [
     { name: 'My Bonds', content: <BondTable/> },
     { name: 'My Terms Deposit', content: <TermTable/> },
-    { name: 'My IPOs', content: <Table/> },
+    { name: 'My IPOs', content: <IPOsTable/> },
     { name: 'My Shares', content: <Table/> },
 ];
 
