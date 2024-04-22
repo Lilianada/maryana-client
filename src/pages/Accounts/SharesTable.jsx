@@ -56,7 +56,7 @@ export default function Table() {
     }
   };
   return (
-    <div className="px-4 sm:px-6 lg:px-8 mt-12 max-w-[96vw]">
+    <div className="px-4 mt-12 max-w-[96vw] sm:max-w-[92vw] lg:max-w-[100vw]">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           {/* <h1 className="text-xl font-semibold text-gray-900">Transactions</h1> */}
@@ -69,7 +69,7 @@ export default function Table() {
         <div className="align-middle inline-block min-w-full">
           <div className="border-t border-gray-200">
             <table className="min-w-full divide-y divide-gray-300">
-              <thead className="bg-gray-50">
+              <thead className="bg-gray-100">
                 <tr>
                   {[
                     " SYM",
