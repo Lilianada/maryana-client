@@ -13,6 +13,7 @@ import WelcomePage from "./pages/Auth/WelcomePage";
 import ProtectedRoute from "./protectedRoute";
 import Dashboard from "./components/Dashboard";
 import AccountsOverview from "./pages/Accounts";
+import BondCards from "./pages/Bonds";
 
 function App() {
   const { loadingAuthState } = useAuth();
@@ -42,6 +43,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AccountsOverview />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="bonds"
+              element={
+                <ProtectedRoute>
+                  <BondCards />
                 </ProtectedRoute>
               }
             />

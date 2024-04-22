@@ -106,7 +106,7 @@ async function sendRequestAdmin(uid, bondData, typeOfRequest) {
   });
 }
 
-export async function buyBonds(uid, bondData) {
+export async function buyBonds(uid, bondData, typeOfRequest) {
   const userRef = doc(db, "users", uid);
   const userSnapshot = await getDoc(userRef);
 
@@ -115,7 +115,7 @@ export async function buyBonds(uid, bondData) {
     const userFullName = userData.fullName;
 
     const notificationData = {
-      message: `User '${userFullName}' made a request to buy bonds`,
+      message: `User '${userFullName}' made a request to ${typeOfRequest} bonds`,
       timeStamp: new Date(),
     };
     await addDoc(
@@ -127,7 +127,7 @@ export async function buyBonds(uid, bondData) {
       ),
       notificationData
     );
-    return sendRequestAdmin(uid, bondData, "buy");
+    return sendRequestAdmin(uid, bondData, typeOfRequest);
   } else {
     console.error("User not found in Firestore.");
     return null;
