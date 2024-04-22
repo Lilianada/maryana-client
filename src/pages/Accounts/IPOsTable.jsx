@@ -35,9 +35,9 @@ export default function IPOsTable() {
   return (
     <div className="px-4 mt-12 max-w-[96vw] sm:max-w-[92vw] lg:max-w-[100vw]">
       <div className="sm:flex-auto text-left mb-8">
-        <h1 className="text-base font-semibold leading-6 text-gray-900">
+      <p className="mt-2 text-sm text-gray-700">
           A list of all the IPOs you have purchased
-        </h1>
+        </p>
       </div>
       <div className="mt-8 overflow-scroll">
         <div className="align-middle inline-block min-w-full">
@@ -56,7 +56,7 @@ export default function IPOsTable() {
                       "Company Name",
                       "Type",
                       "Shares",
-                      "Shares Price",
+                      "Price",
                       "Total",
                       "Date",
                     ].map((header, index) => (

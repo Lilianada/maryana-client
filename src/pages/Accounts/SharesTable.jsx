@@ -59,7 +59,6 @@ export default function Table() {
     <div className="px-4 mt-12 max-w-[96vw] sm:max-w-[92vw] lg:max-w-[100vw]">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          {/* <h1 className="text-xl font-semibold text-gray-900">Transactions</h1> */}
           <p className="mt-2 text-sm text-gray-700">
             A table of all the stock shares that you own.
           </p>
