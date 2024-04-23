@@ -6,6 +6,7 @@ import {
   CreditCardIcon,
   HomeIcon,
   UserGroupIcon,
+  ArrowTrendingUpIcon,
 } from "@heroicons/react/24/outline";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
@@ -40,9 +41,9 @@ const navigation = [
     current: false,
   },
   {
-    name: "Stocks",
-    to: "/dashboard/stocks",
-    icon: CalendarIcon,
+    name: "Market Analysis",
+    to: "/dashboard/market-analysis",
+    icon: ArrowTrendingUpIcon,
     current: false,
   },
   {

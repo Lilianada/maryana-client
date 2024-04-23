@@ -16,6 +16,7 @@ import AccountsOverview from "./pages/Accounts";
 import BondCards from "./pages/Bonds";
 import IposCards from "./pages/Ipos";
 import FixedTerms from "./pages/FixedTerm";
+import MarketAnalysis from "./pages/MarketAnalysis";
 
 function App() {
   const { loadingAuthState } = useAuth();
@@ -69,6 +70,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <FixedTerms />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="market-analysis"
+              element={
+                <ProtectedRoute>
+                  <MarketAnalysis />
                 </ProtectedRoute>
               }
             />
