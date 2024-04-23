@@ -18,6 +18,8 @@
     confirmButtonTextColor,
     showConfirmButton,
     timer,
+    list, 
+    listItems
 }) => {
     showModal({
       title: title,
@@ -39,5 +41,7 @@
       cancelButtonBgColor: cancelButtonBgColor ,
       cancelButtonTextColor: cancelButtonTextColor,
       timer: timer || 0,
+      list: list || null,
+      listItems: listItems
     });
 };

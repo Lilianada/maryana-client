@@ -21,6 +21,8 @@ export default function CustomModal({
   loading,
   showConfirmButton,
   timer,
+  list,
+  listItems
 }) {
   const cancelButtonRef = useRef(null);
 
@@ -91,6 +93,15 @@ export default function CustomModal({
                       <p className="text-sm text-gray-500">{description}</p>
                     </div>
                   </div>
+                  {list === true && listItems.length > 0 && (
+                <div className="mt-2 text-sm text-gray-500">
+                  <ul className="list-disc space-y-1 pl-5">
+                    {listItems.map((item, index) => (
+                      <li key={index}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
                 </div>
                 {showConfirmButton === true && (
                   <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">

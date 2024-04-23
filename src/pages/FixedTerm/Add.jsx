@@ -101,14 +101,19 @@ export default function TermsModal({ setOpen, open, fixedTerm }) {
         customModal({
             showModal,
             title: "Early Withdrawal Alert!",
-            text: `You are initiating an early withdrawal from your term deposit, which may incur: An early withdrawal penalty (refer to terms and conditions for details). A flat administration fee of $30.Are you sure you want to continue?`,
+            text: `You are initiating an early withdrawal from your term deposit, which may incur the following:`, 
+           list: true,
+           listItems: [
+             'An early withdrawal penalty (refer to terms and conditions for details).', 
+             'A flat administration fee of $30.', 
+           ],
             showConfirmButton: true,
-            confirmButtonText: "Yes, delete",
+            confirmButtonText: "Yes, withdraw",
             cancelButtonText: "Cancel",
             confirmButtonBgColor: "bg-green-600",
             confirmButtonTextColor: "text-white",
-            cancelButtonBgColor: "bg-red-600",
-            cancelButtonTextColor: "text-white",
+            cancelButtonBgColor: "bg-white",
+            cancelButtonTextColor: "text-gray-900",
             onConfirm: () => {
               confirmDelete(newDeposit);
               hideModal();
