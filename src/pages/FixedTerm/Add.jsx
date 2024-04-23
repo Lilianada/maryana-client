@@ -1,9 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { formatNumber, getCurrentDate } from "../../config/utils";
-import {
-  depositFixedTerm,
-  withdrawFixedTerm,
-} from "../../config/terms";
+import { depositFixedTerm, withdrawFixedTerm } from "../../config/terms";
 import { customModal } from "../../utils/modalUtils";
 import {
   CheckIcon,
@@ -16,6 +13,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import CurrencyInput from "react-currency-input-field";
 import { useSelector } from "react-redux";
 import { useModal } from "../../context/ModalContext";
+import LoadingScreen from "../../components/LoadingScreen";
 
 export default function TermsModal({ setOpen, open, fixedTerm }) {
   const user = useSelector((state) => state.user);
@@ -25,14 +23,14 @@ export default function TermsModal({ setOpen, open, fixedTerm }) {
   const [date, setDate] = useState(getCurrentDate());
   const [type, setType] = useState("");
 
-  const confirmDelete = async (newDeposit) => {
+  const handleConfirm = async (newDeposit) => {
     setIsLoading(true);
     try {
-        await withdrawFixedTerm(user.userId, newDeposit);
+      await withdrawFixedTerm(user.userId, newDeposit);
       customModal({
         showModal,
         title: "Success",
-        text: "You have successfully deleted this term.",
+        text: "Your request has been sent successfully.",
         showConfirmButton: false,
         icon: CheckIcon,
         iconBgColor: "bg-green-100",
@@ -99,43 +97,41 @@ export default function TermsModal({ setOpen, open, fixedTerm }) {
         });
       } else {
         customModal({
-            showModal,
-            title: "Early Withdrawal Alert!",
-            text: `You are initiating an early withdrawal from your term deposit, which may incur the following:`, 
-           list: true,
-           listItems: [
-             'An early withdrawal penalty (refer to terms and conditions for details).', 
-             'A flat administration fee of $30.', 
-           ],
-            showConfirmButton: true,
-            confirmButtonText: "Yes, withdraw",
-            cancelButtonText: "Cancel",
-            confirmButtonBgColor: "bg-green-600",
-            confirmButtonTextColor: "text-white",
-            cancelButtonBgColor: "bg-white",
-            cancelButtonTextColor: "text-gray-900",
-            onConfirm: () => {
-              confirmDelete(newDeposit);
-              hideModal();
-            },
-            onCancel: hideModal(),
-            onClose: hideModal(),
-            icon: ExclamationTriangleIcon,
-            iconBgColor: "bg-orange-100",
-            iconTextColor: "text-orange-600",
-            timer: 0,
-          });
+          showModal,
+          title: "Early Withdrawal Alert!",
+          text: `You are initiating an early withdrawal from your term deposit, which may incur the following:`,
+          list: true,
+          listItems: [
+            "An early withdrawal penalty (refer to terms and conditions for details).",
+            "A flat administration fee of $30.",
+          ],
+          showConfirmButton: true,
+          confirmButtonText: "Yes, withdraw",
+          cancelButtonText: "Cancel",
+          confirmButtonBgColor: "bg-green-600",
+          confirmButtonTextColor: "text-white",
+          cancelButtonBgColor: "bg-white",
+          cancelButtonTextColor: "text-gray-900",
+          onConfirm: () => {
+            handleConfirm(newDeposit);
+            hideModal();
+          },
+          onCancel: hideModal(),
+          onClose: hideModal(),
+          icon: ExclamationTriangleIcon,
+          iconBgColor: "bg-orange-100",
+          iconTextColor: "text-orange-600",
+          timer: 0,
+        });
       }
-
       setDepositAmount(0);
       setOpen(false);
-      // refreshDetails();
     } catch (error) {
       console.error("Error adding deposit transaction: ", error);
       customModal({
         showModal,
         title: "Error!",
-        text: `There was an error encountered when trying to add term deposit. Please tryy again.`,
+        text: `There was an error encountered. Please tryy again.`,
         showConfirmButton: false,
         icon: ExclamationCircleIcon,
         iconBgColor: "bg-red-100",
@@ -175,7 +171,7 @@ export default function TermsModal({ setOpen, open, fixedTerm }) {
             >
               &#8203;
             </span>
-
+            {isLoading && <LoadingScreen />}
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"

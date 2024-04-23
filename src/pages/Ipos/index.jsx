@@ -48,7 +48,7 @@ export default function IposCards() {
       <ul className="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 sm:grid-cols-2 xl:gap-x-8 w-full">
         {isLoading && <LoadingScreen />}
         {!ipos || ipos.length === 0 ? (
-          <div className="w-full grid place-items-center rounded-xl border border-gray-200 p-4">
+          <div className="w-screen grid place-items-center rounded-xl border border-gray-200 p-4">
             <h5 className="text-gray-400 text-lg ">NO IPOS FOUND.</h5>
           </div>
         ) : (
