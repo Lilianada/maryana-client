@@ -129,7 +129,6 @@ export default function BondTable() {
                 </tbody>
               </table>
             )}
-             
             <AddUserBonds
               bond={selectedId}
               setBond={setSelectedId}
