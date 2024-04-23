@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useModal } from "../../context/ModalContext";
 import { useSelector } from "react-redux";
 import { formatNumber } from "../../config/utils";
 import { getUserTerm } from "../../config/terms";
+import TermsModal from "../FixedTerm/Add";
 
 export default function TermTable() {
   const userId = useSelector((state) => state.user.userId);
   const [terms, setTerms] = useState([]);
   const [open, setOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState("");
+  const [selected, setSelected] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -28,7 +28,8 @@ export default function TermTable() {
   };
 
   const handleRequest = (item) => {
-    setSelectedId(item);
+    setSelected(item);
+    setOpen(true);
   };
 
   return (
@@ -123,6 +124,11 @@ export default function TermTable() {
                 </tbody>
               </table>
             )}
+            <TermsModal
+            open={open}
+            setOpen={setOpen}
+            fixedTerm={selected}
+            />
           </div>
         </div>
       </div>

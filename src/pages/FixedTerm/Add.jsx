@@ -235,7 +235,7 @@ export default function TermsModal({ setOpen, open, fixedTerm }) {
                             Minimum Amount
                           </label>
                           <div className="text-sm leading-6 text-gray-500 font-normal">
-                            ${formatNumber(fixedTerm.minAmount)}
+                            ${formatNumber(fixedTerm.minAmount)} 
                           </div>
                         </div>
 
