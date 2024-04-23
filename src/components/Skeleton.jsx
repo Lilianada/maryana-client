@@ -29,7 +29,7 @@ const navigation = [
   },
   {
     name: "Term Deposits",
-    to: "/dashboard/fixed-term",
+    to: "/dashboard/fixed-terms",
     icon: CreditCardIcon,
     current: false,
   },

@@ -15,7 +15,7 @@ import Dashboard from "./components/Dashboard";
 import AccountsOverview from "./pages/Accounts";
 import BondCards from "./pages/Bonds";
 import IposCards from "./pages/Ipos";
-import FixedTerms from "./pages/fixedTerms";
+import FixedTerms from "./pages/FixedTerm";
 
 function App() {
   const { loadingAuthState } = useAuth();
@@ -57,20 +57,20 @@ function App() {
               }
             />
             <Route
-            path="ipos"
-            element={
-              <ProtectedRoute>
-                <IposCards/>
-              </ProtectedRoute>
-            }
+              path="ipos"
+              element={
+                <ProtectedRoute>
+                  <IposCards />
+                </ProtectedRoute>
+              }
             />
             <Route
-            path="fixed-terms"
-            element={
-              <ProtectedRoute>
-                <FixedTerms/>
-              </ProtectedRoute>
-            }
+              path="fixed-terms"
+              element={
+                <ProtectedRoute>
+                  <FixedTerms />
+                </ProtectedRoute>
+              }
             />
           </Route>
         </Routes>
