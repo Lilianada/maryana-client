@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import DotLoader from "../../../components/DotLoader";
 import {
-    ExclamationCircleIcon,
+  ExclamationCircleIcon,
   EyeIcon,
   EyeSlashIcon,
   QuestionMarkCircleIcon,
@@ -11,12 +11,17 @@ import { Popover, Transition } from "@headlessui/react";
 import { useAlert } from "../../../context/AlertContext";
 import { customAlert } from "../../../utils/alertUtils";
 
-const requirements = [
-  { name: "Minimum of 8 characters" },
+const strongPolicyRequirements = [
+  { name: "Minimum of 6 characters" },
   { name: "One uppercase letter" },
   { name: "One lowercase letter" },
   { name: "At least one number" },
   { name: "At least one special character (!@#$%^&*)" },
+];
+
+const requirements = [
+  { name: "No spaces allowed" },
+  { name: "Minimum of 6 characters" },
 ];
 
 export default function ResetPasswordForm({
@@ -24,8 +29,9 @@ export default function ResetPasswordForm({
   dispatch,
   handleChangePassword,
   ACTIONS,
+  isStrongPolicy,
 }) {
-    const {showAlert} = useAlert();
+  const { showAlert } = useAlert();
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -38,17 +44,17 @@ export default function ResetPasswordForm({
 
   useEffect(() => {
     if (state.error) {
-        customAlert({
-            showAlert,
-            title: "Error",
-            description: state.error,
-            showConfirmButton: false,
-            iconBgColor: "bg-red-50",
-            iconTextColor: "text-red-600",
-            buttonBgColor: "bg-red-600",
-            icon: ExclamationCircleIcon,
-            timer: 2000,
-        });
+      customAlert({
+        showAlert,
+        title: "Error",
+        description: state.error,
+        showConfirmButton: false,
+        iconBgColor: "bg-red-50",
+        iconTextColor: "text-red-600",
+        buttonBgColor: "bg-red-600",
+        icon: ExclamationCircleIcon,
+        timer: 2000,
+      });
 
       const clearErrorTimeout = setTimeout(() => {
         dispatch({ type: ACTIONS.SHOW_ERROR, error: "" });
@@ -58,9 +64,7 @@ export default function ResetPasswordForm({
   }, [state.error, dispatch, ACTIONS]);
 
   return (
-    <div
-      className="grid min-h-full h-screen flex-1 place-items-center justify-center py-12 sm:px-6 bg-blue-50 lg:px-8 sm:bg-custom-pattern bg-cover bg-center"
-    >
+    <div className="grid min-h-full h-screen flex-1 place-items-center justify-center py-12 sm:px-6 bg-blue-50 lg:px-8 sm:bg-custom-pattern bg-cover bg-center">
       <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-[480px]">
         <div className="bg-blue-50 px-6 py-12 sm:shadow sm:rounded-lg sm:px-12">
           <div className="sm:mx-auto sm:w-full sm:max-w-md mb-6">
@@ -95,15 +99,25 @@ export default function ResetPasswordForm({
                   leaveTo="opacity-0 translate-y-1"
                 >
                   <Popover.Panel className="absolute left-1/2 z-10 mt-5 flex w-screen max-w-min -translate-x-1/2 px-4">
-                    <ul className="w-56 shrink rounded-xl bg-white p-4 text-sm font-semibold leading-6 text-gray-900 shadow-lg ring-1 ring-gray-900/5 text-left">
-                      {requirements.map((item) => (
+                    <ul className="w-56 shrink rounded-xl bg-white p-3 text-sm font-medium leading-6 text-gray-900 shadow-lg ring-1 ring-gray-900/5 text-left">
+                      { isStrongPolicy ? (
+                        strongPolicyRequirements.map((item) => (
+                          <li
+                            key={item.name}
+                            className="block hover:text-indigo-600"
+                          >
+                            {item.name}
+                          </li>
+                        ))) : (
+                      requirements.map((item) => (
                         <li
                           key={item.name}
-                          className="block p-2 hover:text-indigo-600"
+                          className="block hover:text-indigo-600"
                         >
                           {item.name}
                         </li>
-                      ))}
+                      )))
+                    }
                     </ul>
                   </Popover.Panel>
                 </Transition>

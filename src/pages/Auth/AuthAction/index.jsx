@@ -241,6 +241,7 @@ export default function AuthAction() {
           dispatch={dispatch}
           handleChangePassword={handleChangePassword}
           ACTIONS={ACTIONS}
+          isStrongPolicy={isStrongPasswordPolicy}
         />
       )}
 
