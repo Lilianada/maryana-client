@@ -22,7 +22,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, navigation }) {
     ...item,
     current: item.to === location.pathname,
   }));
-  
+
   return (
     <Transition.Root show={sidebarOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50 lg:" onClose={setSidebarOpen}>

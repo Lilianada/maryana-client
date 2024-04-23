@@ -14,6 +14,7 @@ import ProtectedRoute from "./protectedRoute";
 import Dashboard from "./components/Dashboard";
 import AccountsOverview from "./pages/Accounts";
 import BondCards from "./pages/Bonds";
+import IposCards from "./pages/Ipos";
 
 function App() {
   const { loadingAuthState } = useAuth();
@@ -53,6 +54,14 @@ function App() {
                   <BondCards />
                 </ProtectedRoute>
               }
+            />
+            <Route
+            path="ipos"
+            element={
+              <ProtectedRoute>
+                <IposCards/>
+              </ProtectedRoute>
+            }
             />
           </Route>
         </Routes>
