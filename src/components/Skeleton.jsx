@@ -28,7 +28,7 @@ const navigation = [
     current: false,
   },
   {
-    name: "Fixed Term Deposits",
+    name: "Term Deposits",
     to: "/dashboard/fixed_term_deposits",
     icon: CreditCardIcon,
     current: false,

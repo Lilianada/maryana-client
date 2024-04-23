@@ -144,8 +144,8 @@ export default function Overview() {
       totalTermAmount +
       totalIpoAmount +
       totalShares;
+      setBalance(totalBalance);
       dispatch(setTotalBalance(balance));
-    setBalance(totalBalance);
   }, [
     totalDeposits,
     totalBondAmount,
@@ -199,7 +199,6 @@ export default function Overview() {
     },
   ];
 
-  
   return (
     <div>
       <h2 className="text-xl font-semibold text-gray-800">Account Overview</h2>
