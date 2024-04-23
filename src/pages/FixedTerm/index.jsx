@@ -3,6 +3,7 @@ import { getFixedTerm } from "../../config/terms";
 import { ArrowLeftIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { formatNumber } from "../../config/utils";
 import TermsModal from "./Add";
+import LoadingScreen from "../../components/LoadingScreen";
 
 export default function FixedTerms() {
     const [open, setOpen] = useState(false);
@@ -44,7 +45,7 @@ export default function FixedTerms() {
           </button>
         </div>
         <ul className="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 sm:grid-cols-2 xl:gap-x-8 w-full">
-          
+        {isLoading && <LoadingScreen />}
           {!fixedTerms || fixedTerms.length === 0 ? (
             <div className="w-screen grid place-items-center rounded-xl border border-gray-200 p-4">
               <h5 className="text-gray-400 text-lg ">

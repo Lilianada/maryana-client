@@ -27,12 +27,8 @@ export default function TermTable() {
     }
   };
 
-  const handleBuy = (item) => {
-    setSelectedId(item.id);
-  };
-
-  const handleSell = (id) => {
-    setSelectedId(id);
+  const handleRequest = (item) => {
+    setSelectedId(item);
   };
 
   return (
@@ -109,17 +105,17 @@ export default function TermTable() {
                       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                         <button
                           className="text-indigo-600 hover:text-indigo-900"
-                          onClick={() => handleBuy(term)}
+                          onClick={() => handleRequest(term)}
                         >
-                          Buy
+                          Deposit
                         </button>
                       </td>
                       <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                         <button
                           className="text-red-600 hover:text-red-900"
-                          onClick={() => handleSell(term.id)}
+                          onClick={() => handleRequest(term)}
                         >
-                          Sell
+                          Withdraw
                         </button>
                       </td>
                     </tr>

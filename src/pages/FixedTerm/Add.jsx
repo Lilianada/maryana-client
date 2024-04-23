@@ -13,14 +13,12 @@ import { Dialog, Transition } from "@headlessui/react";
 import CurrencyInput from "react-currency-input-field";
 import { useSelector } from "react-redux";
 import { useModal } from "../../context/ModalContext";
-import LoadingScreen from "../../components/LoadingScreen";
 
 export default function TermsModal({ setOpen, open, fixedTerm }) {
   const user = useSelector((state) => state.user);
   const { showModal, hideModal } = useModal();
   const [isLoading, setIsLoading] = useState(false);
   const [depositAmount, setDepositAmount] = useState(0);
-  const [date, setDate] = useState(getCurrentDate());
   const [type, setType] = useState("");
 
   const handleConfirm = async (newDeposit) => {
@@ -171,7 +169,6 @@ export default function TermsModal({ setOpen, open, fixedTerm }) {
             >
               &#8203;
             </span>
-            {isLoading && <LoadingScreen />}
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -195,13 +192,13 @@ export default function TermsModal({ setOpen, open, fixedTerm }) {
                   onSubmit={onDeposit}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="space-y-12">
+                  <div className="space-y-6">
                     <div className="">
                       <h2 className="text-xl font-semibold leading-7 text-gray-900">
-                        Add Fixed Term Deposit Information
+                        Deposit/Withdraw Fixed Term Deposit
                       </h2>
                       <p className="mt-1 text-sm leading-6 text-gray-600">
-                        Amount can not be less than minimum investment amount.
+                        Deposit amount can not be less than minimum investment amount and withdrawal cannot be more than amount owned. Early withdrawal incurs a flat rate fee.
                       </p>
                     </div>
 
@@ -284,25 +281,6 @@ export default function TermsModal({ setOpen, open, fixedTerm }) {
                               <option value="deposit">Deposit</option>
                               <option value="withdrawal">Withdrawal</option>
                             </select>
-                          </div>
-                        </div>
-                        <div className="sm:col-span-3">
-                          <label
-                            htmlFor="date"
-                            className="block text-sm font-medium leading-6 text-gray-900"
-                          >
-                            Purchase/Sale Date
-                          </label>
-                          <div className="mt-2">
-                            <input
-                              type="date"
-                              name="date"
-                              id="date"
-                              onChange={(e) => setDate(e.target.value)}
-                              value={date}
-                              autoComplete="date"
-                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            />
                           </div>
                         </div>
                       </div>
