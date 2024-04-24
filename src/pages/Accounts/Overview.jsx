@@ -64,6 +64,7 @@ export default function Overview() {
     }
     setTotalDeposits(total);
   };
+ 
 
   // Calculate total bonds with enhanced error handling
   const calculateTotalBonds = (bonds) => {
@@ -146,13 +147,7 @@ export default function Overview() {
       totalShares;
       setBalance(totalBalance);
       dispatch(setTotalBalance(balance));
-  }, [
-    totalDeposits,
-    totalBondAmount,
-    totalTermAmount,
-    totalShares,
-    totalIpoAmount,
-  ]);
+    }, [totalDeposits, totalBondAmount, totalTermAmount, totalShares, totalIpoAmount, dispatch, balance]);
 
   const accounts = [
     {

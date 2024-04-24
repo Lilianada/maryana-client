@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import DotLoader from "../../components/DotLoader";
 import { customModal } from "../../utils/modalUtils";
 import {
   CheckIcon,
-  ExclamationTriangleIcon,
+  ExclamationCircleIcon,
 } from "@heroicons/react/24/outline";
 import { useModal } from "../../context/ModalContext";
+import { getUser, updateUser } from "../../config/user";
+import { setUserName } from "../../store/actions/userActions";
 
 const CountrySelect = ({ value, onChange }) => {
   const [countries, setCountries] = useState([]);
@@ -35,148 +37,116 @@ const CountrySelect = ({ value, onChange }) => {
   );
 };
 
-export default function AddNewUser() {
+export default function Profile() {
+  const userUID = useSelector((state) => state.user.userId);
+  const { showModal } = useModal();
   const dispatch = useDispatch();
+  const [homePhone, setHomePhone] = useState("");
+  const [mobilePhone, setMobilePhone] = useState("");
+  const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const password = 123456;
-  const { showModal, hideModal } = useModal();
-  const [formData, setFormData] = useState({
-    title: "",
-    fullName: "",
-    email: "",
-    jointAccount: false,
-    secondaryAccountHolder: "",
-    secondaryTitle: "",
-    password: password,
-    mobilePhone: "",
-    homePhone: "",
-    address: "",
-    city: "",
-    country: "",
-    postcode: "",
-  });
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    const newValue = type === "checkbox" ? checked : value;
-    setFormData({
-      ...formData,
-      [name]: newValue,
-    });
-  };
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (!userUID) {
+        console.log("No UID found.");
+        return;
+      }
+      try {
+        const usersData = await getUser(userUID);
+        if (usersData.length > 0) {
+          const userData = usersData[0];
+          setUser({
+            ...userData,
+            title: userData.title,
+            fullName: userData.fullName,
+            email: userData.email,
+            street: userData.address,
+            country: userData.country,
+            jointAccount: userData.jointAccount,
+            secondaryAccountHolder: userData.secondaryAccountHolder,
+          });
+          setHomePhone(userData.homePhone);
+          setMobilePhone(userData.mobilePhone);
+        }
+      } catch (error) {
+        console.log("Error fetching user data: ", error);
+      }
+    };
 
-  const handleAdd = async (e) => {
+    fetchUser();
+  }, []);
+
+  const handleUpdate = async (e) => {
     e.preventDefault();
-
-    const {
-      title,
-      fullName,
-      jointAccount,
-      secondaryAccountHolder,
-      secondaryTitle,
-      email,
-      password,
-      mobilePhone,
-      homePhone,
-      address,
-      city,
-      country,
-      postcode,
-    } = formData;
-
-    // Validation
-    if (
-      !title ||
-      !fullName ||
-      !email ||
-      !password ||
-      !mobilePhone ||
-      !address ||
-      !city ||
-      !country ||
-      !postcode
-    ) {
-      return customModal({
-        showModal,
-        title: "Error!",
-        text: "Please fill in all required fields.",
-        showConfirmButton: false,
-        icon: ExclamationTriangleIcon,
-        iconBgColor: "bg-red-100",
-        iconTextColor: "text-red-600",
-        buttonBgColor: "bg-red-600",
-        timer: 2000,
-        onClose: hideModal,
-      });
-    }
+    const userData = {
+      fullName: user?.fullName || "",
+      title: user?.title || "",
+      email: user?.email || "",
+      address: user?.street || "",
+      city: user?.city || "",
+      mobilePhone: mobilePhone || "",
+      homePhone: homePhone || "",
+      country: user?.country || "",
+      postcode: user?.postcode || "",
+      jointAccount: user?.jointAccount || false,
+      secondaryAccountHolder: user?.secondaryAccountHolder || "",
+      secondaryTitle: user?.secondaryTitle || "",
+    };
     setIsLoading(true);
     try {
-      // Dispatch the addUserAsync thunk action
-      await dispatch(
-        addUserAsync({
-          title,
-          fullName,
-          jointAccount,
-          secondaryAccountHolder,
-          secondaryTitle,
-          email,
-          password,
-          mobilePhone,
-          homePhone,
-          address,
-          city,
-          country,
-          postcode,
-        })
-      ).unwrap();
-
-      customModal({
-        showModal,
-        title: "User Created!",
-        text: `${fullName}'s data has been created and password reset email sent.`,
-        showConfirmButton: false,
-        icon: CheckIcon,
-        iconBgColor: "bg-green-100",
-        iconTextColor: "text-green-600",
-        buttonBgColor: "bg-green-600",
-        timer: 2000,
-        onClose: hideModal,
-      });
-      setTimeout(() => {
-        window.history.back();
-      }, 2000);
+      if (user && userUID) {
+        await updateUser(userUID, userData);
+        customModal({
+          showModal,
+          title: "Success!",
+          text: "Account information updated!",
+          icon: CheckIcon,
+          iconBgColor: "bg-green-100",
+          iconTextColor: "text-green-600",
+          buttonBgColor: "bg-green-600",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      } 
+    dispatch(setUserName(user.fullName));
     } catch (error) {
-      console.error("Error adding user:", error);
+      console.log("Error updating/adding user data: ", error);
       customModal({
         showModal,
-        title: "Error!",
-        text: `There was an error creating the user. ${error}`,
-        showConfirmButton: false,
-        icon: ExclamationTriangleIcon,
+        title: "Oops!",
+        text: "Something went wrong during your submission.",
+        icon: ExclamationCircleIcon,
         iconBgColor: "bg-red-100",
         iconTextColor: "text-red-600",
-        buttonBgColor: "bg-red-600",
-        timer: 3000,
+        showConfirmButton: false,
+        timer: 2000,
       });
     } finally {
       setIsLoading(false);
     }
   };
+  
+  const handleChange = (e) => {
+    const { name, value, checked, type } = e.target;
+    const newValue = type === "checkbox" ? checked : value;
+    setUser((prev) => ({ ...prev, [name]: newValue }));
+  };
 
   return (
-    <form className="text-left bg-gray-50 px-6 py-8" onSubmit={handleAdd}>
+    <form className="lg:p-8" onSubmit={handleUpdate}>
       <div className="space-y-12">
-        <div className="">
+        <div className="text-center lg:text-left">
           <h2 className="text-xl font-semibold leading-7 text-gray-900">
-            Create New User
+            Account Information
           </h2>
           <p className="mt-1 text-sm leading-6 text-gray-600">
-            Fill in the correct details of the user you wish to create.
+            Fill the form with your correct details.
           </p>
         </div>
 
         <div className="pb-12">
-          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+          <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-4 flex items-center gap-2">
               <div className="">
                 <input
@@ -184,7 +154,7 @@ export default function AddNewUser() {
                   name="jointAccount"
                   id="jointAccount"
                   onChange={handleChange}
-                  checked={formData.jointAccount || false}
+                  checked={user?.jointAccount || false}
                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                 />
               </div>
@@ -209,7 +179,7 @@ export default function AddNewUser() {
                   name="title"
                   autoComplete="title"
                   onChange={handleChange}
-                  value={formData.title || ""}
+                  value={user?.title || ""}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                 >
                   <option value="">Select Title</option>
@@ -237,7 +207,7 @@ export default function AddNewUser() {
                   name="fullName"
                   id="full-name"
                   onChange={handleChange}
-                  value={formData.fullName || ""}
+                  value={user?.fullName || ""}
                   required
                   autoComplete="given-name"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -245,7 +215,7 @@ export default function AddNewUser() {
               </div>
             </div>
 
-            {!formData.jointAccount === false && (
+            {user?.jointAccount && (
               <div className="sm:col-span-3">
                 <label
                   htmlFor="secondaryTitle"
@@ -259,7 +229,7 @@ export default function AddNewUser() {
                     name="secondaryTitle"
                     id="secondaryTitle"
                     onChange={handleChange}
-                    value={formData.secondaryTitle || ""}
+                    value={user?.secondaryTitle || ""}
                     autoComplete="secondaryTitle"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
@@ -267,7 +237,7 @@ export default function AddNewUser() {
               </div>
             )}
 
-            {!formData.jointAccount === false && (
+            {user?.jointAccount && (
               <div className="sm:col-span-3">
                 <label
                   htmlFor="secondaryAccountHolder"
@@ -281,7 +251,7 @@ export default function AddNewUser() {
                     name="secondaryAccountHolder"
                     id="full-name"
                     onChange={handleChange}
-                    value={formData.secondaryAccountHolder || ""}
+                    value={user?.secondaryAccountHolder || ""}
                     autoComplete="given-name"
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
@@ -302,7 +272,7 @@ export default function AddNewUser() {
                   name="homePhone"
                   id="homePhone"
                   onChange={handleChange}
-                  value={formData.homePhone || ""}
+                  value={user?.homePhone || ""}
                   autoComplete="homePhone"
                   placeholder="e.g. +234-567-8901"
                   required
@@ -326,7 +296,7 @@ export default function AddNewUser() {
                   required
                   onChange={handleChange}
                   placeholder="e.g. +234-567-8901"
-                  value={formData.mobilePhone || ""}
+                  value={user?.mobilePhone || ""}
                   autoComplete="mobilePhone"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -346,7 +316,7 @@ export default function AddNewUser() {
                   name="email"
                   type="email"
                   onChange={handleChange}
-                  value={formData.email || ""}
+                  value={user?.email || ""}
                   autoComplete="email"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -367,7 +337,7 @@ export default function AddNewUser() {
                   name="address"
                   type="text"
                   onChange={handleChange}
-                  value={formData.address || ""}
+                  value={user?.address || ""}
                   required
                   autoComplete="homePhone-address"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -388,7 +358,7 @@ export default function AddNewUser() {
                   name="city"
                   id="city"
                   onChange={handleChange}
-                  value={formData.city || ""}
+                  value={user?.city || ""}
                   required
                   autoComplete="address-level2"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -409,7 +379,7 @@ export default function AddNewUser() {
                   name="postcode"
                   id="postcode"
                   onChange={handleChange}
-                  value={formData.postcode || ""}
+                  value={user?.postcode || ""}
                   required
                   autoComplete="post-code"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -426,10 +396,8 @@ export default function AddNewUser() {
               </label>
 
               <CountrySelect
-                value={formData.country || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, country: e.target.value })
-                }
+                value={user?.country || ""}
+                onChange={(e) => setUser({ ...user, country: e.target.value })}
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                 required
               />
@@ -439,24 +407,24 @@ export default function AddNewUser() {
       </div>
 
       <div className="mt-8 flex space-x-6 justify-end">
-        <button
+        {/* <button
           type="button"
           className="text-sm font-semibold leading-6 text-gray-900"
           onClick={() => window.history.back()}
         >
           Close
-        </button>
+        </button> */}
         <button
           type="submit"
           className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
         >
           {isLoading ? (
             <div className="flex w-full justify-center align-middle gap-2">
-              <span>Creating</span>
+              <span>Updating</span>
               <DotLoader />
             </div>
           ) : (
-            "Create"
+            "Update Details"
           )}
         </button>
       </div>
