@@ -1,341 +1,171 @@
 import React, { useEffect, useState } from "react";
-import {
-  addBankingDetails,
-  getBankingDetails,
-  updateBankingDetails,
-} from "../../config/bankDetails";
-import { useSelector } from "react-redux";
-import { useModal } from "../../context/ModalContext";
-import { getUser } from "../../config/user";
-import { customModal } from "../../utils/modalUtils";
-import { CheckIcon, XCircleIcon } from "@heroicons/react/24/outline";
-import DotLoader from "../../components/DotLoader";
+import { useDispatch, useSelector } from "react-redux";
+import Profile from "./Profile";
+import ChangePassword from "./ChangePassword";
+import BankDetails from "./BankDetails";
 
-export default function BankDetails() {
-  const user = useSelector((state) => state.user);
-  const { showModal } = useModal();
-  const [formData, setFormData] = useState({
-    accountName: "",
-    bankName: "",
-    branch: "",
-    bsbNumber: 0,
-    accountNumber: 0,
-    iban: 0,
-    swiftCode: 0,
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [userCountry, setUserCountry] = useState({
-    country: "",
-  });
-  const country = userCountry.country.value;
-
-  const fetchUserCountry = async () => {
-    setIsLoading(true);
-    const userUID = user.userId;
-    if (!userUID) {
-      console.log("No UID found.");
-      return;
-    }
-    try {
-      const usersData = await getUser(userUID);
-      if (usersData.length > 0) {
-        const userData = usersData[0];
-        setUserCountry({
-          ...userData,
-          country: userData.country,
-        });
-      }
-    } catch (error) {
-      console.log("Error fetching user data: ", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const fetchBankingDetails = async () => {
-    setIsLoading(true);
-
-    if (!user) {
-      console.log("No user is currently authenticated.");
-      return;
-    }
-
-    try {
-      const data = await getBankingDetails(user.userId);
-
-      if (data.length > 0) {
-        const bankingDetails = data[0];
-        setFormData({
-          accountName: bankingDetails.accountName,
-          bankName: bankingDetails.bankName,
-          branch: bankingDetails.branch,
-          bsbNumber: bankingDetails.bsbNumber,
-          accountNumber: bankingDetails.accountNumber,
-          iban: bankingDetails.iban,
-          swiftCode: bankingDetails.swiftCode,
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching banking details: ", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchBankingDetails();
-    fetchUserCountry();
-  }, []);
-
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    if (!user) {
-      console.log("No user is currently authenticated.");
-      return;
-    }
-    const bankingDetailsData = {
-      accountName: formData.accountName,
-      bankName: formData.bankName,
-      branch: formData.branch,
-      bsbNumber: formData.bsbNumber,
-      accountNumber: formData.accountNumber,
-      iban: formData.iban,
-    };
-
-    try {
-      const userBankingDetails = await getBankingDetails(user.userId);
-
-      if (userBankingDetails && userBankingDetails.length > 0) {
-        const docId = userBankingDetails[0].id; // Assuming the first document is the one to update
-        await updateBankingDetails(user.userId, docId, bankingDetailsData);
-        customModal({
-          showModal,
-          icon: CheckIcon,
-          iconBgColor: "bg-green-100",
-          iconTextColor: "text-green-600",
-          title: "Success!",
-          text: `Banking details updated successfully!`,
-          showConfirmButton: false,
-          timer: 2000,
-        });
-      } else {
-        await addBankingDetails(user.userId, bankingDetailsData);
-        customModal({
-          showModal,
-          icon: CheckIcon,
-          iconBgColor: "bg-green-100",
-          iconTextColor: "text-green-600",
-          title: "Success!",
-          text: `Banking details added successfully!`,
-          showConfirmButton: false,
-          timer: 2000,
-        });
-      }
-
-      fetchBankingDetails(); // fetch details again after saving or adding
-    } catch (error) {
-      console.error("Error submiting banking details: ", error);
-      customModal({
-        showModal,
-        icon: XCircleIcon,
-        iconBgColor: "bg-red-100",
-        iconTextColor: "text-red-600",
-        title: "Oops!",
-        text: `Failed to submit banking details. Please try again.`,
-        showConfirmButton: false,
-        timer: 2000,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+export default function Change() {
+  
   return (
-    <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
-      <div className="px-4 sm:px-0">
-        <h2 className="text-base font-semibold leading-7 text-gray-900">
-          Bank Details
-        </h2>
-        <p className="mt-1 text-sm leading-6 text-gray-600">
-          Confirm your details and ensure they are correct before submitting.
-        </p>
-      </div>
+    <div className="space-y-10 divide-y divide-gray-900/10">
+     <Profile/>
+     <BankDetails />
+     <ChangePassword />
+      <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
+        <div className="px-4 sm:px-0">
+          <h2 className="text-base font-semibold leading-7 text-gray-900">
+            Notifications
+          </h2>
+          <p className="mt-1 text-sm leading-6 text-gray-600">
+            We'll always let you know about important changes, but you pick what
+            else you want to hear about.
+          </p>
+        </div>
 
-      <form
-        className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2"
-        onSubmit={handleUpdate}
-      >
-        <div className="px-4 py-6 sm:p-8">
-          <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div className="sm:col-span-4">
-              <label
-                htmlFor="account-name"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Account Holder's Name
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="account_name"
-                  value={formData.accountName}
-                  onChange={(e) =>
-                    setFormData({ ...formData, accountName: e.target.value })
-                  }
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="bank-name"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Bank Name
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="bank_name"
-                  value={formData.bankName}
-                  onChange={(e) =>
-                    setFormData({ ...formData, bankName: e.target.value })
-                  }
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            {country === "AU" && (
-              <div className="col-span-full">
-                <label
-                  htmlFor="branch-address"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Branch Address
-                </label>
-                <div className="mt-2">
-                  <input
-                    type="text"
-                    name="branch"
-                    value={formData.branch}
-                    onChange={(e) =>
-                      setFormData({ ...formData, branch: e.target.value })
-                    }
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-            )}
-
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="bsb-number"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                BSB Number
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="bsbNumber"
-                  placeholder="6 digits"
-                  value={formData.bsbNumber}
-                  onChange={(e) =>
-                    setFormData({ ...formData, bsbNumber: e.target.value })
-                  }
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="account-number"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Account Number
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="accountNumber"
-                  placeholder="6-10 digits"
-                  value={formData.accountNumber}
-                  onChange={(e) =>
-                    setFormData({ ...formData, accountNumber: e.target.value })
-                  }
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            {country !== "AU" && (
-              <>
-                <div className="sm:col-span-3">
-                  <label
-                    htmlFor="iban"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    IBAN
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      type="text"
-                      name="iban"
-                      placeholder="6-10 digits"
-                      value={formData.iban}
-                      onChange={(e) =>
-                        setFormData({ ...formData, iban: e.target.value })
-                      }
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    />
+        <form className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
+          <div className="px-4 py-6 sm:p-8">
+            <div className="max-w-2xl space-y-10">
+              <fieldset>
+                <legend className="text-sm font-semibold leading-6 text-gray-900">
+                  By Email
+                </legend>
+                <div className="mt-6 space-y-6">
+                  <div className="relative flex gap-x-3">
+                    <div className="flex h-6 items-center">
+                      <input
+                        id="comments"
+                        name="comments"
+                        type="checkbox"
+                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                      />
+                    </div>
+                    <div className="text-sm leading-6">
+                      <label
+                        htmlFor="comments"
+                        className="font-medium text-gray-900"
+                      >
+                        Comments
+                      </label>
+                      <p className="text-gray-500">
+                        Get notified when someones posts a comment on a posting.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="relative flex gap-x-3">
+                    <div className="flex h-6 items-center">
+                      <input
+                        id="candidates"
+                        name="candidates"
+                        type="checkbox"
+                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                      />
+                    </div>
+                    <div className="text-sm leading-6">
+                      <label
+                        htmlFor="candidates"
+                        className="font-medium text-gray-900"
+                      >
+                        Candidates
+                      </label>
+                      <p className="text-gray-500">
+                        Get notified when a candidate applies for a job.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="relative flex gap-x-3">
+                    <div className="flex h-6 items-center">
+                      <input
+                        id="offers"
+                        name="offers"
+                        type="checkbox"
+                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                      />
+                    </div>
+                    <div className="text-sm leading-6">
+                      <label
+                        htmlFor="offers"
+                        className="font-medium text-gray-900"
+                      >
+                        Offers
+                      </label>
+                      <p className="text-gray-500">
+                        Get notified when a candidate accepts or rejects an
+                        offer.
+                      </p>
+                    </div>
                   </div>
                 </div>
-
-                <div className="sm:col-span-3">
-                  <label
-                    htmlFor="swift-code"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Swift Code
-                  </label>
-                  <div className="mt-2">
+              </fieldset>
+              <fieldset>
+                <legend className="text-sm font-semibold leading-6 text-gray-900">
+                  Push Notifications
+                </legend>
+                <p className="mt-1 text-sm leading-6 text-gray-600">
+                  These are delivered via SMS to your mobile phone.
+                </p>
+                <div className="mt-6 space-y-6">
+                  <div className="flex items-center gap-x-3">
                     <input
-                      type="text"
-                      name="swiftCode"
-                      placeholder="6 digits"
-                      value={formData.swiftCode}
-                      onChange={(e) =>
-                        setFormData({ ...formData, swiftCode: e.target.value })
-                      }
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      id="push-everything"
+                      name="push-notifications"
+                      type="radio"
+                      className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                     />
+                    <label
+                      htmlFor="push-everything"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Everything
+                    </label>
+                  </div>
+                  <div className="flex items-center gap-x-3">
+                    <input
+                      id="push-email"
+                      name="push-notifications"
+                      type="radio"
+                      className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                    />
+                    <label
+                      htmlFor="push-email"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Same as email
+                    </label>
+                  </div>
+                  <div className="flex items-center gap-x-3">
+                    <input
+                      id="push-nothing"
+                      name="push-notifications"
+                      type="radio"
+                      className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                    />
+                    <label
+                      htmlFor="push-nothing"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      No push notifications
+                    </label>
                   </div>
                 </div>
-              </>
-            )}
+              </fieldset>
+            </div>
           </div>
-        </div>
-        <div className="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
-          <button
-            type="submit"
-            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            {isLoading ? (
-              <div className="flex w-full justify-center align-middle gap-2">
-                <span>Submitting</span>
-                <DotLoader />
-              </div>
-            ) : (
-              "Update Details"
-            )}
-          </button>
-        </div>
-      </form>
+          <div className="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
+            <button
+              type="button"
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
