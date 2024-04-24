@@ -18,23 +18,23 @@ export default function BankDetails() {
     accountName: "",
     bankName: "",
     branch: "",
-    bsbNumber: 0,
-    accountNumber: 0,
-    iban: 0,
-    swiftCode: 0,
+    bsbNumber: '',
+    accountNumber: '',
+    iban: '',
+    swiftCode: '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const [userCountry, setUserCountry] = useState({
-    country: "",
-  });
-  const country = userCountry.country.value;
-
-  const fetchUserCountry = async () => {
-    setIsLoading(true);
-    const userUID = user.userId;
-    if (!userUID) {
-      console.log("No UID found.");
-      return;
+      country: "",
+    });
+    const country = userCountry.country.value;
+    
+    const fetchUserCountry = async () => {
+        setIsLoading(true);
+        const userUID = user.userId;
+        if (!userUID) {
+            console.log("No UID found.");
+            return;
     }
     try {
       const usersData = await getUser(userUID);
@@ -75,6 +75,8 @@ export default function BankDetails() {
           swiftCode: bankingDetails.swiftCode,
         });
       }
+
+    console.log(formData)
     } catch (error) {
       console.error("Error fetching banking details: ", error);
     } finally {
@@ -152,6 +154,11 @@ export default function BankDetails() {
     }
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
   return (
     <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
       <div className="px-4 sm:px-0">
@@ -201,9 +208,7 @@ export default function BankDetails() {
                   type="text"
                   name="bank_name"
                   value={formData.bankName}
-                  onChange={(e) =>
-                    setFormData({ ...formData, bankName: e.target.value })
-                  }
+                  onChange={handleChange}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -222,9 +227,7 @@ export default function BankDetails() {
                     type="text"
                     name="branch"
                     value={formData.branch}
-                    onChange={(e) =>
-                      setFormData({ ...formData, branch: e.target.value })
-                    }
+                    onChange={handleChange}
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -244,9 +247,7 @@ export default function BankDetails() {
                   name="bsbNumber"
                   placeholder="6 digits"
                   value={formData.bsbNumber}
-                  onChange={(e) =>
-                    setFormData({ ...formData, bsbNumber: e.target.value })
-                  }
+                  onChange={handleChange }
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -265,9 +266,7 @@ export default function BankDetails() {
                   name="accountNumber"
                   placeholder="6-10 digits"
                   value={formData.accountNumber}
-                  onChange={(e) =>
-                    setFormData({ ...formData, accountNumber: e.target.value })
-                  }
+                  onChange={handleChange}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -288,9 +287,7 @@ export default function BankDetails() {
                       name="iban"
                       placeholder="6-10 digits"
                       value={formData.iban}
-                      onChange={(e) =>
-                        setFormData({ ...formData, iban: e.target.value })
-                      }
+                      onChange={handleChange }
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -301,7 +298,7 @@ export default function BankDetails() {
                     htmlFor="swift-code"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    Swift Code
+                    BIC/Swift Code
                   </label>
                   <div className="mt-2">
                     <input
@@ -309,9 +306,7 @@ export default function BankDetails() {
                       name="swiftCode"
                       placeholder="6 digits"
                       value={formData.swiftCode}
-                      onChange={(e) =>
-                        setFormData({ ...formData, swiftCode: e.target.value })
-                      }
+                      onChange={handleChange}
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
