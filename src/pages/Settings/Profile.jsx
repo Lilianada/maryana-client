@@ -329,7 +329,7 @@ export default function Profile() {
               </label>
               <div className="mt-2">
                 <input
-                  id="homePhone-address"
+                  id="home-address"
                   name="address"
                   type="text"
                   onChange={handleChange}
