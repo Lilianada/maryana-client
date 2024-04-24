@@ -134,289 +134,275 @@ export default function Profile() {
   };
 
   return (
-    <form className="lg:p-8" onSubmit={handleUpdate}>
-      <div className="space-y-12">
-        <div className="text-center lg:text-left">
-          <h2 className="text-xl font-semibold leading-7 text-gray-900">
-            Account Information
-          </h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">
-            Fill the form with your correct details.
-          </p>
-        </div>
+    <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
+    <div className="px-4 sm:px-0">
+      <h2 className="text-base font-semibold leading-7 text-gray-900">
+        Account Information
+      </h2>
+      <p className="mt-1 text-sm leading-6 text-gray-600">
+      Fill the form with your correct details.
+      </p>
+    </div>
 
-        <div className="pb-12">
-          <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div className="sm:col-span-4 flex items-center gap-2">
-              <div className="">
-                <input
-                  type="checkbox"
-                  name="jointAccount"
-                  id="jointAccount"
-                  onChange={handleChange}
-                  checked={user?.jointAccount || false}
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                />
-              </div>
-              <label
-                htmlFor="jointAccount"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Joint Account
-              </label>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="title"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Primary Account Holder Title
-              </label>
-              <div className="mt-2">
-                <select
-                  id="title"
-                  name="title"
-                  autoComplete="title"
-                  onChange={handleChange}
-                  value={user?.title || ""}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                >
-                  <option value="">Select Title</option>
-                  <option value="Miss">Miss</option>
-                  <option value="Mrs">Mrs</option>
-                  <option value="Mr">Mr</option>
-                  <option value="Ms">Ms</option>
-                  <option value="Dr">Dr</option>
-                  <option value="Rev">Rev</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="full-name"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Primary Account Holder Full Name
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="fullName"
-                  id="full-name"
-                  onChange={handleChange}
-                  value={user?.fullName || ""}
-                  required
-                  autoComplete="given-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            {user?.jointAccount && (
-              <div className="sm:col-span-3">
-                <label
-                  htmlFor="secondaryTitle"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Secondary Account Holder Title
-                </label>
-                <div className="mt-2">
-                  <input
-                    type="text"
-                    name="secondaryTitle"
-                    id="secondaryTitle"
-                    onChange={handleChange}
-                    value={user?.secondaryTitle || ""}
-                    autoComplete="secondaryTitle"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-            )}
-
-            {user?.jointAccount && (
-              <div className="sm:col-span-3">
-                <label
-                  htmlFor="secondaryAccountHolder"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Secondary Account Holder Full Name
-                </label>
-                <div className="mt-2">
-                  <input
-                    type="text"
-                    name="secondaryAccountHolder"
-                    id="full-name"
-                    onChange={handleChange}
-                    value={user?.secondaryAccountHolder || ""}
-                    autoComplete="given-name"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-            )}
-
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="homePhone"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Home Phone
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="homePhone"
-                  id="homePhone"
-                  onChange={handleChange}
-                  value={user?.homePhone || ""}
-                  autoComplete="homePhone"
-                  placeholder="e.g. +234-567-8901"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="mobilePhone"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Mobile Phone
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="mobilePhone"
-                  id="mobilePhone"
-                  required
-                  onChange={handleChange}
-                  placeholder="e.g. +234-567-8901"
-                  value={user?.mobilePhone || ""}
-                  autoComplete="mobilePhone"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  onChange={handleChange}
-                  value={user?.email || ""}
-                  autoComplete="email"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="homePhone-address"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Home Address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="homePhone-address"
-                  name="address"
-                  type="text"
-                  onChange={handleChange}
-                  value={user?.address || ""}
-                  required
-                  autoComplete="homePhone-address"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="city"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                City
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="city"
-                  id="city"
-                  onChange={handleChange}
-                  value={user?.city || ""}
-                  required
-                  autoComplete="address-level2"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="postal-code"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                ZIP / Postal code
-              </label>
-              <div className="mt-2">
-                <input
-                  type="text"
-                  name="postcode"
-                  id="postcode"
-                  onChange={handleChange}
-                  value={user?.postcode || ""}
-                  required
-                  autoComplete="post-code"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label
-                htmlFor="country"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Country
-              </label>
-
-              <CountrySelect
-                value={user?.country || ""}
-                onChange={(e) => setUser({ ...user, country: e.target.value })}
+    <form  onSubmit={handleUpdate} className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
+      <div className="px-4 py-6 sm:p-8">
+        <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+          <div className="sm:col-span-4">
+            <label
+              htmlFor="title"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              Primary Account Holder Title
+            </label>
+            <div className="mt-2">
+              <select
+                id="title"
+                name="title"
+                autoComplete="title"
+                onChange={handleChange}
+                value={user?.title || ""}
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+              >
+                <option value="">Select Title</option>
+                <option value="Miss">Miss</option>
+                <option value="Mrs">Mrs</option>
+                <option value="Mr">Mr</option>
+                <option value="Ms">Ms</option>
+                <option value="Dr">Dr</option>
+                <option value="Rev">Rev</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div className="sm:col-span-3">
+            <label
+              htmlFor="first-name"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              Primary Account Holder Full Name
+            </label>
+            <div className="mt-2">
+              <input
+                type="text"
+                name="fullName"
+                id="full-name"
+                onChange={handleChange}
+                value={user?.fullName || ""}
                 required
+                autoComplete="given-name"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
+
+          {user?.jointAccount && (
+            <div className="sm:col-span-3">
+              <label
+                htmlFor="secondary-name"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Secondary Account Holder Full Name
+              </label>
+              <div className="mt-2">
+                <input
+                  type="text"
+                  name="secondaryAccountHolder"
+                  id="full-name"
+                  onChange={handleChange}
+                  value={user?.secondaryAccountHolder || ""}
+                  autoComplete="secondaryName"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+          )}
+
+          <div className="sm:col-span-3">
+            <label
+              htmlFor="last-name"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              Last name
+            </label>
+            <div className="mt-2">
+              <input
+                type="text"
+                name="last-name"
+                id="last-name"
+                autoComplete="family-name"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+
+          <div className="sm:col-span-3">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              Email address
+            </label>
+            <div className="mt-2">
+              <input
+                id="email"
+                name="email"
+                type="email"
+                onChange={handleChange}
+                value={user?.email || ""}
+                autoComplete="email"
+                required
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+
+          <div className="sm:col-span-3">
+            <label
+              htmlFor="home-phone"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              Home Phone
+            </label>
+            <div className="mt-2">
+              <input
+                type="text"
+                name="homePhone"
+                id="homePhone"
+                onChange={handleChange}
+                value={user?.homePhone || ""}
+                autoComplete="homePhone"
+                placeholder="e.g. +234-567-8901"
+                required
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+
+          <div className="sm:col-span-3">
+            <label
+              htmlFor="mobile-phone"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              Mobile Phone
+            </label>
+            <div className="mt-2">
+              <input
+                type="text"
+                name="mobilePhone"
+                id="mobilePhone"
+                required
+                onChange={handleChange}
+                placeholder="e.g. +234-567-8901"
+                value={user?.mobilePhone || ""}
+                autoComplete="mobilePhone"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+
+          <div className="col-span-full">
+            <label
+              htmlFor="home-address"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              Home address
+            </label>
+            <div className="mt-2">
+              <input
+                id="homePhone-address"
+                name="address"
+                type="text"
+                onChange={handleChange}
+                value={user?.address || ""}
+                required
+                autoComplete="homePhone-address"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+
+          <div className="sm:col-span-2 sm:col-start-1">
+            <label
+              htmlFor="city"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              City
+            </label>
+            <div className="mt-2">
+              <input
+                type="text"
+                name="city"
+                id="city"
+                onChange={handleChange}
+                value={user?.city || ""}
+                required
+                autoComplete="city"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+
+          <div className="sm:col-span-2">
+            <label
+              htmlFor="region"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              State / Province
+            </label>
+            <div className="mt-2">
+              <input
+                type="text"
+                name="region"
+                id="region"
+                autoComplete="address-level1"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+
+          <div className="sm:col-span-2">
+            <label
+              htmlFor="postal-code"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              ZIP / Postal code
+            </label>
+            <div className="mt-2">
+              <input
+                type="text"
+                name="postcode"
+                id="postcode"
+                onChange={handleChange}
+                value={user?.postcode || ""}
+                required
+                autoComplete="post-code"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+
+          <div className="sm:col-span-4">
+            <label
+              htmlFor="country"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              Country
+            </label>
+            <CountrySelect
+              value={user?.country || ""}
+              onChange={(e) =>
+                setUser({ ...user, country: e.target.value })
+              }
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+              required
+            />
+          </div>
         </div>
       </div>
-
-      <div className="mt-8 flex space-x-6 justify-end">
-        {/* <button
-          type="button"
-          className="text-sm font-semibold leading-6 text-gray-900"
-          onClick={() => window.history.back()}
-        >
-          Close
-        </button> */}
+      <div className="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
         <button
           type="submit"
-          className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
+          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           {isLoading ? (
             <div className="flex w-full justify-center align-middle gap-2">
@@ -429,5 +415,7 @@ export default function Profile() {
         </button>
       </div>
     </form>
+  </div>
+
   );
 }

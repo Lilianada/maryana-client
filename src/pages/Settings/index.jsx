@@ -8,6 +8,7 @@ import {
 import BondCards from "../Bonds";
 import TermTable from "../Accounts/TermsTable";
 import Profile from "./Profile";
+import ChangePassword from "./ChangePassword";
 // import
 
 const nav = [
@@ -76,7 +77,7 @@ export default function Settings() {
         <main className="px-4 py-8 sm:px-6 lg:flex-auto lg:px-0 bg-white sm:-ml-6 sm:-mr-6 sm:-mb-6 lg:pr-6 lg:pl-6 lg:pb-6">
           <div className="mx-auto max-w-2xl space-y-16 sm:space-y-20 lg:mx-0 lg:max-w-none">
             {activeTab === "profile" && <Profile />}
-            {activeTab === "password" && <TermTable/>}
+            {activeTab === "password" && <ChangePassword/>}
             {activeTab === "document" && <BondCards />}
             {activeTab === "bankDetails" && <BondCards />}
           </div>
