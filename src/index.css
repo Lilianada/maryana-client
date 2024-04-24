@@ -23,9 +23,9 @@
     display: none !important;
 }
 
-/* .css-13cymwt-control{
-    background: rgb(239 246 255 / var(--tw-bg-opacity)) !important;
-} */
+.importantWidth{
+    width: 100% !important;
+}
 
 @media screen and (min-width: 640px) {
   .PhoneInputInput {

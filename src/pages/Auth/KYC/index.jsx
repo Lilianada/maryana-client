@@ -164,7 +164,10 @@ export default function KycForm() {
     event.preventDefault();
     setIsSubmitting(true);
 
-    const response = await updateUserKyc('v6pygKlYmrSOoJxkh6lpKesG2Bl2', formData);
+    const response = await updateUserKyc(
+      "v6pygKlYmrSOoJxkh6lpKesG2Bl2",
+      formData
+    );
 
     if (response.success) {
       customModal({
@@ -214,10 +217,7 @@ export default function KycForm() {
       {}
     );
 
-   await updateUserKyc(
-      "v6pygKlYmrSOoJxkh6lpKesG2Bl2",
-      filteredFormData
-    );
+    await updateUserKyc("v6pygKlYmrSOoJxkh6lpKesG2Bl2", filteredFormData);
   };
 
   const handleNext = () => {
@@ -298,7 +298,6 @@ export default function KycForm() {
 
   return (
     <div className="px-2 pb-10 lg:px-24 sm:px-8 bg-gray-50 min-h-[calc(100vh_-_64px)]">
-      
       <div className="py-8 text-left">
         <h3 className="text-lg font-semibold leading-6 text-gray-900">
           Know Your Customer Form
@@ -333,55 +332,53 @@ export default function KycForm() {
         </div>
 
         {renderSection()}
-        
       </div>
 
       <div className="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8 mt-4">
-  {currentSection < totalSections - 1 ? (
-    <>
-      <button
-        type="button"
-        className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-        onClick={() => navigate('/dashboard')} // Using `navigate` from `react-router-dom`
-      >
-        Skip for later
-      </button>
-      <button
-        type="button"
-        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        onClick={handleNext}
-      >
-        Save & Next
-      </button>
-    </>
-  ) : (
-    <>
-      <button
-        type="button"
-        className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-            onClick={() => navigate('/dashboard')} // Using `navigate` from `react-router-dom`
-      >
-        Skip for later
-      </button>
-      <button
-        type="submit"
-        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        onClick={handleSubmit}
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? (
-          <div className="flex w-full justify-center align-middle gap-2">
-            <span>Submitting</span>
-            <DotLoader />
-          </div>
+        {currentSection < totalSections - 1 ? (
+          <>
+            <button
+              type="button"
+              className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+              onClick={() => navigate("/dashboard")} // Using `navigate` from `react-router-dom`
+            >
+              Skip for later
+            </button>
+            <button
+              type="button"
+              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              onClick={handleNext}
+            >
+              Save & Next
+            </button>
+          </>
         ) : (
-          "Submit KYC Form"
+          <>
+            <button
+              type="button"
+              className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+              onClick={() => navigate("/dashboard")} // Using `navigate` from `react-router-dom`
+            >
+              Skip for later
+            </button>
+            <button
+              type="submit"
+              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <div className="flex w-full justify-center align-middle gap-2">
+                  <span>Submitting</span>
+                  <DotLoader />
+                </div>
+              ) : (
+                "Submit KYC Form"
+              )}
+            </button>
+          </>
         )}
-      </button>
-    </>
-  )}
-</div>
-
+      </div>
     </div>
   );
 }

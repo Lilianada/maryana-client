@@ -58,7 +58,7 @@ const TechnicalAnalysisWidget = ({ symbol }) => {
   return (
     <div>
       {!delayRenderStatus && (
-        <div className="tradingview-widget-container" ref={widgetRef}>
+        <div className="tradingview-widget-container importantWidth" ref={widgetRef}>
           <div className="tradingview-widget-container__widget"></div>
         </div>
       )}
