@@ -8,11 +8,15 @@ import React, { Fragment, useEffect, useState } from "react";
 import { fetchPasswordPolicySetting } from "../../config/utils";
 import { Popover, Transition } from "@headlessui/react";
 import {
+  CheckIcon,
+  ExclamationCircleIcon,
   EyeIcon,
   EyeSlashIcon,
 } from "@heroicons/react/24/outline";
 import DotLoader from "../../components/DotLoader";
 import { QuestionMarkCircleIcon } from "@heroicons/react/20/solid";
+import { customModal } from "../../utils/modalUtils";
+import { useModal } from "../../context/ModalContext";
 
 const strongPolicyRequirements = [
   { name: "Minimum of 6 characters" },
@@ -28,13 +32,11 @@ const requirements = [
 ];
 
 export default function ChangePassword() {
+  const { showModal } = useModal();
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [requiresReauth, setRequiresReauth] = useState(false);
   const [isStrongPasswordPolicy, setIsStrongPasswordPolicy] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -58,15 +60,33 @@ export default function ChangePassword() {
 
   const validatePasswords = () => {
     if (newPassword !== confirmPassword) {
-      setError("New password and confirm password do not match.");
+      customModal({
+        showModal,
+        title: "Error",
+        text: `New password and confirm password do not match.`,
+        icon: ExclamationCircleIcon,
+        showConfirmButton: false,
+        iconBgColor: "bg-red-100",
+        iconTextColor: "text-red-600",
+        buttonBgColor: "bg-red-600",
+        timer: 1500,
+      });
       return false;
     }
     if (!validatePassword(newPassword, isStrongPasswordPolicy)) {
-      setError(
-        isStrongPasswordPolicy
+      customModal({
+        showModal,
+        title: "Error",
+        text: isStrongPasswordPolicy
           ? "Password must be at least 8 characters long, must contain at least one number and a special character."
-          : "Password must be at least 6 digits long."
-      );
+          : "Password must be at least 6 digits long.",
+        icon: ExclamationCircleIcon,
+        showConfirmButton: false,
+        iconBgColor: "bg-red-100",
+        iconTextColor: "text-red-600",
+        buttonBgColor: "bg-red-600",
+        timer: 1500,
+      });
       return false;
     }
     return true;
@@ -76,10 +96,17 @@ export default function ChangePassword() {
     e.preventDefault();
 
     if (newPassword !== confirmPassword) {
-      setError("Passwords do not match.");
-      setTimeout(() => {
-        setError("");
-      }, 3000);
+      customModal({
+        showModal,
+        title: "Error",
+        text: `Passwords do not match.`,
+        icon: ExclamationCircleIcon,
+        showConfirmButton: false,
+        iconBgColor: "bg-red-100",
+        iconTextColor: "text-red-600",
+        buttonBgColor: "bg-red-600",
+        timer: 1500,
+      });
       return;
     }
 
@@ -92,27 +119,41 @@ export default function ChangePassword() {
 
     const auth = getAuth();
     const user = auth.currentUser;
-    
+
     const credential = EmailAuthProvider.credential(
       user.email,
       currentPassword
     );
-    console.log(user, credential)
     reauthenticateWithCredential(user, credential)
       .then(() => {
         // User re-authenticated.
         return updatePassword(user, newPassword);
       })
       .then(() => {
-        setSuccessMessage("Password updated successfully.");
-        setTimeout(() => {
-          setSuccessMessage("");
-        }, 3000);
+        customModal({
+          showModal,
+          title: "Success",
+          text: `Password updated successfully.`,
+          icon: CheckIcon,
+          showConfirmButton: false,
+          iconBgColor: "bg-green-100",
+          iconTextColor: "text-green-600",
+          buttonBgColor: "bg-green-600",
+          timer: 1500,
+        });
       })
       .catch((error) => {
-        setError(
-          "Failed to update password. Please make sure your current password is correct."
-        );
+        customModal({
+          showModal,
+          title: "Error",
+          text: `Failed to update password. Please make sure your current password is correct.`,
+          icon: ExclamationCircleIcon,
+          showConfirmButton: false,
+          iconBgColor: "bg-red-100",
+          iconTextColor: "text-red-600",
+          buttonBgColor: "bg-red-600",
+          timer: 1500,
+        });
         console.error(error);
       })
       .finally(() => {
@@ -265,7 +306,7 @@ export default function ChangePassword() {
               </label>
               <div className="mt-2">
                 <input
-                  type={showPassword ? "text" : "password"}
+                  type={showNewPassword ? "text" : "password"}
                   name="confirmPassword"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
