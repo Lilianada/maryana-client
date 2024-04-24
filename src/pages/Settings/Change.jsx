@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import Profile from "./Profile";
+import ChangePassword from "./ChangePassword";
 
 export default function Change() {
   
   return (
     <div className="space-y-10 divide-y divide-gray-900/10">
      <Profile/>
+     <ChangePassword />
       <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
         <div className="px-4 sm:px-0">
           <h2 className="text-base font-semibold leading-7 text-gray-900">
