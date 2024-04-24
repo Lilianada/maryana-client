@@ -44,7 +44,7 @@ function StockHeatmapWidget() {
     );
   
     return (
-      <div className="tradingview-widget-container" ref={widgetContainerRef} >
+      <div className="tradingview-widget-container h-100vh-important" ref={widgetContainerRef} >
         <div className="tradingview-widget-container__widget"></div>
       </div>
     );

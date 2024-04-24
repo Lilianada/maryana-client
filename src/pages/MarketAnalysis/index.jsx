@@ -209,7 +209,7 @@ export default function MarketAnalysis() {
             {/* Invoice summary */}
 
             {/* Invoice */}
-            <div className="grid gap-6 bg-white -mx-4 px-4 py-8 shadow-sm ring-1 ring-gray-900/5 sm:mx-0 sm:rounded-lg sm:px-8 sm:pb-14 lg:col-span-2 lg:row-span-2 lg:row-end-2 xl:pb-20 xl:pt-8">
+            <div className="grid gap-6 bg-white -mx-4 px-4 py-8 shadow-sm ring-1 ring-gray-900/5 sm:mx-0 sm:rounded-lg sm:px-8  lg:col-span-2 lg:row-span-2 lg:row-end-2 pb-8 xl:pt-8 m-1">
               <div className="grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-2">
                 <SearchBar onSearch={handleSearch} />
                 <MiniChartWidget symbol={selectedSymbol} />

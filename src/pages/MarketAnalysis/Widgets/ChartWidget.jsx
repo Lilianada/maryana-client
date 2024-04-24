@@ -59,14 +59,12 @@ export default function ChartWidget({ symbol, setIsChartWidgetLoading }) {
 
   return (
     <div
-      className="tradingview-widget-container"
-      style={{ height: "100%", width: "100%" }}
+      className="tradingview-widget-container h-100vh-important importantWidth"
     >
       
       <div
         id={chartIdRef.current}
         ref={chartContainerRef}
-        style={{ height: "100%", width: "100%" }}
       />
     </div>
   );
