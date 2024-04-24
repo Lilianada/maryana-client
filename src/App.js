@@ -18,7 +18,6 @@ import IposCards from "./pages/Ipos";
 import FixedTerms from "./pages/FixedTerm";
 import MarketAnalysis from "./pages/MarketAnalysis";
 import Settings from "./pages/Settings";
-import Change from "./pages/Settings/Change";
 
 function App() {
   const { loadingAuthState } = useAuth();
@@ -87,7 +86,7 @@ function App() {
               path="settings"
               element={
                 <ProtectedRoute>
-                  <Change />
+                  <Settings />
                 </ProtectedRoute>
               }
             />
