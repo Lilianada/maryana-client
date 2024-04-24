@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import Profile from "./Profile";
 import ChangePassword from "./ChangePassword";
 import BankDetails from "./BankDetails";
+import Document from "./Document";
 
 export default function Change() {
   
@@ -10,9 +10,8 @@ export default function Change() {
     <div className="space-y-10 divide-y divide-gray-900/10">
      <Profile/>
      <BankDetails />
+      <Document/>
      <ChangePassword />
-      
-
     </div>
   );
 }
