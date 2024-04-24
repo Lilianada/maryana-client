@@ -26,7 +26,7 @@ import {
 //NOTIFICATIONS
 const NOTIFICATIONS_SUB_COLLECTION = "notifications";
 
-export async function getNotificationsForUser(userId) {
+export async function getNotifications(userId) {
   try {
     const notificationsRef = collection(
       db,
@@ -52,6 +52,7 @@ export async function getNotificationsForUser(userId) {
 }
 
 export const deleteNotification = async (uid, notificationId) => {
+  console.log(uid, notificationId)
   try {
     const requestRef = doc(
       db,
@@ -63,6 +64,24 @@ export const deleteNotification = async (uid, notificationId) => {
     await deleteDoc(requestRef);
   } catch (error) {
     console.error("Error deleting Notification: ", error);
+    throw error;
+  }
+};
+
+export const deleteAllNotification = async (uid) => {
+  const notificationsRef = collection(db, 'users', uid, 'notifications');
+
+  const deleteCollection = async (collectionRef) => {
+    const querySnapshot = await getDocs(collectionRef);
+    querySnapshot.forEach(async (doc) => {
+      await deleteDoc(doc.ref);
+    });
+  };
+  try {
+    await deleteCollection(notificationsRef);
+    console.log('All notifications deleted successfully');
+  } catch (error) {
+    console.error("Error deleting notifications: ", error);
     throw error;
   }
 };

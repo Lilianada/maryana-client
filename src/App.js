@@ -18,6 +18,7 @@ import IposCards from "./pages/Ipos";
 import FixedTerms from "./pages/FixedTerm";
 import MarketAnalysis from "./pages/MarketAnalysis";
 import Settings from "./pages/Settings";
+import Notifications from "./pages/Notifications";
 
 function App() {
   const { loadingAuthState } = useAuth();
@@ -87,6 +88,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Settings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="notifications"
+              element={
+                <ProtectedRoute>
+                  <Notifications />
                 </ProtectedRoute>
               }
             />
