@@ -10,9 +10,9 @@ import { Popover, Transition } from "@headlessui/react";
 import {
   EyeIcon,
   EyeSlashIcon,
-  QuestionMarkCircleIcon,
 } from "@heroicons/react/24/outline";
 import DotLoader from "../../components/DotLoader";
+import { QuestionMarkCircleIcon } from "@heroicons/react/20/solid";
 
 const strongPolicyRequirements = [
   { name: "Minimum of 6 characters" },
@@ -92,11 +92,12 @@ export default function ChangePassword() {
 
     const auth = getAuth();
     const user = auth.currentUser;
-
+    
     const credential = EmailAuthProvider.credential(
       user.email,
       currentPassword
     );
+    console.log(user, credential)
     reauthenticateWithCredential(user, credential)
       .then(() => {
         // User re-authenticated.
@@ -133,9 +134,50 @@ export default function ChangePassword() {
   return (
     <div className="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
       <div className="px-4 sm:px-0">
-        <h2 className="text-base font-semibold leading-7 text-gray-900">
+        <div className="text-base font-semibold leading-7 text-gray-900 flex gap-2">
           Change Password
-        </h2>
+          <Popover className="relative">
+            <Popover.Button className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
+              <span>
+                <QuestionMarkCircleIcon
+                  className="h-5 w-5 text-indigo-600"
+                  aria-hidden="true"
+                />
+              </span>
+            </Popover.Button>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-200"
+              enterFrom="opacity-0 translate-y-1"
+              enterTo="opacity-100 translate-y-0"
+              leave="transition ease-in duration-150"
+              leaveFrom="opacity-100 translate-y-0"
+              leaveTo="opacity-0 translate-y-1"
+            >
+              <Popover.Panel className="absolute left-1/2 z-10 mt-5 flex w-screen max-w-min -translate-x-1/2 px-4">
+                <ul className="w-56 shrink rounded-xl bg-white p-3 text-sm font-medium leading-6 text-gray-900 shadow-lg ring-1 ring-gray-900/5 text-left">
+                  {isStrongPasswordPolicy
+                    ? strongPolicyRequirements.map((item) => (
+                        <li
+                          key={item.name}
+                          className="block hover:text-indigo-600"
+                        >
+                          {item.name}
+                        </li>
+                      ))
+                    : requirements.map((item) => (
+                        <li
+                          key={item.name}
+                          className="block hover:text-indigo-600"
+                        >
+                          {item.name}
+                        </li>
+                      ))}
+                </ul>
+              </Popover.Panel>
+            </Transition>
+          </Popover>
+        </div>
         <p className="mt-1 text-sm leading-6 text-gray-600">
           Confirm your password and make sure it is something you can remember.
         </p>
@@ -157,7 +199,7 @@ export default function ChangePassword() {
               <div className="relative mt-2 rounded-md shadow-sm">
                 <input
                   type={showPassword ? "text" : "password"}
-                  name="current_password"
+                  name="currentPassword"
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
                   autoComplete="current-password"
@@ -191,7 +233,7 @@ export default function ChangePassword() {
               <div className="relative mt-2 rounded-md shadow-sm">
                 <input
                   type={showNewPassword ? "text" : "password"}
-                  name="new_password"
+                  name="newPassword"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -224,7 +266,7 @@ export default function ChangePassword() {
               <div className="mt-2">
                 <input
                   type={showPassword ? "text" : "password"}
-                  name="confirm_password"
+                  name="confirmPassword"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   autoComplete="new-password"

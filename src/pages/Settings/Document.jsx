@@ -18,7 +18,6 @@ export default function Document() {
     const fetchDoc = async () => {
       try {
         const userDoc = await fetchDocument(userId);
-        console.log(userDoc)
         if (userDoc) {
           setDoc(userDoc);
           setFileDescription(userDoc[0].fileDescription || "");

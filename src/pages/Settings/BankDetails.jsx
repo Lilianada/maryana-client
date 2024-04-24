@@ -26,31 +26,31 @@ export default function BankDetails() {
   const [userCountry, setUserCountry] = useState({
     country: "",
   });
-  
-  const fetchUserCountry = async () => {
-      setIsLoading(true);
-      const userUID = user.userId;
-      if (!userUID) {
-          console.log("No UID found.");
-          return;
-        }
-        try {
-            const usersData = await getUser(userUID);
-            if (usersData.length > 0) {
-                const userData = usersData[0];
-                setUserCountry({
-                    ...userData,
-                    country: userData.country,
-                });
-            }
-        } catch (error) {
-            console.log("Error fetching user data: ", error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
 
-    const country = userCountry.country;
+  const fetchUserCountry = async () => {
+    setIsLoading(true);
+    const userUID = user.userId;
+    if (!userUID) {
+      console.log("No UID found.");
+      return;
+    }
+    try {
+      const usersData = await getUser(userUID);
+      if (usersData.length > 0) {
+        const userData = usersData[0];
+        setUserCountry({
+          ...userData,
+          country: userData.country,
+        });
+      }
+    } catch (error) {
+      console.log("Error fetching user data: ", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const country = userCountry.country;
 
   const fetchBankingDetails = async () => {
     setIsLoading(true);
@@ -103,15 +103,15 @@ export default function BankDetails() {
       bsbNumber: formData.bsbNumber,
       accountNumber: formData.accountNumber,
       iban: formData.iban,
-      swiftCode: formData.swiftCode
+      swiftCode: formData.swiftCode,
     };
 
     try {
       const userBankingDetails = await getBankingDetails(user.userId);
 
       if (userBankingDetails && userBankingDetails.length > 0) {
-        const docId = userBankingDetails[0].id; 
-        await manageBankingDetails(user.userId, bankingDetailsData,  docId,);
+        const docId = userBankingDetails[0].id;
+        await manageBankingDetails(user.userId, bankingDetailsData, docId);
         customModal({
           showModal,
           icon: CheckIcon,
@@ -301,7 +301,7 @@ export default function BankDetails() {
                     BIC/Swift Code
                   </label>
                   <div className="mt-2">
-                  <input
+                    <input
                       type="text"
                       name="swiftCode"
                       placeholder="6-10 digits"
