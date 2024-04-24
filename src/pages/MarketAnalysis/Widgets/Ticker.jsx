@@ -47,13 +47,7 @@ const TickerWidget = () => {
        if (!existingScript) {
          widgetContainerRef.current.appendChild(script);
        }
-   
-       // Cleanup function
-      //  return () => {
-      //    if (existingScript) {
-      //      widgetContainerRef.current.removeChild(existingScript);
-      //    }
-      //  };
+       
        return () => {
         if (existingScript && widgetContainerRef.current) {
           widgetContainerRef.current.removeChild(existingScript); // Make sure widgetRef.current exists here
