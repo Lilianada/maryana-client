@@ -19,17 +19,72 @@ import {
   getDocs,
   query,
   setDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "./firebase";
 
-// Banking Details
-export async function addBankingDetails(uid, data) {
-  const bankingDetailsRef = collection(db, "users", uid, "bankingDetails");
-  return addDoc(bankingDetailsRef, data);
-}
+const USERS_COLLECTION = "users";
+const BANKING_DETAILS_SUB_COLLECTION = "bankingDetails";
 
-export async function updateBankingDetails(uid, docId, data) {
-  return setDoc(doc(db, "users", uid, "bankingDetails", docId), data);
+
+export async function manageBankingDetails(uid, formData, detailsId) {
+  const bankingDetailsRef = collection(
+    db,
+    USERS_COLLECTION,
+    uid,
+    BANKING_DETAILS_SUB_COLLECTION
+  );
+  if (detailsId) {
+    const updateBankingDetailsRef = collection(
+      db,
+      USERS_COLLECTION,
+      uid,
+      BANKING_DETAILS_SUB_COLLECTION,
+    );
+    const bankRef = doc(updateBankingDetailsRef, detailsId)
+    try {
+      await setDoc(bankRef, {
+        accountName: formData.accountName,
+        bankName: formData.bankName,
+        branch: formData.branch,
+        bsbNumber: formData.bsbNumber,
+        accountNumber: formData.accountNumber,
+        iban: formData.iban,
+        swiftCode: formData.swiftCode,
+      });
+    } catch (error) {
+      throw error;
+    }
+  } else {
+    // No matching documents found, proceed to add a new document
+    const dets = query(
+      bankingDetailsRef,
+      where("accountName", "==", formData.accountName),
+      where("bankName", "==", formData.bankName),
+      where("branch", "==", formData.branch),
+      where("bsbNumber", "==", formData.bsbNumber),
+      where("accountNumber", "==", formData.accountNumber),
+      where("swiftCode", "==", formData.swiftCode)
+    );
+
+    // Execute the query to check for existing documents
+    const querySnapshot = await getDocs(dets);
+    if (querySnapshot.empty) {
+      try {
+        await addDoc(bankingDetailsRef, {
+          accountName: formData.accountName,
+          bankName: formData.bankName,
+          branch: formData.branch,
+          bsbNumber: formData.bsbNumber,
+          accountNumber: formData.accountNumber,
+          iban: formData.iban,
+          swiftCode: formData.swiftCode,
+        });
+      } catch (error) {
+        throw error;
+      }
+    }
+  }
 }
 
 export async function getBankingDetails(uid) {

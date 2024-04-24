@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
-  addBankingDetails,
   getBankingDetails,
-  updateBankingDetails,
+  manageBankingDetails,
 } from "../../config/bankDetails";
 import { useSelector } from "react-redux";
 import { useModal } from "../../context/ModalContext";
@@ -18,39 +17,40 @@ export default function BankDetails() {
     accountName: "",
     bankName: "",
     branch: "",
-    bsbNumber: '',
-    accountNumber: '',
-    iban: '',
-    swiftCode: '',
+    bsbNumber: "",
+    accountNumber: "",
+    iban: "",
+    swiftCode: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [userCountry, setUserCountry] = useState({
-      country: "",
-    });
-    const country = userCountry.country.value;
-    
-    const fetchUserCountry = async () => {
-        setIsLoading(true);
-        const userUID = user.userId;
-        if (!userUID) {
-            console.log("No UID found.");
-            return;
-    }
-    try {
-      const usersData = await getUser(userUID);
-      if (usersData.length > 0) {
-        const userData = usersData[0];
-        setUserCountry({
-          ...userData,
-          country: userData.country,
-        });
-      }
-    } catch (error) {
-      console.log("Error fetching user data: ", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    country: "",
+  });
+  
+  const fetchUserCountry = async () => {
+      setIsLoading(true);
+      const userUID = user.userId;
+      if (!userUID) {
+          console.log("No UID found.");
+          return;
+        }
+        try {
+            const usersData = await getUser(userUID);
+            if (usersData.length > 0) {
+                const userData = usersData[0];
+                setUserCountry({
+                    ...userData,
+                    country: userData.country,
+                });
+            }
+        } catch (error) {
+            console.log("Error fetching user data: ", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const country = userCountry.country;
 
   const fetchBankingDetails = async () => {
     setIsLoading(true);
@@ -75,8 +75,6 @@ export default function BankDetails() {
           swiftCode: bankingDetails.swiftCode,
         });
       }
-
-    console.log(formData)
     } catch (error) {
       console.error("Error fetching banking details: ", error);
     } finally {
@@ -97,6 +95,7 @@ export default function BankDetails() {
       console.log("No user is currently authenticated.");
       return;
     }
+
     const bankingDetailsData = {
       accountName: formData.accountName,
       bankName: formData.bankName,
@@ -104,14 +103,15 @@ export default function BankDetails() {
       bsbNumber: formData.bsbNumber,
       accountNumber: formData.accountNumber,
       iban: formData.iban,
+      swiftCode: formData.swiftCode
     };
 
     try {
       const userBankingDetails = await getBankingDetails(user.userId);
 
       if (userBankingDetails && userBankingDetails.length > 0) {
-        const docId = userBankingDetails[0].id; // Assuming the first document is the one to update
-        await updateBankingDetails(user.userId, docId, bankingDetailsData);
+        const docId = userBankingDetails[0].id; 
+        await manageBankingDetails(user.userId, bankingDetailsData,  docId,);
         customModal({
           showModal,
           icon: CheckIcon,
@@ -123,7 +123,7 @@ export default function BankDetails() {
           timer: 2000,
         });
       } else {
-        await addBankingDetails(user.userId, bankingDetailsData);
+        await manageBankingDetails(user.userId, bankingDetailsData);
         customModal({
           showModal,
           icon: CheckIcon,
@@ -156,7 +156,7 @@ export default function BankDetails() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -247,7 +247,7 @@ export default function BankDetails() {
                   name="bsbNumber"
                   placeholder="6 digits"
                   value={formData.bsbNumber}
-                  onChange={handleChange }
+                  onChange={handleChange}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -272,7 +272,7 @@ export default function BankDetails() {
               </div>
             </div>
 
-            {country !== "AU" && (
+            {country !== "Australia" && (
               <>
                 <div className="sm:col-span-3">
                   <label
@@ -287,7 +287,7 @@ export default function BankDetails() {
                       name="iban"
                       placeholder="6-10 digits"
                       value={formData.iban}
-                      onChange={handleChange }
+                      onChange={handleChange}
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -301,10 +301,10 @@ export default function BankDetails() {
                     BIC/Swift Code
                   </label>
                   <div className="mt-2">
-                    <input
+                  <input
                       type="text"
                       name="swiftCode"
-                      placeholder="6 digits"
+                      placeholder="6-10 digits"
                       value={formData.swiftCode}
                       onChange={handleChange}
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
