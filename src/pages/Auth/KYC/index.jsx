@@ -165,7 +165,7 @@ export default function KycForm() {
     setIsSubmitting(true);
 
     const response = await updateUserKyc(
-      "v6pygKlYmrSOoJxkh6lpKesG2Bl2",
+      userId,
       formData
     );
 
@@ -217,7 +217,7 @@ export default function KycForm() {
       {}
     );
 
-    await updateUserKyc("v6pygKlYmrSOoJxkh6lpKesG2Bl2", filteredFormData);
+    await updateUserKyc(userId, filteredFormData);
   };
 
   const handleNext = () => {
