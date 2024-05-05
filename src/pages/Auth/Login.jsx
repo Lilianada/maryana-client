@@ -15,7 +15,7 @@ import { customAlert } from "../../utils/alertUtils";
 import { useAlert } from "../../context/AlertContext";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { addLogNotification } from "../../config/utils";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setUserName, setUserId } from "../../store/actions/userActions";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
@@ -27,15 +27,14 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const result = useSelector((state) => state.user.name);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigate("/onboard");
-      } else {
-        return;
-      }
+      // if (user.uid) {
+      //   navigate("/onboard");
+      // } else {
+      //   return;
+      // }
     });
 
     return () => unsubscribe();
@@ -66,12 +65,11 @@ export default function Login() {
       if (!userDoc.exists()) {
         customAlert({
           showAlert,
-          title: 'Error',
-          description: 'This user does not exist.',
+          title: "Error",
+          description: "This user does not exist.",
           icon: ExclamationCircleIcon,
-          iconBgColor: 'bg-red-100',
-          iconTextColor: 'bg-red-600',
-
+          iconBgColor: "bg-red-100",
+          iconTextColor: "bg-red-600",
         });
         setIsLoading(false);
         return;
@@ -87,7 +85,7 @@ export default function Login() {
       await updateDoc(userRef, { isLoggedIn: true });
       await addLogNotification(userRef, user);
 
-      if(result  === nameParts) {
+      if (user.uid) {
         navigate("/onboard");
       }
     } catch (error) {
@@ -107,7 +105,6 @@ export default function Login() {
       setIsLoading(false);
     }
   };
-
   return (
     <div className="h-screen bg-blue-50">
       <div className="flex min-h-full flex-1">
