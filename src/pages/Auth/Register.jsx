@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   RecaptchaVerifier,
   getAuth,
@@ -24,6 +24,7 @@ import PhoneVerification from "./PhoneValidation";
 import DotLoader from "../../components/DotLoader";
 import { ExclamationCircleIcon } from "@heroicons/react/20/solid";
 import PasswordTooltip from "../../components/PasswordTooltip";
+import { registerNewUser } from "../../config/user";
 
 const CountrySelect = ({ value, onChange }) => {
   const [countries, setCountries] = useState([]);
@@ -91,12 +92,14 @@ export default function Register() {
   const [canResend, setCanResend] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const auth = getAuth();
+  const navigate = useNavigate();
 
   const { setPhoneAuthData } = useAuth();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
   const toggleConfirmPassword = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
@@ -226,7 +229,7 @@ export default function Register() {
     return;
   };
 
-  const sendUserRequest = async () => {
+  const registeUser = async () => {
     const userRequest = {
       fullName: formData.fullName,
       email: formData.email,
@@ -236,20 +239,19 @@ export default function Register() {
       password: formData.password,
       jointAccount: formData.jointAccount,
       secondaryAccountHolder: formData.secondaryAccountHolder,
-      status: "pending",
       createdAt: getCurrentDate(),
     };
 
     // Add user request to Firestore
-    const userRequestId = await addUserRequestToFirestore(userRequest);
+    const userRequestId = await registerNewUser(db, auth, userRequest);
 
     if (!userRequestId) {
-      throw new Error("Failed to send signup request.");
+      throw new Error("Failed to signup.");
     }
     customModal({
       showModal,
       title: "Success",
-      text: "Signup successful. Please wait for admin approval.",
+      text: "Signup successful. Proceed to login and fill KYC.",
       icon: CheckIcon,
       showConfirmButton: false,
       timer: 4000,
@@ -269,7 +271,7 @@ export default function Register() {
     try {
       await confirmationResult.confirm(code);
       setIsVerified(true);
-      sendUserRequest();
+      registeUser();
     } catch (error) {
       console.error(error);
       handleFirebaseError(error);

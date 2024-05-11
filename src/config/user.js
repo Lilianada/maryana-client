@@ -12,12 +12,85 @@ http://www.apache.org/licenses/LICENSE-2.0
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-import { collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "./firebase";
-import { getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, sendEmailVerification } from "firebase/auth";
+import { getFunctions, httpsCallable } from "firebase/functions";
 
-// const USER_COLLECTION = "users";
+const ADMINDASH_COLLECTION = "admin_users";
 const USERS_COLLECTION = "users";
+
+//Delete user from auth table
+export async function deleteUserByPhone(phoneNumber) {
+  console.log("Deleting user by phone number:", phoneNumber);
+  const functionsInstance = getFunctions();
+  const deleteFunction = httpsCallable(functionsInstance, "deleteUserByPhone");
+
+  try {
+    const result = await deleteFunction({ phoneNumber });
+    console.log(result.data.message);
+    return result.data;
+  } catch (error) {
+    console.error("Error calling deleteUserByPhone function:", error);
+    throw error;
+  }
+}
+
+//register user
+export const registerNewUser = async (db, auth, requestData) => {
+
+  try {
+    // Step 0: Delete the first instance created of the user from Firebase Authentication
+   const result = await deleteUserByPhone(requestData.mobilePhone);
+
+   if (result.success === true) {
+    // Step 1: Create the user with Firebase Authentication
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      requestData.email,
+      requestData.password
+    );
+    // 
+    
+    const user = userCredential.user;
+    // Send email verification
+    await sendEmailVerification(user);
+
+    // Step 2: Use the User ID as the document ID in the 'users' collection
+    const newUserId = userCredential.user.uid;
+    await setDoc(doc(db, "users", newUserId), {
+      fullName: requestData.fullName,
+      email: requestData.email,
+      address: requestData.address,
+      mobilePhone: requestData.mobilePhone,
+      country: requestData.country,
+      jointAccount: requestData.jointAccount,
+      secondaryAccountHolder: requestData.secondaryAccountHolder,
+      uid: newUserId,
+      userId: newUserId,
+    });
+
+    // Step 3: Send a confirmation email
+    const mailRef = collection(db, "mail");
+    await addDoc(mailRef, {
+      to: requestData.email,
+      message: {
+        subject: "Signup Request Approved",
+        html: `<p>Hello ${requestData.fullName},</p>
+            <p>Your signup request has been approved! You can now log in using your credentials.</p>
+            <p>Thank you for joining us!</p>`,
+      },
+    });
+  }
+
+    return "User request approved successfully.";
+  } catch (error) {
+    console.error("Error approving user:", error);
+    // Rollback in case of failure after creating the user
+    await deleteUserByPhone(requestData.mobilePhone);
+    throw new Error(`Error approving user: ${error.message}`);
+  }
+};
 
 // Authenticated user
 export function getAuthUser() {
@@ -135,6 +208,5 @@ export async function getUserKycCompletion(userId) {
   });
 
   const completionPercentage = Math.round((filledFields / totalFields) * 100);
-  console.log(completionPercentage)
   return completionPercentage;
 }

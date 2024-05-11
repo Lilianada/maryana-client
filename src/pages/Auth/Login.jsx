@@ -69,7 +69,8 @@ export default function Login() {
           description: "This user does not exist.",
           icon: ExclamationCircleIcon,
           iconBgColor: "bg-red-100",
-          iconTextColor: "bg-red-600",
+          iconTextColor: "text-red-600",
+          timer: 3000,
         });
         setIsLoading(false);
         return;

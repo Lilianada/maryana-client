@@ -12,7 +12,6 @@ export default function WelcomePage() {
     try {
       const completion = await getUserKycCompletion(userId);
       setKycCompletion(completion);
-      console.log(`KYC Completion: ${completion}%`);
     } catch (error) {
       console.error("Error fetching KYC completion:", error);
       setKycCompletion("none");
@@ -50,14 +49,12 @@ export default function WelcomePage() {
                   ? "Start KYC"
                   : "Complete KYC"}
               </Link>
-              {kycCompletion !== 0 && (
-                <Link
-                  to="/dashboard"
-                  className="text-sm font-semibold leading-6 text-gray-800"
-                >
-                  Explore your account <span aria-hidden="true">→</span>
-                </Link>
-              )}
+              <Link
+                to="/dashboard"
+                className="text-sm font-semibold leading-6 text-gray-800"
+              >
+                Explore your account <span aria-hidden="true">→</span>
+              </Link>
             </div>
           )}
           <svg
