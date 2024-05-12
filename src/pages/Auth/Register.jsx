@@ -10,7 +10,6 @@ import { CheckIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { db } from "../../config/firebase";
 import Select from "react-select";
 import {
-  addUserRequestToFirestore,
   fetchPasswordPolicySetting,
   getCurrentDate,
 } from "../../config/utils";
@@ -229,7 +228,7 @@ export default function Register() {
     return;
   };
 
-  const registeUser = async () => {
+  const registerUser = async () => {
     setIsLoading(true);
     try {
       const userRequest = {
@@ -280,7 +279,7 @@ export default function Register() {
     try {
       await confirmationResult.confirm(code);
       setIsVerified(true);
-      registeUser();
+      registerUser();
     } catch (error) {
       console.error(error);
       handleFirebaseError(error);
