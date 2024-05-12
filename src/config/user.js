@@ -17,18 +17,15 @@ import { db } from "./firebase";
 import { createUserWithEmailAndPassword, getAuth, sendEmailVerification } from "firebase/auth";
 import { getFunctions, httpsCallable } from "firebase/functions";
 
-const ADMINDASH_COLLECTION = "admin_users";
 const USERS_COLLECTION = "users";
 
 //Delete user from auth table
 export async function deleteUserByPhone(phoneNumber) {
-  console.log("Deleting user by phone number:", phoneNumber);
   const functionsInstance = getFunctions();
   const deleteFunction = httpsCallable(functionsInstance, "deleteUserByPhone");
 
   try {
     const result = await deleteFunction({ phoneNumber });
-    console.log(result.data.message);
     return result.data;
   } catch (error) {
     console.error("Error calling deleteUserByPhone function:", error);
