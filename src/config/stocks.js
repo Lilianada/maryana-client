@@ -39,9 +39,6 @@ export async function getStock(userId) {
 
       const stocksData = stocksSnapshot.docs.map((doc) => doc.data());
       return stocksData;
-    } else {
-      console.error(`User with ID ${userId} not found.`);
-      return null;
     }
   } catch (error) {
     console.error("Error getting stock from user database: ", error);
