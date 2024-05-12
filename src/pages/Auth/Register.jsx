@@ -230,37 +230,46 @@ export default function Register() {
   };
 
   const registeUser = async () => {
-    const userRequest = {
-      fullName: formData.fullName,
-      email: formData.email,
-      address: formData.address,
-      country: formData.country.label,
-      mobilePhone: formData.mobilePhone,
-      password: formData.password,
-      jointAccount: formData.jointAccount,
-      secondaryAccountHolder: formData.secondaryAccountHolder,
-      createdAt: getCurrentDate(),
-    };
-
-    // Add user request to Firestore
-    const userRequestId = await registerNewUser(db, auth, userRequest);
-
-    if (!userRequestId) {
-      throw new Error("Failed to signup.");
+    setIsLoading(true);
+    try {
+      const userRequest = {
+        fullName: formData.fullName,
+        email: formData.email,
+        address: formData.address,
+        country: formData.country.label,
+        mobilePhone: formData.mobilePhone,
+        password: formData.password,
+        jointAccount: formData.jointAccount,
+        secondaryAccountHolder: formData.secondaryAccountHolder,
+        createdAt: getCurrentDate(),
+      };
+  
+      // Add user request to Firestore
+      const userRequestId = await registerNewUser(db, auth, userRequest);
+  
+      if (!userRequestId) {
+        throw new Error("Failed to signup.");
+      }
+      customModal({
+        showModal,
+        title: "Success",
+        text: "Signup successful. Proceed to login and fill KYC.",
+        icon: CheckIcon,
+        showConfirmButton: false,
+        timer: 4000,
+        iconBgColor: "bg-green-100",
+        iconTextColor: "text-green-600",
+        buttonBgColor: "bg-green-600",
+      });
+      setVerificationModal(false);
+      resetForm();
+      navigate("/");
+    } catch (error) {
+      console.error("Error registering user:", error);
+      handleFirebaseError(error);
+    } finally {
+      setIsLoading(false);
     }
-    customModal({
-      showModal,
-      title: "Success",
-      text: "Signup successful. Proceed to login and fill KYC.",
-      icon: CheckIcon,
-      showConfirmButton: false,
-      timer: 4000,
-      iconBgColor: "bg-green-100",
-      iconTextColor: "text-green-600",
-      buttonBgColor: "bg-green-600",
-    });
-    setVerificationModal(false);
-    resetForm();
   };
 
   const handleVerifyCode = async (e) => {
@@ -403,6 +412,7 @@ export default function Register() {
     setFormData(initialFormState);
     setVerificationCode(new Array(6).fill(""));
   }
+
   return (
     <div className="h-screen bg-blue-50">
       <div className="flex min-h-full flex-1">

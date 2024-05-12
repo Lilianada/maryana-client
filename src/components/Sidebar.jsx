@@ -1,13 +1,18 @@
-import React, { Fragment } from "react";
-import { useLocation } from "react-router-dom";
+import React, { Fragment, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
-import {
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import Logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { formatNumber } from "../config/utils";
+import CustomModal from "./CustomModal";
+import {
+  ArrowLeftStartOnRectangleIcon,
+  ExclamationTriangleIcon,
+} from "@heroicons/react/20/solid";
+import { auth } from "../config/firebase";
+import LoadingScreen from "./LoadingScreen";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -16,7 +21,24 @@ function classNames(...classes) {
 export default function Sidebar({ sidebarOpen, setSidebarOpen, navigation }) {
   const location = useLocation();
   const balance = useSelector((state) => state.user.balance);
-  const userName = useSelector(state => state.user.name);
+  const userName = useSelector((state) => state.user.name);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const onSignOut = () => {
+    setIsLoading(true);
+    auth
+      .signOut()
+      .then(() => {
+        setIsLoading(false);
+        navigate("/");
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        console.error("Error signing out:", error);
+      });
+  };
 
   const updatedNavigation = navigation.map((item) => ({
     ...item,
@@ -73,6 +95,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, navigation }) {
                 </div>
               </Transition.Child>
               {/* Sidebar */}
+              {isLoading && (<LoadingScreen/>)}
               <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4 ring-1 ring-white/10">
                 <div className="flex h-16 shrink-0 items-center mt-4">
                   <img className="h-12 w-auto" src={Logo} alt="CVS Online" />
@@ -80,16 +103,17 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, navigation }) {
                 <nav className="flex flex-1 flex-col">
                   <ul className="flex flex-1 flex-col -mx-2 space-y-1">
                     <li className="mb-6">
-                      <div
-                        className="group flex items-center w-full bg-white text-gray-900 rounded-md px-2 py-2 text-sm font-medium"
-                      >
+                      <div className="group flex items-center w-full bg-white text-gray-900 rounded-md px-2 py-2 text-sm font-medium">
                         <div className="flex flex-col justify-start ">
                           <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">
                             {userName}
                           </p>
                           <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
                             Total Account Value:
-                            <span className="text-indigo-500"> ${formatNumber(balance)}</span>
+                            <span className="text-indigo-500">
+                              {" "}
+                              ${formatNumber(balance)}
+                            </span>
                           </p>
                           <p className="text-xs italic font-medium text-gray-500 group-hover:text-gray-700"></p>
                         </div>
@@ -121,9 +145,55 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, navigation }) {
                       </li>
                     ))}
                   </ul>
+                  <div
+                    className="absolute bottom-1 flex flex-1 flex-col -mx-2 space-y-1 w-11/12"
+                    onClick={() => setSidebarOpen(false)}
+                  >
+                    <button
+                      onClick={onSignOut}
+                      className="group flex gap-x-3 tems-center px-3 py-2 text-sm font-medium leading-6 hover:border-rose-600 hover:border-l-4 text-rose-500 hover:text-rose-700 hover:bg-rose-50"
+                    >
+                      <ArrowLeftStartOnRectangleIcon
+                        className="h-6 w-6 shrink-0"
+                        aria-hidden="true"
+                      />
+                      Sign out
+                      <span className="sr-only">Sign out</span>
+                    </button>
+                  </div>
                 </nav>
               </div>
             </Dialog.Panel>
+            {/* <CustomModal
+              open={isOpen}
+              onClose={() => setIsOpen(false)}
+              title="Sign out"
+              description="Are you sure you want to sign out of your account?"
+              showConfirmButton={true}
+              confirmButtonText="Sign Out"
+              cancelButtonText="Cancel"
+              confirmButtonBgColor="bg-red-600"
+              confirmButtonTextColor="text-white"
+              onConfirm={() => {
+                setIsLoading(true);
+                auth
+                  .signOut()
+                  .then(() => {
+                    setIsLoading(false);
+                    navigate("/");
+                  })
+                  .catch((error) => {
+                    setIsLoading(false);
+                    console.error("Error signing out:", error);
+                  });
+              }}
+              onCancel={() => setIsOpen(false)}
+              Icon={ExclamationTriangleIcon}
+              iconBgColor="bg-red-100"
+              buttonBgColor="bg-red-600"
+              iconTextColor="text-red-600"
+              loading={isLoading}
+            /> */}
           </Transition.Child>
         </div>
       </Dialog>

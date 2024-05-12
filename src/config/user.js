@@ -68,6 +68,7 @@ export const registerNewUser = async (db, auth, requestData) => {
       secondaryAccountHolder: requestData.secondaryAccountHolder,
       uid: newUserId,
       userId: newUserId,
+      createdAt: requestData.createdAt,
     });
 
     // Step 3: Send a confirmation email
