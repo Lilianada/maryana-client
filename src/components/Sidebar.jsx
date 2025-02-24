@@ -98,7 +98,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, navigation }) {
               {isLoading && (<LoadingScreen/>)}
               <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4 ring-1 ring-white/10">
                 <div className="flex h-16 shrink-0 items-center mt-4">
-                  <img className="h-12 w-auto" src={Logo} alt="CVS Online" />
+                  <img className="h-12 w-auto" src={Logo} alt="Maryana Capital Inc." />
                 </div>
                 <nav className="flex flex-1 flex-col">
                   <ul className="flex flex-1 flex-col -mx-2 space-y-1">
@@ -110,7 +110,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, navigation }) {
                           </p>
                           <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
                             Total Account Value:
-                            <span className="text-indigo-500">
+                            <span className="text-teal-500">
                               {" "}
                               ${formatNumber(balance)}
                             </span>
@@ -126,7 +126,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, navigation }) {
                           to={item.to}
                           className={classNames(
                             item.current
-                              ? "border-indigo-600 bg-indigo-50 text-indigo-600"
+                              ? "border-teal-600 bg-teal-50 text-teal-600"
                               : "border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900",
                             "group flex items-center border-l-4 px-3 py-2 text-sm font-medium"
                           )}
@@ -134,7 +134,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, navigation }) {
                           <item.icon
                             className={classNames(
                               item.current
-                                ? "text-indigo-500"
+                                ? "text-teal-500"
                                 : "text-gray-400 group-hover:text-gray-500",
                               "mr-3 h-6 w-6 flex-shrink-0"
                             )}

@@ -195,7 +195,7 @@ export default function ChangePassword() {
                 <Popover.Button className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
                   <span>
                     <QuestionMarkCircleIcon
-                      className="h-5 w-5 text-indigo-600"
+                      className="h-5 w-5 text-teal-600"
                       aria-hidden="true"
                     />
                   </span>
@@ -215,7 +215,7 @@ export default function ChangePassword() {
                         strongPolicyRequirements.map((item) => (
                           <li
                             key={item.name}
-                            className="block hover:text-indigo-600"
+                            className="block hover:text-teal-600"
                           >
                             {item.name}
                           </li>
@@ -223,7 +223,7 @@ export default function ChangePassword() {
                       requirements.map((item) => (
                         <li
                           key={item.name}
-                          className="block hover:text-indigo-600"
+                          className="block hover:text-teal-600"
                         >
                           {item.name}
                         </li>
@@ -244,7 +244,7 @@ export default function ChangePassword() {
           >
             <div className="relative mt-2 rounded-md shadow-sm">
               <input
-                className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
                 type={showPassword ? "text" : "password"}
                 name="password"
                 value={currentPassword}
@@ -255,7 +255,7 @@ export default function ChangePassword() {
               <div className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3">
                 {showPassword ? (
                   <EyeIcon
-                    className="h-4 w-4 text-indigo-300"
+                    className="h-4 w-4 text-teal-300"
                     aria-hidden="true"
                     onClick={togglePasswordVisibility}
                   />
@@ -271,7 +271,7 @@ export default function ChangePassword() {
 
             <div className="relative mt-2 rounded-md shadow-sm">
               <input
-                className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
                 type={showNewPassword ? "text" : "password"}
                 name="newPassword"
                 value={newPassword}
@@ -282,7 +282,7 @@ export default function ChangePassword() {
               <div className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3">
                 {showNewPassword ? (
                   <EyeIcon
-                    className="h-4 w-4 text-indigo-300"
+                    className="h-4 w-4 text-teal-300"
                     aria-hidden="true"
                     onClick={toggleNewPassword}
                   />
@@ -298,7 +298,7 @@ export default function ChangePassword() {
 
             <div className="relative mt-2 rounded-md shadow-sm">
               <input
-                className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="bg-white focus:bg-blue-50 block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
                 value={confirmPassword}
@@ -309,7 +309,7 @@ export default function ChangePassword() {
               <div className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3">
                 {showConfirmPassword ? (
                   <EyeIcon
-                    className="h-4 w-4 text-indigo-300"
+                    className="h-4 w-4 text-teal-300"
                     aria-hidden="true"
                     onClick={toggleConfirmPassword}
                   />
@@ -326,7 +326,7 @@ export default function ChangePassword() {
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="flex w-full justify-center rounded-md bg-teal-600 px-3 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
               >
                 {isLoading ? (
                   <div className="flex w-full justify-center align-middle gap-2">
@@ -344,7 +344,7 @@ export default function ChangePassword() {
             Remembered your password?{" "}
             <Link
               to="/"
-              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+              className="font-semibold leading-6 text-teal-600 hover:text-teal-500"
             >
               Sign In
             </Link>

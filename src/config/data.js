@@ -102,13 +102,13 @@ export const financialStatus = [
 ];
 
 export const netAnnualIncome = [
-  "Less than $25k",
-  "$25k- $50k",
-  "$50k - $100k",
-  "$100k - $200k",
-  "$200k - $500k",
-  "$500k - $1m",
-  "Above $1m",
+  "Less than 25k",
+  "25k - 50k",
+  "50k - 100k",
+  "100k - 200k",
+  "200k - 500k",
+  "500k - 1m",
+  "Above 1m",
 ];
 
 export const occupation = [
@@ -145,8 +145,24 @@ export const occupation = [
 
 export const stockInvestents = ["$1 - $500", "$500 - $2000", "$2000 plus"];
 
-export const stockExperiences = ["1-10", "10-20", "20 plus"]
+export const stockExperiences = ["1 - 10", "10 - 20", "20 plus"];
 
 export const cryptoInvestments = ["$1 - $500", "$500 - $2000", "$2000 plus"];
 
-export const cryptoExperiences = ["1-10", "10-20", "20 plus"]
+export const cryptoExperiences = ["1 - 10", "10 - 20", "20 plus"];
+
+export const investmentExperience = ["Yes", "No", "Financial Advisor"];
+
+export const investmentKnowledge = ["Limited Knowledge", "Good Understanding", "Experienced Investor"];
+
+export const riskProfile = ["Low Risk", "Medium Risk", "High Risk"];
+
+export const investmentStrategy = ["Capital Growth", "Capital Preservation", "Capital Income"];
+
+export const relevantInvestment = ["Equities", "Property Funds", "Hedge Funds", "Structured Products", "Venture Capital / Private Equity", "Warrants / Futures / Options", "None"];
+
+export const currency = ["USD", "EUR", "GBP", "CHF", "AUD", "CAD"];
+
+export const liquidNetWorth = ["Less than 25k", "25k - 50k", "50k - 100k", "100k - 200k", "200k - 500k", "500k - 1m",  "$1m - $3m", "Above $3m"];
+
+export const totalNetWorth = ["Less than 25k", "25k - 50k", "50k - 100k", "100k - 200k", "200k - 500k", "500k - 1m",  "1m - 3m", "3m - 5m", "Above 5m"];

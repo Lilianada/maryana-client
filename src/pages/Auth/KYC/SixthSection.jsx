@@ -6,7 +6,11 @@ export default function SixthSection({
   financialStatus,
   occupation,
   netAnnualIncome,
+  currencies,
+  liquidNetWorth,
+  totalNetWorth,
 }) {
+  
   return (
     <div className="space-y-10 divide-y divide-gray-900/10 mt-12">
       <div className="grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-3">
@@ -19,6 +23,31 @@ export default function SixthSection({
         <form className="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
           <div className="px-4 py-6 sm:p-8">
             <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+             
+            <div className="col-span-full">
+                <label
+                  htmlFor="select-currency"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Please select one of the following currencies for the below options.
+                </label>
+                <div className="mt-2">
+                  <select
+                    name="selectCurrency"
+                    value={formData.selectCurrency}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                  >
+                    <option value="">Select your currency</option>
+                    {currencies.map((item, index) => (
+                      <option value={item} key={index}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
               <div className="col-span-full">
                 <label
                   htmlFor="financialStats"
@@ -37,7 +66,7 @@ export default function SixthSection({
                           value={item}
                           checked={formData.financialStats.includes(item)}
                           onChange={handleChange}
-                          className="form-checkbox h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                          className="form-checkbox h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                         />
                         <span className="ml-2 text-sm text-gray-700">
                           {item}
@@ -47,7 +76,7 @@ export default function SixthSection({
                   ))}
                 </div>
               </div>
-
+             
               <div className="col-span-full">
                 <label
                   htmlFor="occupation"
@@ -61,7 +90,7 @@ export default function SixthSection({
                     name="job"
                     value={formData.job}
                     onChange={handleChange}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                   >
                     <option value="">Select your occupation</option>
                     {occupation.map((item, index) => (
@@ -87,7 +116,7 @@ export default function SixthSection({
                     value={formData.employerDets}
                     onChange={handleChange}
                     placeholder="Company Name, Address, Position"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                   />
                 </div>
               </div>
@@ -97,14 +126,14 @@ export default function SixthSection({
                   htmlFor="netIncome"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Your net annual income (USD)
+                  Your net annual income.
                 </label>
                 <div className="mt-2">
                   <select
                     name="netIncome"
                     value={formData.netIncome}
                     onChange={handleChange}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                   >
                     <option value="">Select your net annual income</option>
                     {netAnnualIncome.map((item, index) => (
@@ -118,10 +147,60 @@ export default function SixthSection({
 
               <div className="col-span-full">
                 <label
+                  htmlFor="liquidNetWorth"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Your liquid net worth.
+                </label>
+                <div className="mt-2">
+                  <select
+                    name="liquidNetWorth"
+                    value={formData.liquidNetWorth}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                  >
+                    <option value="">Select your liquid net worth</option>
+                    {liquidNetWorth.map((item, index) => (
+                      <option value={item} key={index}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="col-span-full">
+                <label
+                  htmlFor="totalNet"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Your total net worth.
+                </label>
+                <div className="mt-2">
+                  <select
+                    name="totalNet"
+                    value={formData.totalNetWorth}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                  >
+                    <option value="">
+                      Select your total net worth
+                    </option>
+                    {totalNetWorth.map((item, index) => (
+                      <option value={item} key={index}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="col-span-full">
+                <label
                   htmlFor="assets"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Your total cash and liquid assets (USD). Such as savings
+                  Your total cash and liquid assets. Such as savings
                   accounts, brokerage accounts etc.
                 </label>
                 <div className="mt-2">
@@ -129,7 +208,7 @@ export default function SixthSection({
                     name="assets"
                     value={formData.assets}
                     onChange={handleChange}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                   >
                     <option value="">
                       Select your total cash and liquid assets

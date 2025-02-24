@@ -275,7 +275,7 @@ export const displayIposTable = (setIsIposVisible) => {
 export const fetchLogo = async (setLogo) => {
   const storageRef = ref(
     storage,
-    "gs://cvs-online.appspot.com/logos/darkLogo/"
+    "gs://maryana-893ef.appspot.com/logos/darkLogo/"
   );
   try {
     const logoUrl = await getDownloadURL(storageRef);

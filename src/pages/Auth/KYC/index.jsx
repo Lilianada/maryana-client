@@ -18,6 +18,15 @@ import {
   tradingExperience,
   tradingKnowledgeAssessment,
   tradingStrategy,
+
+  investmentExperience,
+  investmentKnowledge,
+  investmentStrategy,
+  currency,
+  liquidNetWorth,
+  totalNetWorth,
+  riskProfile,
+  relevantInvestment
 } from "../../../config/data";
 import { getUserKyc, updateUserKyc } from "../../../config/user";
 import { customModal } from "../../../utils/modalUtils";
@@ -63,6 +72,15 @@ export default function KycForm() {
       limit: "",
     },
     familyAssessment: [],
+
+    investExperience: "",
+    investKnowledge: "",
+    investStrategy: "",
+    riskProfile: "",
+    relevantInvestment: "",
+    selectCurrency: "",
+    liquidNetWorth: "",
+    totalNet: "",
   });
   const { showModal, hideModal } = useModal();
   const userId = useSelector((state) => state.user.userId);
@@ -101,6 +119,15 @@ export default function KycForm() {
             investAmount: details.investAmount || "",
             risk: details.risk || { name: "", limit: "" },
             familyAssessment: details.familyAssessment || [],
+
+            investExperience: details.investExperience || "",
+            investKnowledge: details.investKnowledge || "",
+            investStrategy: details.investStrategy || "",
+            riskProfile: details.riskProfile || "",
+            relevantInvestment: details.relevantInvestment || "",
+            selectCurrency: details.selectCurrency || "",
+            liquidNetWorth: details.liquidNetWorth || "",
+            totalNet: details.totalNet || "",
           }));
         } else {
           setFormData({
@@ -129,6 +156,15 @@ export default function KycForm() {
               limit: "",
             },
             familyAssessment: [],
+
+            investExperience: "",
+            investKnowledge: "",
+            investStrategy: "",
+            riskProfile: "",
+            relevantInvestment: "",
+            selectCurrency: "",
+            liquidNetWorth: "",
+            totalNet: "",
           });
         }
       } catch (err) {
@@ -241,44 +277,49 @@ export default function KycForm() {
             primaryPurpose={primaryPurpose}
             plannedInvestments={plannedInvestments}
             investmentWindow={investmentWindow}
-          />
-        );
-      case 1:
-        return (
-          <SecondSection
-            formData={formData}
-            handleChange={handleInputChange}
-            stockExperiences={stockExperiences}
-            stockInvestents={stockInvestents}
-          />
-        );
-      case 2:
-        return (
-          <ThirdSection
-            formData={formData}
-            handleChange={handleInputChange}
-            cryptoExperiences={cryptoExperiences}
-            cryptoInvestments={cryptoInvestments}
-          />
-        );
-      case 3:
-        return (
-          <FourthSection formData={formData} handleChange={handleInputChange} />
-        );
-      case 4:
-        return (
-          <FifthSection
-            formData={formData}
-            handleChange={handleInputChange}
-            setFormData={setFormData}
-            tradingExperience={tradingExperience}
-            educationExperience={educationExperience}
-            tradingKnowledgeAssessment={tradingKnowledgeAssessment}
-            tradingStrategy={tradingStrategy}
-            purposeOfTrading={purposeOfTrading}
-            investmentAmount={investmentAmount}
-            riskReward={riskReward}
-            familyMembers={familyMembers}
+            investStrategy={investmentStrategy}
+            />
+          );
+          case 1:
+            return (
+              <SecondSection
+              formData={formData}
+              handleChange={handleInputChange}
+              stockExperiences={stockExperiences}
+              stockInvestents={stockInvestents}
+              />
+            );
+            case 2:
+              return (
+                <ThirdSection
+                formData={formData}
+                handleChange={handleInputChange}
+                cryptoExperiences={cryptoExperiences}
+                cryptoInvestments={cryptoInvestments}
+                />
+              );
+              case 3:
+                return (
+                  <FourthSection formData={formData} handleChange={handleInputChange} />
+                );
+                case 4:
+                  return (
+                    <FifthSection
+                    formData={formData}
+                    handleChange={handleInputChange}
+                    setFormData={setFormData}
+                    tradingExperience={tradingExperience}
+                    educationExperience={educationExperience}
+                    tradingKnowledgeAssessment={tradingKnowledgeAssessment}
+                    tradingStrategy={tradingStrategy}
+                    purposeOfTrading={purposeOfTrading}
+                    investmentAmount={investmentAmount}
+                    riskReward={riskReward}
+                    riskProfile={riskProfile}
+                    familyMembers={familyMembers}
+                    investExperience={investmentExperience}
+                    investKnowledge={investmentKnowledge}
+                    relevantInvestment={relevantInvestment}
           />
         );
       case 5:
@@ -289,6 +330,9 @@ export default function KycForm() {
             financialStatus={financialStatus}
             occupation={occupation}
             netAnnualIncome={netAnnualIncome}
+            liquidNetWorth={liquidNetWorth}
+            currencies={currency}
+            totalNetWorth={totalNetWorth}
           />
         );
       default:
@@ -309,7 +353,7 @@ export default function KycForm() {
         <div className="mt-6 mb-6" aria-hidden="true">
           <div className="overflow-hidden rounded-full bg-gray-200">
             <div
-              className="h-2 bg-indigo-600 rounded-full"
+              className="h-2 bg-teal-600 rounded-full"
               style={{ width: `${progressPercentage}%` }}
             />
           </div>
@@ -320,8 +364,8 @@ export default function KycForm() {
                 onClick={() => handleGoToSection(i)}
                 className={`w-full text-center cursor-pointer ${
                   i === currentSection
-                    ? "text-indigo-600"
-                    : "hover:text-indigo-400"
+                    ? "text-teal-600"
+                    : "hover:text-teal-400"
                 }`}
                 style={{ padding: "4px 0" }} // Adding padding to increase clickable area
               >
@@ -346,7 +390,7 @@ export default function KycForm() {
             </button>
             <button
               type="button"
-              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
               onClick={handleNext}
             >
               Save & Next
@@ -363,7 +407,7 @@ export default function KycForm() {
             </button>
             <button
               type="submit"
-              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="rounded-md bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
               onClick={handleSubmit}
               disabled={isSubmitting}
             >

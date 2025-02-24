@@ -22,13 +22,13 @@ export default function Header() {
     <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
       <div className="relative flex flex-1 items-center justify-center">
         <h1 className="hidden md:block md:text-2xl text-sm font-semibold leading-6 text-gray-900 ">
-          CVS Investment Management
+        Maryana Capital Inc.
         </h1>
       </div>
       <div className="flex items-center gap-x-4 lg:gap-x-6">
         <Link
           to="/dashboard/notifications"
-          className="-m-2.5 p-2.5 text-gray-400 hover:text-indigo-500"
+          className="-m-2.5 p-2.5 text-gray-400 hover:text-teal-500"
         >
           <span className="sr-only">View notifications</span>
           <BellIcon className="h-6 w-6" aria-hidden="true" />
